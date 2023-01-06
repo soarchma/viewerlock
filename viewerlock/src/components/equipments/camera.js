@@ -13,7 +13,7 @@ const base = 0;
 export const Camera = (props) => {
   const { type } = props;
   // console.log(type);
-  const url = `http://192.168.4.233:8889/${type}/index.m3u8`;
+  const url = `http://192.168.4.233:8888/${type}/index.m3u8`;
   // if (type === "shape") {
   //   url = "static/shape.png";
   // } else if (type === "leak") {
