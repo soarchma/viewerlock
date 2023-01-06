@@ -1,0 +1,142 @@
+version: "3"
+services:
+  influxdb:
+    image: influxdb:2.4-alpine
+    volumes:
+      # Mount for influxdb data directory and configuration
+      - C:\docker-vol\influxdb2\data:/var/lib/influxdb2:rw
+      - C:\docker-vol\influxdb2\config:/etc/influxdb2:rw
+    ports:
+      - "8086:8086"
+    restart: always
+
+  # Use the influx cli to set up an influxdb instance.
+  influxdb_cli:
+    links:
+      - influxdb
+    image: influxdb:2.4-alpine
+    # volumes:
+    # Mount for influxdb data directory and configuration
+    # - C:\docker-vol\influxdb2\data:/var/lib/influxdb2:rw
+    # - C:\dev\docker\influxv2\entrypoint.sh:/entrypoint.sh:rw
+    # - ./ssl/influxdb-selfsigned.crt:/etc/ssl/influxdb-selfsigned.crt:rw
+    # - ./ssl/influxdb-selfsigned.key:/etc/ssl/influxdb-selfsigned.key:rw
+    environment:
+      # Use these same configurations parameters in your telegraf configuration, mytelegraf.conf.
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=shbaek
+      - DOCKER_INFLUXDB_INIT_PASSWORD=tmdghkqor0
+      - DOCKER_INFLUXDB_INIT_ORG=cn
+      - DOCKER_INFLUXDB_INIT_BUCKET=mybucket
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
+      # - INFLUXDB_HTTP_AUTH_ENABLED=false
+      # - INFLUXD_TLS_CERT=/etc/ssl/influxdb-selfsigned.crt
+      # - INFLUXD_TLS_KEY=/etc/ssl/influxdb-selfsigned.key
+    entrypoint: influx setup --bucket mybucket -t mytoken -o cn --username=shbaek --password=tmdghkqor0 --host=http://influxv2_influxdb_1:8086 -f
+    restart: on-failure:10
+    depends_on:
+      - influxdb
+
+  grafana:
+    image: grafana/grafana
+    links:
+      - influxdb
+    volumes:
+      - C:\docker-vol\grafana\grafana.ini:/etc/grafana/grafana.ini:rw
+      # /var/lib/grafana/grafana.db => API-KEY 저장됨.
+      - C:\docker-vol\grafana\data:/var/lib/grafana:rw
+      - C:\docker-vol\grafana\provisioning:/etc/grafana/provisioning:rw
+      # - C:\docker-vol\grafana\admin_password:/run/secrets/admin_password
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=shbaek
+      - GF_SECURITY_ADMIN_PASSWORD=tmdghkqor0
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: always
+    depends_on:
+      - influxdb_cli
+
+  mosquitto:
+    image: eclipse-mosquitto
+    links:
+      - influxdb
+    ports:
+      - "1883:1883"
+    # 일단 auth 옵션은 끈 상태로 진행
+    # mosquitto_passwd -c /password_file shbaek => 패스워드 파일 생성
+    # 생성된 password_file 컨테이너에 마운트
+    # /mosquitto/config/mosquitto.conf에 password_file 설정
+    entrypoint: mosquitto -c /mosquitto-no-auth.conf
+    restart: always
+    depends_on:
+      - grafana
+
+  telegraf:
+    image: telegraf:1.24-alpine
+    links:
+      - influxdb
+    volumes:
+      #  Sync timezone with host
+      # - /etc/localtime:/etc/localtime:ro
+      # Mount for telegraf config
+      - C:\docker-vol\telegraf\telegraf.conf:/etc/telegraf/telegraf.conf:rw
+      # - /var/run/docker.sock:/var/run/docker.sock
+    # env_file:
+    #   - ./influxv2.env
+    environment:
+      - DOCKER_INFLUXDB_INIT_URLS=http://influxv2_influxdb_1:8086
+      - DOCKER_INFLUXDB_INIT_ORG=cn
+      - DOCKER_INFLUXDB_INIT_BUCKET=mybucket
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
+      - DOCKER_GRAFANA_WS_INIT_URL=ws://influxv2_grafana_1:3000/api/live/push/custom_stream_id
+      # - DOCKER_GRAFANA_INIT_API_KEY=
+      - DOCKER_MQTT_INIT_SERVER=tcp://influxv2_mosquitto_1:1883
+      # - DOCKER_MQTT_INIT_SERVER=mqtt://123.142.5.131:21984
+    restart: always
+    depends_on:
+      - mosquitto
+
+  rtsp_simple_server:
+    image: aler9/rtsp-simple-server
+    # network_mode: "host"
+    links:
+      - influxdb
+    ports:
+      - "8554:8554"
+      - "8889:8888"
+    volumes:
+      - C:\docker-vol\rtsp-simple-server\rtsp-simple-server.yml:/rtsp-simple-server.yml:rw
+    environment:
+      - RTSP_PROTOCOLS=tcp
+    restart: always
+
+  ffmpeg_leak:
+    image: jrottenberg/ffmpeg:latest
+    links:
+      - influxdb
+    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=420:240 -an -f rtsp rtsp://host.docker.internal:8554/leak
+    restart: always
+    depends_on:
+      - rtsp_simple_server
+
+  ffmpeg_shape:
+    image: jrottenberg/ffmpeg:latest
+    links:
+      - influxdb
+    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=420:240 -an -f rtsp rtsp://host.docker.internal:8554/shape
+    restart: always
+    depends_on:
+      - rtsp_simple_server
+
+  ffmpeg_assemble:
+    image: jrottenberg/ffmpeg:latest
+    links:
+      - influxdb
+    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=420:240 -an -f rtsp rtsp://host.docker.internal:8554/assemble
+    restart: always
+    depends_on:
+      - rtsp_simple_server
+
+volumes:
+  influxdb2:

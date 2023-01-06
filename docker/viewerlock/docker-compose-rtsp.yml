@@ -1,0 +1,9 @@
+version: "3"
+services:
+  rtsp-simple-server:
+    image: aler9/rtsp-simple-server
+    network_mode: "host"
+    volumes:
+      - C:\docker-vol\rtsp-simple-server\rtsp-simple-server.yml:/rtsp-simple-server.yml:rw
+# volumes:
+#   influxdb2:
