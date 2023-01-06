@@ -1,4 +1,4 @@
-
+# SHBAEK
 ###############################################
 # General parameters
 
@@ -151,7 +151,7 @@ hlsPartDuration: 200ms
 hlsSegmentMaxSize: 0.3M
 # Value of the Access-Control-Allow-Origin header provided in every HTTP response.
 # This allows to play the HLS stream from an external website.
-hlsAllowOrigin: '*'
+hlsAllowOrigin: "*"
 # Enable TLS/HTTPS on the HLS server.
 # This is required for Low-Latency HLS.
 hlsEncryption: no
@@ -238,7 +238,7 @@ paths:
     rpiCameraIDRPeriod: 60
     rpiCameraBitrate: 1000000
     rpiCameraProfile: main
-    rpiCameraLevel: '4.1'
+    rpiCameraLevel: "4.1"
 
     # Username required to publish.
     # SHA256-hashed values can be inserted with the "sha256:" prefix.
