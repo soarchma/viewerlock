@@ -1,0 +1,32 @@
+services:
+  influxdb:
+    image: influxdb:2.4-alpine
+    volumes:
+      # Mount for influxdb data directory and configuration
+      - C:\docker-vol\influxdb2\data:/var/lib/influxdb2:rw
+      - C:\docker-vol\influxdb2\config:/etc/influxdb2:rw
+    ports:
+      - "8086:8086"
+    restart: unless-stopped
+
+  telegraf:
+    image: telegraf:1.24-alpine
+    links:
+      - influxdb
+    volumes:
+      #  Sync timezone with host
+      # - /etc/localtime:/etc/localtime:ro
+      # Mount for telegraf config
+      - C:\docker-vol\telegraf\telegraf.conf:/etc/telegraf/telegraf.conf
+      #  Map /tmp to permanent storage  (this includes /tmp/metrics.out)
+      - C:\docker-vol\telegraf\tmp:/tmp
+    # env_file:
+    #   - ./viewerlock.env
+    environment:
+      - DOCKER_INFLUXDB_INIT_URLS="http://viewerlock_influxdb_1:8086"
+      - DOCKER_INFLUXDB_INIT_ORG=cn
+      - DOCKER_INFLUXDB_INIT_BUCKET=mybucket
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
+    depends_on:
+      - influxdb
+    restart: unless-stopped
