@@ -7,5 +7,6 @@
 # production
 
 # misc
-/docker-vol/grafana/data/*
-/docker-vol/influxdb/data/*
+/docker-vol/grafana/data
+/docker-vol/influxdb2/data
+/docker-vol/telegraf/data
