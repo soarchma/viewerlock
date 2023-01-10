@@ -1,13 +1,13 @@
 {
-  "name": "material-kit-react",
-  "author": "Devias IO",
+  "name": "viewerlock",
+  "author": "CloudNetworks",
   "licence": "MIT",
-  "version": "2.1.1",
+  "version": "0.0.1",
   "private": false,
   "scripts": {
-    "dev": "next dev -p 8003",
+    "dev": "next dev -p 8080",
     "build": "next build",
-    "start": "next start -p 8003",
+    "start": "next start -p 8080",
     "export": "next export",
     "lint": "next lint",
     "lint-fix": "next lint --fix"

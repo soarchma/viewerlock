@@ -6,8 +6,8 @@ services:
     image: influxdb:2.4-alpine
     volumes:
       # Mount for influxdb data directory and configuration
-      - ..\docker-vol\influxdb2\data:/var/lib/influxdb2:rw
-      - ..\docker-vol\influxdb2\config:/etc/influxdb2:rw
+      - .\docker-vol\influxdb2\data:/var/lib/influxdb2:rw
+      - .\docker-vol\influxdb2\config:/etc/influxdb2:rw
     ports:
       - "8086:8086"
     restart: always
@@ -19,7 +19,7 @@ services:
     image: influxdb:2.4-alpine
     # volumes:
     # Mount for influxdb data directory and configuration
-    # - ..\docker-vol\influxdb2\data:/var/lib/influxdb2:rw
+    # - .\docker-vol\influxdb2\data:/var/lib/influxdb2:rw
     # - ..\dev\docker\viewerlock\entrypoint.sh:/entrypoint.sh:rw
     # - ./ssl/influxdb-selfsigned.crt:/etc/ssl/influxdb-selfsigned.crt:rw
     # - ./ssl/influxdb-selfsigned.key:/etc/ssl/influxdb-selfsigned.key:rw
@@ -45,11 +45,11 @@ services:
     links:
       - influxdb
     volumes:
-      - ..\docker-vol\grafana\grafana.ini:/etc/grafana/grafana.ini:rw
+      - .\docker-vol\grafana\grafana.ini:/etc/grafana/grafana.ini:rw
       # /var/lib/grafana/grafana.db => API-KEY 저장됨.
-      - ..\docker-vol\grafana\data:/var/lib/grafana:rw
-      - ..\docker-vol\grafana\provisioning:/etc/grafana/provisioning:rw
-      # - ..\docker-vol\grafana\admin_password:/run/secrets/admin_password
+      - .\docker-vol\grafana\data:/var/lib/grafana:rw
+      - .\docker-vol\grafana\provisioning:/etc/grafana/provisioning:rw
+      # - .\docker-vol\grafana\admin_password:/run/secrets/admin_password
     ports:
       - "3000:3000"
     environment:
@@ -83,7 +83,7 @@ services:
       #  Sync timezone with host
       # - /etc/localtime:/etc/localtime:ro
       # Mount for telegraf config
-      - ..\docker-vol\telegraf\telegraf.conf:/etc/telegraf/telegraf.conf:rw
+      - .\docker-vol\telegraf\telegraf.conf:/etc/telegraf/telegraf.conf:rw
       # - /var/run/docker.sock:/var/run/docker.sock
     # env_file:
     #   - ./viewerlock.env
@@ -103,6 +103,20 @@ services:
     depends_on:
       - mosquitto
 
+  viewerlock:
+    container_name: "viewerlock"
+    restart: "on-failure"
+    build:
+      context: ./viewerlock
+      dockerfile: Dockerfile
+    volumes:
+      # hot reload를 위해 mount
+      - "./viewerlock:/usr/src/viewerlock"
+      - "/usr/src/viewerlock/node_modules"
+      - "/usr/src/viewerlock/.viewerlock"
+    ports:
+      - "8080:8080"
+
   rtsp_simple_server:
     image: aler9/rtsp-simple-server
     # network_mode: "host"
@@ -112,7 +126,7 @@ services:
       - "8554:8554"
       - "8888:8888"
     volumes:
-      - ..\docker-vol\rtsp-simple-server\rtsp-simple-server.yml:/rtsp-simple-server.yml:rw
+      - .\docker-vol\rtsp-simple-server\rtsp-simple-server.yml:/rtsp-simple-server.yml:rw
     environment:
       - RTSP_PROTOCOLS=tcp
     restart: always
@@ -121,7 +135,11 @@ services:
     image: jrottenberg/ffmpeg:latest
     links:
       - influxdb
-    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=420:240 -an -f rtsp rtsp://host.docker.internal:8554/leak
+    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -c copy -an -f rtsp rtsp://host.docker.internal:8554/leak
+    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=420:240 -an -f rtsp rtsp://host.docker.internal:8554/leak
+    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -filter:v fps=fps=3 -update 1 /images/leak.jpg -y
+    # volumes:
+    #   - .\docker-vol\ffmpeg\images:/images:rw
     restart: always
     depends_on:
       - rtsp_simple_server
@@ -130,7 +148,11 @@ services:
     image: jrottenberg/ffmpeg:latest
     links:
       - influxdb
-    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=420:240 -an -f rtsp rtsp://host.docker.internal:8554/shape
+    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -c copy -an -f rtsp rtsp://host.docker.internal:8554/shape
+    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=210:120 -an -f rtsp rtsp://host.docker.internal:8554/shape
+    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -filter:v fps=fps=3 -update 1 /images/shape.jpg -y
+    # volumes:
+      # - .\docker-vol\ffmpeg\images:/images:rw
     restart: always
     depends_on:
       - rtsp_simple_server
@@ -139,9 +161,14 @@ services:
     image: jrottenberg/ffmpeg:latest
     links:
       - influxdb
-    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=420:240 -an -f rtsp rtsp://host.docker.internal:8554/assemble
+    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -c copy -an -f rtsp rtsp://host.docker.internal:8554/assemble
+    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=210:120 -an -f rtsp rtsp://host.docker.internal:8554/assemble
+    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -filter:v fps=fps=3 -update 1 /images/assemble.jpg -y
+    # volumes:
+    #   - .\docker-vol\ffmpeg\images:/images:rw
     restart: always
     depends_on:
       - rtsp_simple_server
+
 # volumes:
 #   influxdb2:
