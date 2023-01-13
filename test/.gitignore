@@ -28,4 +28,4 @@ yarn-debug.log*
 yarn-error.log*
 
 /.git_*
-/.yarn
+/.yarn/cache
