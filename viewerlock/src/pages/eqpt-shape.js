@@ -15,6 +15,8 @@ import { useCookies } from "react-cookie";
 const Page = (props) => {
   const [cookies, setCookie /*, removeCookie*/] = useCookies(["apiToken"]);
 
+  // console.log("shape", props);
+
   return (
     <>
       <Head>
@@ -35,14 +37,14 @@ const Page = (props) => {
             <Grid item lg={3} md={3} xl={3} xs={3}>
               <Capacity sx={{ height: "100%" }} />
             </Grid>
-            <Grid item lg={5} md={3} xl={3} xs={3}>
+            <Grid item lg={5} md={5} xl={5} xs={5}>
               <Camera sx={{ height: "100%" }} type="shape" />
             </Grid>
 
-            <Grid item lg={5} md={6} xl={6} xs={6}>
+            <Grid item lg={5} md={5} xl={5} xs={5}>
               <InterlockList sx={{ height: "100%" }} />
             </Grid>
-            <Grid item lg={7} md={6} xl={6} xs={6}>
+            <Grid item lg={7} md={7} xl={7} xs={7}>
               <InterlockChart />
             </Grid>
           </Grid>
@@ -58,7 +60,7 @@ Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 // 또는 추가 prop 리턴이 필요할 경우
 export async function getServerSideProps(context) {
   const { props, redirect } = await getProps(context);
-  return { props: { ...props, test2: "test2" }, redirect };
+  return { props: { ...props, test2: "test3" }, redirect };
 }
 
 export default Page;

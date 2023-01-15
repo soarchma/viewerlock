@@ -43,10 +43,10 @@ const Page = (props) => {
               <Camera sx={{ height: "100%" }} type="assemble" />
             </Grid>
 
-            <Grid item lg={5} md={6} xl={6} xs={6}>
+            <Grid item lg={5} md={5} xl={5} xs={5}>
               <InterlockList sx={{ height: "100%" }} />
             </Grid>
-            <Grid item lg={7} md={6} xl={6} xs={6}>
+            <Grid item lg={7} md={7} xl={7} xs={7}>
               <InterlockChart />
             </Grid>
           </Grid>

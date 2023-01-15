@@ -45,7 +45,7 @@ export const Capacity = (props) => {
   const theme = useTheme();
   const { val, color } = props;
   const data = [val];
-  console.log(data);
+  // console.log(data);
 
   // const devices = [
   //   {

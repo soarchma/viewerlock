@@ -105,6 +105,8 @@ export const DashboardSidebar = (props) => {
     [router.asPath]
   );
 
+  // console.log("sidebar");
+
   const content = (
     <>
       <Box

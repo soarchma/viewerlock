@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { AuthGuard } from "./auth-guard";
@@ -18,8 +18,29 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
 export const DashboardLayout = (props) => {
   const { children } = props;
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  // const [ws, setWs] = useState(null);
+  // console.log("========> layout:", children.props);
 
-  // console.log("layout", children.props.user);
+  // useEffect(() => {
+  //   // children.props.test2 = "12345";  // readonly error
+  //   let ws = new WebSocket("ws://host.docker.internal:8070");
+  //   setWs(ws);
+  //   // console.log(ws);
+  //   ws.onclose = (ev) => {
+  //     console.log("onclose", ev);
+  //   };
+  //   ws.onerror = (ev) => {
+  //     console.log("onerror", ev);
+  //   };
+  //   ws.onmessage = (ev) => {
+  //     console.log("onmessage", ev);
+  //   };
+  //   ws.onopen = (ev) => {
+  //     console.log("onopen", ev);
+  //   };
+  // }, []);
+
+  // useEffect;
 
   return (
     <AuthGuard>

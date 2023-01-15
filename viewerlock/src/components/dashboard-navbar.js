@@ -21,13 +21,16 @@ export const DashboardNavbar = (props) => {
   const { onSidebarOpen, user, ...other } = props;
   const settingsRef = useRef(null);
   const [openAccountPopover, setOpenAccountPopover] = useState(false);
+  const [ws, setWs] = useState(null);
   // const [user, setUser] = useState({});
   // const [cookies, setCookie /*, removeCookie*/] = useCookies(["apiToken"]);
   const authContext = useContext(AuthContext);
 
-  // console.log("navbar", props);
+  // console.log("navbar~~~~~~~~~~~~~~~~~~", "??????????????????");
 
   useEffect(() => {
+    // let ws = new WebSocket("ws://javascript.info");
+    // console.log(ws);
     if (authContext.user) {
       // console.log("*************************", authContext.user);
       // setUser(authContext.user);
@@ -46,6 +49,10 @@ export const DashboardNavbar = (props) => {
   //     }
   //   }
   // }, [cookies]);
+  const handleData = () => {
+    // let result = JSON.parse(data)
+    // this.setState({ count: this.state.count + result.movement })
+  };
 
   return (
     <>
@@ -90,13 +97,13 @@ export const DashboardNavbar = (props) => {
               <UsersIcon fontSize="small" />
             </IconButton>
           </Tooltip> */}
-          <Tooltip title="Notifications">
+          {/* <Tooltip title="Notifications">
             <IconButton sx={{ ml: 1 }}>
               <Badge badgeContent={4} color="primary" variant="dot">
                 <BellIcon fontSize="small" />
               </Badge>
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
           <Avatar
             onClick={() => setOpenAccountPopover(true)}
             ref={settingsRef}

@@ -21,13 +21,29 @@ import { NextPageContext } from "next";
 // import { rewrites } from "../../next.config";
 import { default as getProps } from "../lib/getProps";
 import { useCookies } from "react-cookie";
+import { useEffect, useState } from "react";
 
 const Page = (props) => {
-  const [cookies, setCookie /*, removeCookie*/] = useCookies(["apiToken"]);
+  const { myEmitter } = props;
+  // const [cookies, setCookie /*, removeCookie*/] = useCookies(["apiToken"]);
+  // const [test, setTest] = useState(null);
   // console.log("index-dashboard:", props);
   // console.log("apiToken:", cookies["apiToken"]);
-  const url =
-    "http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=now-1m&to=now&theme=light&panelId=2&refresh=10s";
+  // const url =
+  //   "http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=now-1m&to=now&theme=light&panelId=2&refresh=10s";
+
+  // console.log(props);
+
+  useEffect(() => {
+    myEmitter.on("testEvent", (msg) => {
+      console.log(msg);
+    });
+
+    return () => {
+      myEmitter.removeAllListeners();
+      console.log("index.js ==> Clean Up~!");
+    };
+  }, []);
 
   return (
     <>

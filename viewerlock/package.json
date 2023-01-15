@@ -49,6 +49,7 @@
     "uuid": "9.0.0",
     "webpack-merge": "^5.8.0",
     "worker-plugin": "^5.0.1",
+    "ws": "^8.12.0",
     "yup": "0.32.11"
   },
   "devDependencies": {

@@ -4,6 +4,8 @@ import jwtDecode from "jwt-decode";
 import store from "store2";
 import JWT from "jsonwebtoken";
 import fs from "fs";
+// import WebSocket from "ws";
+// import { useRouter } from "next/router";
 // import { withIronSessionSsr } from "iron-session/next";
 // import { withIronSessionApiRoute } from "iron-session/next";
 
@@ -62,6 +64,8 @@ function verifyApiToken(apiToken) {
   return false;
 }
 
+// console.log("hahahaha@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
 export default async function getServerSideProps(context) {
   readEnvKeys();
   const cookies = cookie.parse(context.req.headers.cookie ? context.req.headers.cookie : "");
@@ -70,6 +74,25 @@ export default async function getServerSideProps(context) {
   // console.log(context.req);
   // const temp = await withIronSessionApiRoute();
   // console.log("temp", temp);
+
+  // const ws = new WebSocket("ws://host.docker.internal:8070", {
+  //   perMessageDeflate: false,
+  // });
+
+  // // console.log("HAHAHAHAHAHAHAHAHA", JSON.parse(JSON.stringify(ws)));
+  // ws.on("open", () => {
+  //   console.log("open");
+  // });
+  // ws.on("close", (code, reason) => {
+  //   console.log("close", code, reason);
+  // });
+  // ws.on("error", (err) => {
+  //   console.log("err", err);
+  // });
+  // ws.on("message", (data) => {
+  //   console.log("message", data);
+  //   // router.replace(router.asPath);
+  // });
 
   if (cookies && cookies["apiToken"]) {
     decoded = verifyApiToken(cookies["apiToken"]);

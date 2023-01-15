@@ -50,23 +50,23 @@ const Page = (props) => {
               <TotalProfit sx={{ height: "100%" }} />
             </Grid> */}
 
-            <Grid item lg={4} md={12} xl={4} xs={12}>
+            <Grid item lg={4} md={4} xl={4} xs={4}>
               <Production />
             </Grid>
-            <Grid item lg={3} md={6} xl={3} xs={12}>
+            <Grid item lg={3} md={3} xl={3} xs={3}>
               <Capacity sx={{ height: "100%" }} />
             </Grid>
-            <Grid item lg={5} md={6} xl={5} xs={12}>
+            <Grid item lg={5} md={5} xl={5} xs={5}>
               <Camera sx={{ height: "100%" }} type="leak" />
             </Grid>
 
-            <Grid item lg={3} md={12} xl={3} xs={12}>
+            <Grid item lg={3} md={3} xl={3} xs={3}>
               <InterlockList sx={{ height: "100%" }} />
             </Grid>
-            <Grid item lg={4} md={12} xl={4} xs={12}>
+            <Grid item lg={4} md={4} xl={4} xs={4}>
               <InterlockChart />
             </Grid>
-            <Grid item lg={5} md={12} xl={5} xs={12}>
+            <Grid item lg={5} md={5} xl={5} xs={5}>
               <iframe src={url} width="100%" height="100%" frameBorder="0" />
             </Grid>
           </Grid>
