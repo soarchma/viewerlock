@@ -8,9 +8,10 @@
     "build": "tsc",
     "start": "node ./bin/app.js",
     "dev": "ts-node ./src/app.ts",
-    "dev-shape": "ts-node ./src/app-shape.ts",
-    "dev-leak": "ts-node ./src/app-leak.ts",
-    "dev-assem": "ts-node ./src/app-assem.ts"
+    "dev-insert": "ts-node ./src/app-insert.ts",
+    "insert-shape": "ts-node ./src/insert-shape.ts",
+    "insert-leak": "ts-node ./src/insert-leak.ts",
+    "insert-assem": "ts-node ./src/insert-assem.ts"
   },
   "author": "",
   "license": "ISC",

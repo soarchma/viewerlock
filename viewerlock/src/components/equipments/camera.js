@@ -26,7 +26,7 @@ export const Camera = (props) => {
   const [timerId, setTimerId] = useState(undefined);
 
   useEffect(() => {
-    console.log("state:", state);
+    // console.log("state:", state);
     if (state === "onError" || state === "reload") {
       if (timerId) {
         console.log("CLEAR!!!!!11111111111", timerId);

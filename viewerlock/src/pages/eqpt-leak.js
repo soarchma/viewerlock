@@ -10,14 +10,32 @@ import { NextPageContext } from "next";
 // import * as cookie from "cookie";
 // import { rewrites } from "../../next.config";
 import { default as getProps } from "../lib/getProps";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
+const urlReal =
+  "http://localhost:3000/d-solo/3Qi9Uxh4k/viewerlock?orgId=1&refresh=5s&from=now-1m&to=now&panelId=6";
+const urlTest =
+  "http://localhost:3000/d-solo/hXeL8624z/test?orgId=1&from=now-1m&to=now&refresh=5s&panelId=2";
+
 const Page = (props) => {
-  const [cookies, setCookie /*, removeCookie*/] = useCookies(["apiToken"]);
-  // console.log("index-dashboard:", props);
-  // console.log("apiToken:", cookies["apiToken"]);
-  const url =
-    "http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=now-10s&to=now&theme=light&panelId=2&refresh=10s";
+  const [url, setUrl] = useState(urlReal);
+  const { myEmitter } = props;
+
+  useEffect(() => {
+    myEmitter.on("leakEvent", (msg) => {
+      const obj = JSON.parse(msg);
+      if (obj.test) {
+        setUrl(urlTest);
+      } else {
+        setUrl(urlReal);
+      }
+    });
+
+    return () => {
+      myEmitter.removeAllListeners();
+    };
+  }, []);
 
   return (
     <>
@@ -61,7 +79,7 @@ const Page = (props) => {
             </Grid>
 
             <Grid item lg={3} md={3} xl={3} xs={3}>
-              <InterlockList sx={{ height: "100%" }} />
+              <InterlockList sx={{ height: "100%" }} event={myEmitter} />
             </Grid>
             <Grid item lg={4} md={4} xl={4} xs={4}>
               <InterlockChart />

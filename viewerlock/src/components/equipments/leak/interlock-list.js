@@ -21,20 +21,63 @@ import {
 } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useEffect, useState } from "react";
 
-function createData(unit, lowerLimit, targetVal, realVal, isInterlock) {
+function createData(unit, lowerLimit, targetVal, realVal, isActive) {
+  let isInterlock = false;
+  if (isActive && lowerLimit > realVal) isInterlock = true;
   return { unit, lowerLimit, targetVal, realVal, isInterlock };
 }
 
 const rows = [
-  createData("1", 159, 6.0, 24, false),
-  createData("2", 237, 9.0, 37, false),
-  createData("3", 262, 16.0, 24, false),
-  createData("4", 305, 3.7, 67, true),
-  createData("5", 356, 16.0, 49, false),
+  createData("1", 550, 600, 0, false),
+  createData("2", 550, 600, 0, false),
+  createData("3", 550, 600, 0, false),
+  createData("4", 550, 600, 0, false),
+  createData("5", 550, 600, 0, false),
+  createData("6", 550, 600, 0, false),
 ];
 
 export const InterlockList = (props) => {
+  // const { leakData } = props;
+  // console.log("InterlockList:", leakData);
+
+  const { event } = props;
+  const [leakData, setLeakData] = useState(undefined);
+  useEffect(() => {
+    event.on("leakEvent", (msg) => {
+      const obj = JSON.parse(msg);
+      if (obj.active) {
+        console.log(obj);
+      }
+      setLeakData(obj);
+    });
+
+    return () => {
+      event.removeAllListeners();
+      console.log("111111 ==> Clean Up~!");
+    };
+  }, []);
+
+  useEffect(() => {
+    if (leakData) {
+      // console.log(leakData);
+      rows.map((row, index) => {
+        if (leakData.data[`leak${index + 1}`] != null) {
+          row.realVal = leakData.data[`leak${index + 1}`];
+          if (leakData.active) {
+            row.isInterlock = false;
+            if (row.lowerLimit > row.realVal) row.isInterlock = true;
+          }
+        }
+      });
+    }
+
+    return () => {
+      // console.log("22222222222 ==> Clean Up~!");
+    };
+  }, [leakData]);
+
   return (
     <Card {...props}>
       <CardHeader

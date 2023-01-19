@@ -1,6 +1,6 @@
-import fs from "fs";
-import net from "net";
-import express from "express";
+// import fs from "fs";
+// import net from "net";
+// import express from "express";
 import * as mqtt from "mqtt";
 import { leakFunc } from "./lib/leak";
 // import ip from "ip";
@@ -8,7 +8,7 @@ import { leakFunc } from "./lib/leak";
 const mqttClient = mqtt.connect("mqtt://localhost");
 const topics = {
   shape: "ktcc/insert/shape",
-  leak: "ktcc/insert/leakaaa",
+  leak: "ktcc/insert/leak",
   assemble: "ktcc/insert/assemble",
 };
 

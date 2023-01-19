@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useEffect, useState } from "react";
 
 function createData(type, straight_1, straight_2, shape_1, shape_2, cut_1, cut_2) {
   return { type, straight_1, straight_2, shape_1, shape_2, cut_1, cut_2 };
@@ -29,13 +30,45 @@ function createData(type, straight_1, straight_2, shape_1, shape_2, cut_1, cut_2
 const rows = [
   createData(800, 159, 6.0, 24, 1000, 10130, 10130),
   createData(1000, 237, 9.0, 37, 1000, 10130, 10130),
-  createData(1200, 900, 1800, 9510, 9511, 10130, 10130),
-  createData(1500, 900, 1750, 11990, 11991, 10180, 10180),
+  createData(1200, 900, 1950, 8700, 8701, 10040, 10040),
+  createData(1500, 900, 1920, 11690, 11691, 10050, 10050),
   createData(1800, 356, 16.0, 49, 1000, 10130, 10130),
 ];
 
 export const InterlockList = (props) => {
-  const data = createData(1500, 900, 1750, 11990, 11991, 10180, 10180);
+  // let data = createData(0, 0, 0, 0, 0, 0, 0);
+  const { event } = props;
+  const [realData, setRealData] = useState(createData(0, 0, 0, 0, 0, 0, 0));
+  const [curRecipe, setCurRecipe] = useState(createData(0, 0, 0, 0, 0, 0, 0));
+  useEffect(() => {
+    event.on("shapeEvent", (msg) => {
+      const obj = JSON.parse(msg);
+      // console.log(obj);
+      const { data } = obj;
+      const tempData = createData(
+        data.setting_model,
+        data.intuition1,
+        data.intuition2,
+        data.modeling1,
+        data.modeling2,
+        data.cut1,
+        data.cut2
+      );
+      setRealData(tempData);
+
+      rows.forEach((row, index) => {
+        // console.log(row, index);
+        if (row.type === tempData.type) {
+          setCurRecipe(row);
+        }
+      });
+    });
+
+    return () => {
+      event.removeAllListeners();
+      console.log("111111 ==> Clean Up~!");
+    };
+  }, []);
 
   return (
     <Card {...props}>
@@ -92,7 +125,7 @@ export const InterlockList = (props) => {
                     "&:last-child td, &:last-child th": {
                       border: 0,
                     },
-                    bgcolor: row.type === 1500 ? "#00FF00" : null,
+                    bgcolor: row.type === realData.type ? "#00FF00" : null,
                   }}
                   style={{ height: 38 }}
                 >
@@ -173,7 +206,7 @@ export const InterlockList = (props) => {
           </TableHead>
           <TableBody>
             <TableRow
-              key={data.type}
+              key={realData.type}
               sx={{
                 "&:last-child td, &:last-child th": {
                   border: 0,
@@ -183,25 +216,55 @@ export const InterlockList = (props) => {
               style={{ height: 38 }}
             >
               <TableCell align="center" sx={{}} component="th" scope="row">
-                {data.type}
+                {realData.type}
               </TableCell>
-              <TableCell align="center" sx={{}}>
-                {data.straight_1}
+              <TableCell
+                align="center"
+                sx={{
+                  bgcolor: curRecipe.straight_1 === realData.straight_1 ? "#00FF00" : "#FF0000",
+                }}
+              >
+                {realData.straight_1}
               </TableCell>
-              <TableCell align="center" sx={{}}>
-                {data.straight_2}
+              <TableCell
+                align="center"
+                sx={{
+                  bgcolor: curRecipe.straight_2 === realData.straight_2 ? "#00FF00" : "#FF0000",
+                }}
+              >
+                {realData.straight_2}
               </TableCell>
-              <TableCell align="center" sx={{}}>
-                {data.shape_1}
+              <TableCell
+                align="center"
+                sx={{
+                  bgcolor: curRecipe.shape_1 === realData.shape_1 ? "#00FF00" : "#FF0000",
+                }}
+              >
+                {realData.shape_1}
               </TableCell>
-              <TableCell align="center" sx={{}}>
-                {data.shape_2}
+              <TableCell
+                align="center"
+                sx={{
+                  bgcolor: curRecipe.shape_2 === realData.shape_2 ? "#00FF00" : "#FF0000",
+                }}
+              >
+                {realData.shape_2}
               </TableCell>
-              <TableCell align="center" sx={{}}>
-                {data.cut_1}
+              <TableCell
+                align="center"
+                sx={{
+                  bgcolor: curRecipe.cut_1 === realData.cut_1 ? "#00FF00" : "#FF0000",
+                }}
+              >
+                {realData.cut_1}
               </TableCell>
-              <TableCell align="center" sx={{}}>
-                {data.cut_2}
+              <TableCell
+                align="center"
+                sx={{
+                  bgcolor: curRecipe.cut_2 === realData.cut_2 ? "#00FF00" : "#FF0000",
+                }}
+              >
+                {realData.cut_2}
               </TableCell>
             </TableRow>
           </TableBody>

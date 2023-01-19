@@ -26,8 +26,8 @@ const Page = (props) => {
   const [cookies, setCookie /*, removeCookie*/] = useCookies(["apiToken"]);
   // console.log("index-dashboard:", props);
   // console.log("apiToken:", cookies["apiToken"]);
-  const url =
-    "http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=now-1m&to=now&theme=light&panelId=2&refresh=10s";
+  // const url =
+  //   "http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=now-1m&to=now&theme=light&panelId=2&refresh=10s";
 
   return (
     <>
@@ -49,7 +49,7 @@ const Page = (props) => {
                   <Grid container rowSpacing={0} columnSpacing={0}>
                     <Grid item lg={12} sm={12} xl={12} xs={12}>
                       <iframe
-                        src="http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=0&from=1670230768316&to=1670230828316&theme=light&panelId=22"
+                        src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=0&from=1670230768316&to=1670230828316&theme=light&panelId=22"
                         width="100%"
                         height="200"
                         frameBorder="0"
@@ -57,7 +57,7 @@ const Page = (props) => {
                     </Grid>
                     <Grid item lg={12} sm={12} xl={12} xs={12}>
                       <iframe
-                        src="http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=1670230636813&to=1670230696813&theme=light&panelId=14"
+                        src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=1670230636813&to=1670230696813&theme=light&panelId=14"
                         width="100%"
                         height="245"
                         frameBorder="0"
@@ -70,7 +70,7 @@ const Page = (props) => {
                   <Grid container rowSpacing={0} columnSpacing={1}>
                     <Grid item xl={6} lg={6} sm={6} xs={6}>
                       <iframe
-                        src="http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=0&from=1670285690598&to=1670285750598&theme=light&panelId=20"
+                        src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=0&from=1670285690598&to=1670285750598&theme=light&panelId=20"
                         width="100%"
                         height="100"
                         frameBorder="0"
@@ -78,24 +78,7 @@ const Page = (props) => {
                     </Grid>
                     <Grid item xl={6} lg={6} sm={6} xs={6}>
                       <iframe
-                        src="http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=1670285703086&to=1670285763086&theme=light&panelId=16"
-                        width="100%"
-                        height="100"
-                        frameBorder="0"
-                      ></iframe>
-                    </Grid>
-
-                    <Grid item xl={6} lg={6} sm={6} xs={6}>
-                      <iframe
-                        src="http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=1670285696912&to=1670285996912&theme=light&panelId=26"
-                        width="100%"
-                        height="100"
-                        frameBorder="0"
-                      ></iframe>
-                    </Grid>
-                    <Grid item xl={6} lg={6} sm={6} xs={6}>
-                      <iframe
-                        src="http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=1670285720529&to=1670286020529&theme=light&panelId=28"
+                        src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=1670285703086&to=1670285763086&theme=light&panelId=16"
                         width="100%"
                         height="100"
                         frameBorder="0"
@@ -104,7 +87,24 @@ const Page = (props) => {
 
                     <Grid item xl={6} lg={6} sm={6} xs={6}>
                       <iframe
-                        src="http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=1670285748133&to=1670286048133&theme=light&panelId=12"
+                        src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=1670285696912&to=1670285996912&theme=light&panelId=26"
+                        width="100%"
+                        height="100"
+                        frameBorder="0"
+                      ></iframe>
+                    </Grid>
+                    <Grid item xl={6} lg={6} sm={6} xs={6}>
+                      <iframe
+                        src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=1670285720529&to=1670286020529&theme=light&panelId=28"
+                        width="100%"
+                        height="100"
+                        frameBorder="0"
+                      ></iframe>
+                    </Grid>
+
+                    <Grid item xl={6} lg={6} sm={6} xs={6}>
+                      <iframe
+                        src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=1670285748133&to=1670286048133&theme=light&panelId=12"
                         width="100%"
                         height="238"
                         frameBorder="0"
@@ -112,7 +112,7 @@ const Page = (props) => {
                     </Grid>
                     <Grid item xl={6} lg={6} sm={6} xs={6}>
                       <iframe
-                        src="http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=1670285779206&to=1670286079206&theme=light&panelId=30"
+                        src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=1670285779206&to=1670286079206&theme=light&panelId=30"
                         width="100%"
                         height="238"
                         frameBorder="0"
@@ -125,7 +125,7 @@ const Page = (props) => {
 
             <Grid item xl={6} lg={6} sm={6} xs={6}>
               <iframe
-                src="http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=now-30s&to=now&theme=light&panelId=2&refresh=10s"
+                src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=now-30s&to=now&theme=light&panelId=2&refresh=10s"
                 width="100%"
                 height="450"
                 frameBorder="0"
@@ -134,7 +134,7 @@ const Page = (props) => {
 
             <Grid item xl={6} lg={6} sm={6} xs={6}>
               <iframe
-                src="http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=now-30s&to=now&theme=light&panelId=6&refresh=10s"
+                src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=now-30s&to=now&theme=light&panelId=6&refresh=10s"
                 width="100%"
                 height="400"
                 frameBorder="0"
@@ -143,7 +143,7 @@ const Page = (props) => {
 
             <Grid item xl={6} lg={6} sm={6} xs={6}>
               <iframe
-                src="http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=now-30s&to=now&theme=light&panelId=24&refresh=10s"
+                src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=now-30s&to=now&theme=light&panelId=24&refresh=10s"
                 width="100%"
                 height="400"
                 frameBorder="0"

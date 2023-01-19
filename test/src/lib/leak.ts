@@ -14,14 +14,9 @@ let endOfTerm = false;
 interface KeyValuePair {
   [key: string]: number;
 }
-
-// export const asdf = () => {
-//   return leakFunc;
-// } 
-
-export const leakFunc = (leakData: KeyValuePair) => {
+export const leakFunc = (leakData: any) => {
   //
-  Object.keys(leakData).forEach((key: string, index: number) => {
+  Object.keys(leakData.data).forEach((key: string, index: number) => {
     if (index === 0) {
       if (state === "zero") {
         countZero -= 1;
@@ -30,6 +25,7 @@ export const leakFunc = (leakData: KeyValuePair) => {
         if (countZero === 0) {
           oldState = state;
           state = "inc";
+          leakData.active = false;
           countZero = Math.floor(Math.random() * (120 - 80) + 80);
         }
       } else if (state === "inc") {
@@ -39,6 +35,7 @@ export const leakFunc = (leakData: KeyValuePair) => {
         if (countIncDec === 0) {
           oldState = state;
           state = "max";
+          leakData.active = true;
           // minVal = maxVal = 600;
           countIncDec = 3;
         }
@@ -49,6 +46,7 @@ export const leakFunc = (leakData: KeyValuePair) => {
         if (countMax === 0) {
           oldState = state;
           state = "dec";
+          leakData.active = false;
           countMax = 50;
           errVal = 0;
         }
@@ -59,6 +57,7 @@ export const leakFunc = (leakData: KeyValuePair) => {
         if (countIncDec === 0) {
           oldState = state;
           state = "zero";
+          leakData.active = false;
           countIncDec = 3;
           endOfTerm = true;
         }
@@ -79,31 +78,31 @@ export const leakFunc = (leakData: KeyValuePair) => {
     }
 
     if (oldState === "zero") {
-      leakData[key] = Math.floor(
+      leakData.data[key] = Math.floor(
         Math.random() * (maxVal - minVal) + minVal
       );
     } else if (oldState === "inc") {
       if (state === "max") {
-        leakData[key] = Math.floor(Math.random() * (602 - 598) + 598);
+        leakData.data[key] = Math.floor(Math.random() * (602 - 598) + 598);
       } else {
-        leakData[key] += Math.floor(
+        leakData.data[key] += Math.floor(
           Math.random() * (maxVal - minVal) + minVal
         );
       }
     } else if (oldState === "max") {
-      leakData[key] -= Math.floor(
+      leakData.data[key] -= Math.floor(
         Math.random() * (maxVal - minVal) + minVal
       );
       if (errKey.includes(key)) {
-        leakData[key] -= Math.floor(Math.random() * (7 - 2) + 2);
+        leakData.data[key] -= Math.floor(Math.random() * (7 - 2) + 2);
       }
     } else {
-      leakData[key] -= Math.floor(
+      leakData.data[key] -= Math.floor(
         Math.random() * (maxVal - minVal) + minVal
       );
     }
 
-    if (leakData[key] < 0) leakData[key] = 0;
+    if (leakData.data[key] < 0) leakData.data[key] = 0;
 
     // keyCount -= 1;
   });
@@ -116,8 +115,8 @@ export const leakFunc = (leakData: KeyValuePair) => {
     );
     errKey.length = 0;
   }
-  // leakData["tag"] = termCount;
-  console.log(state, JSON.stringify(leakData));
+  // leakData.data["tag"] = termCount;
+  // console.log(state, JSON.stringify(leakData));
   // mqttClient.publish(topics.leak, JSON.stringify(leakData));
   return leakData;
-}
+};

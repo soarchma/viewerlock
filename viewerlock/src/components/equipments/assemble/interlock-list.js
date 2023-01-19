@@ -1,16 +1,9 @@
-import { formatDistanceToNow, subHours } from "date-fns";
-import { v4 as uuid } from "uuid";
+// import { formatDistanceToNow, subHours } from "date-fns";
+// import { v4 as uuid } from "uuid";
 import {
-  Box,
-  Button,
   Card,
   CardHeader,
   Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   Table,
   TableBody,
   TableCell,
@@ -18,27 +11,58 @@ import {
   TableHead,
   TableRow,
   Paper,
+  ListItem,
 } from "@mui/material";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+// import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+// import MoreVertIcon from "@mui/icons-material/MoreVert";
+// import { useEffect, useState } from "react";
+import { create } from "domain";
+import { CustomCell } from "../../common/custom-cell";
 
-function createData(type, straight_1, straight_2, shape_1) {
-  return { type, straight_1, straight_2, shape_1 };
+function createData1(type, ng1_1, ng1_2a, ng1_2b) {
+  return { type, ng1_1, ng1_2a, ng1_2b };
+}
+function createData2(type, ng2_1, ng2_2a, ng2_2b) {
+  return { type, ng2_1, ng2_2a, ng2_2b };
 }
 
 const rows_1 = [
-  createData("Day", 5, 3, 6),
-  createData("Week", 0, 8, 2),
-  createData("Month", 3, 12, 4),
+  createData1("Day", 0, 0, 0),
+  createData1("Week", 0, 0, 0),
+  createData1("Month", 0, 0, 0),
 ];
 const rows_2 = [
-  createData("Day", 1, 7, 12),
-  createData("Week", 4, 8, 2),
-  createData("Month", 3, 9, 6),
+  createData2("Day", 0, 0, 0),
+  createData2("Week", 0, 0, 0),
+  createData2("Month", 0, 0, 0),
 ];
 
 export const InterlockList = (props) => {
   // const data = createData(1500, 900, 1750, 11990, 11991, 10180, 10180);
+  const { event } = props;
+  // const [ng1, setNg1] = useState(rows_1);
+  // const [ng2, setNg2] = useState(rows_2);
+  // const [rawData, setRawData] = useState(null);
+
+  // useEffect(() => {
+  //   event.on("assemEvent", (msg) => {
+  //     const obj = JSON.parse(msg);
+  //     // console.log(obj);
+  //     // setRawData(obj);
+  //     const { data } = obj;
+  //     let temp = JSON.parse(JSON.stringify(ng1));
+  //     temp[0] = createData1("Day", data.ng1_1, data.ng1_2a, data.ng1_2b);
+  //     // setNg1(temp);
+  //     temp = JSON.parse(JSON.stringify(ng2));
+  //     temp[0] = createData2("Day", data.ng2_1, data.ng2_2a, data.ng2_2b);
+  //     // setNg2(temp);
+  //   });
+
+  //   return () => {
+  //     event.removeAllListeners();
+  //     console.log("111111 ==> Clean Up~!");
+  //   };
+  // }, []);
 
   return (
     <Card {...props}>
@@ -62,51 +86,29 @@ export const InterlockList = (props) => {
               <TableCell align="center">주기</TableCell>
               <TableCell align="center">확관 불량</TableCell>
               <TableCell align="center">레듀샤 체결불량</TableCell>
-              <TableCell align="center">O링 삽입불량</TableCell>
+              <TableCell align="center">O-링 삽입불량</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows_1.map((row) => {
-              // row.shape_2 ? (color = "red") : (color = null);
-              return (
-                <TableRow
-                  key={row.type}
-                  sx={{
-                    "&:last-child td, &:last-child th": {
-                      border: 0,
-                    },
-                    // bgcolor: row.shape_2 ? "red" : null,
-                  }}
-                  style={{ height: 44 }}
-                >
-                  <TableCell align="center" sx={{}} component="th" scope="row">
-                    {row.type}
-                  </TableCell>
-                  <TableCell align="center" sx={{}}>
-                    {row.straight_1}
-                  </TableCell>
-                  <TableCell align="center" sx={{}}>
-                    {row.straight_2}
-                  </TableCell>
-                  <TableCell align="center" sx={{}}>
-                    {row.shape_1}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            <TableRow
+              key={"Day"}
+              sx={{
+                "&:last-child td, &:last-child th": {
+                  border: 0,
+                },
+              }}
+              style={{ height: 64 }}
+            >
+              <TableCell align="center" sx={{}} component="th" scope="row">
+                {"Day"}
+              </TableCell>
+              <CustomCell event={event} name={"ng1_1"} />
+              <CustomCell event={event} name={"ng1_2a"} />
+              <CustomCell event={event} name={"ng1_2b"} />
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
-
-      {/* <Divider /> */}
-
-      {/* <CardHeader
-        title="실시간 데이타"
-        sx={{
-          mb: -1,
-          height: 60,
-        }}
-      /> */}
 
       <Divider />
 
@@ -121,39 +123,27 @@ export const InterlockList = (props) => {
             <TableRow>
               <TableCell align="center">주기</TableCell>
               <TableCell align="center">확관 불량</TableCell>
-              <TableCell align="center">레듀샤 체결불량</TableCell>
-              <TableCell align="center">O링 삽입불량</TableCell>
+              <TableCell align="center">니쁠 체결불량</TableCell>
+              <TableCell align="center">O-링 삽입불량</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows_2.map((row) => {
-              // row.shape_2 ? (color = "red") : (color = null);
-              return (
-                <TableRow
-                  key={row.type}
-                  sx={{
-                    "&:last-child td, &:last-child th": {
-                      border: 0,
-                    },
-                    // bgcolor: row.shape_2 ? "red" : null,
-                  }}
-                  style={{ height: 44 }}
-                >
-                  <TableCell align="center" sx={{}} component="th" scope="row">
-                    {row.type}
-                  </TableCell>
-                  <TableCell align="center" sx={{}}>
-                    {row.straight_1}
-                  </TableCell>
-                  <TableCell align="center" sx={{}}>
-                    {row.straight_2}
-                  </TableCell>
-                  <TableCell align="center" sx={{}}>
-                    {row.shape_1}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            <TableRow
+              key={"Day"}
+              sx={{
+                "&:last-child td, &:last-child th": {
+                  border: 0,
+                },
+              }}
+              style={{ height: 64 }}
+            >
+              <TableCell align="center" sx={{}} component="th" scope="row">
+                {"Day"}
+              </TableCell>
+              <CustomCell event={event} name={"ng2_1"} />
+              <CustomCell event={event} name={"ng2_2a"} />
+              <CustomCell event={event} name={"ng2_2b"} />
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

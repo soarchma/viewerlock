@@ -40,7 +40,7 @@ const data = [
     레듀사체결불량1: 2,
     O링삽입불량1: 1,
     확관불량2: 5,
-    레듀사체결불량2: 3,
+    니쁠체결불량2: 3,
     O링삽입불량2: 2,
   },
   {
@@ -49,7 +49,7 @@ const data = [
     레듀사체결불량1: 2,
     O링삽입불량1: 1,
     확관불량2: 7,
-    레듀사체결불량2: 4,
+    니쁠체결불량2: 4,
     O링삽입불량2: 6,
   },
   {
@@ -58,7 +58,7 @@ const data = [
     레듀사체결불량1: 7,
     O링삽입불량1: 2,
     확관불량2: 4,
-    레듀사체결불량2: 5,
+    니쁠체결불량2: 5,
     O링삽입불량2: 1,
   },
   {
@@ -67,7 +67,7 @@ const data = [
     레듀사체결불량1: 5,
     O링삽입불량1: 2,
     확관불량2: 6,
-    레듀사체결불량2: 1,
+    니쁠체결불량2: 1,
     O링삽입불량2: 4,
   },
   {
@@ -76,7 +76,7 @@ const data = [
     레듀사체결불량1: 3,
     O링삽입불량1: 4,
     확관불량2: 2,
-    레듀사체결불량2: 5,
+    니쁠체결불량2: 5,
     O링삽입불량2: 2,
   },
 ];
@@ -121,7 +121,7 @@ export const InterlockChart = (props) => {
               <Line type="number" dataKey="레듀사체결불량1" strokeWidth={2} stroke="#82ca9d" />
               <Line type="number" dataKey="O링삽입불량1" strokeWidth={2} stroke="#f20f0d" />
               <Line type="number" dataKey="확관불량2" strokeWidth={2} stroke="#020fFd" />
-              <Line type="number" dataKey="레듀사체결불량2" strokeWidth={2} stroke="#02Ff0d" />
+              <Line type="number" dataKey="니쁠체결불량2" strokeWidth={2} stroke="#02Ff0d" />
               <Line type="number" dataKey="O링삽입불량2" strokeWidth={2} stroke="#ff02ea" />
             </LineChart>
           </ResponsiveContainer>

@@ -22,21 +22,28 @@ const clientSideEmotionCache = createEmotionCache();
 const myEmitter = new EventEmitter();
 
 const connet = (oldWs) => {
-  // if (oldWs) {
-  //   console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ", oldWs.CLOSED);
-  // }
-  let ws = new WebSocket("ws://host.docker.internal:8070");
-  console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ", ws.CLOSED);
+  let ws = new WebSocket("ws://host.docker.internal:8070"); // real server
+  // let ws = new WebSocket("ws://localhost:8070"); // test server
 
   ws.onclose = (ev) => {
     console.log("onclose", ev);
+    // const timeout = setTimeout( () => {
+    //   window.location.replace("/");
+    // }, 3000);
   };
   ws.onerror = (ev) => {
     console.log("onerror", ev);
   };
   ws.onmessage = (ev) => {
     // console.log("onmessage", ev.data);
-    myEmitter.emit("testEvent", ev.data);
+    const obj = JSON.parse(ev.data);
+    let eventType = "";
+    if (obj.type) {
+      if (obj.type === "leak") eventType = "leakEvent";
+      else if (obj.type === "shape") eventType = "shapeEvent";
+      else if (obj.type === "assem") eventType = "assemEvent";
+      if (eventType != "") myEmitter.emit(eventType, ev.data);
+    }
   };
   ws.onopen = (ev) => {
     console.log("onopen", ev);
@@ -47,7 +54,6 @@ const connet = (oldWs) => {
 
 const disConnet = (ws) => {
   if (ws) {
-    console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWqq", ws);
     ws.close();
   }
 };
@@ -67,11 +73,9 @@ const App = (props) => {
   // console.log("_app:", pageProps);
   const [ws, setWs] = useState(undefined);
   useEffect(() => {
-    return () => {
-      // myEmitter.removeAllListeners();
+    return function cleanUp() {
       disConnet(ws);
       setWs(null);
-      console.log("_app.js => Clean Up~!", ws);
     };
   }, []);
 

@@ -10,12 +10,11 @@ import { NextPageContext } from "next";
 // import * as cookie from "cookie";
 // import { rewrites } from "../../next.config";
 import { default as getProps } from "../lib/getProps";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
 const Page = (props) => {
-  const [cookies, setCookie /*, removeCookie*/] = useCookies(["apiToken"]);
-
-  // console.log("shape", props);
+  const { myEmitter } = props;
 
   return (
     <>
@@ -42,7 +41,7 @@ const Page = (props) => {
             </Grid>
 
             <Grid item lg={5} md={5} xl={5} xs={5}>
-              <InterlockList sx={{ height: "100%" }} />
+              <InterlockList sx={{ height: "100%" }} event={myEmitter} />
             </Grid>
             <Grid item lg={7} md={7} xl={7} xs={7}>
               <InterlockChart />

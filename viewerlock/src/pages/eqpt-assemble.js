@@ -10,14 +10,11 @@ import { NextPageContext } from "next";
 // import * as cookie from "cookie";
 // import { rewrites } from "../../next.config";
 import { default as getProps } from "../lib/getProps";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
 const Page = (props) => {
-  const [cookies, setCookie /*, removeCookie*/] = useCookies(["apiToken"]);
-  // console.log("index-dashboard:", props);
-  // console.log("apiToken:", cookies["apiToken"]);
-  const url =
-    "http://localhost:3000/d-solo/dQBuSLI4z/new-dashboard?orgId=1&from=now-1m&to=now&theme=light&panelId=2&refresh=10s";
+  const { myEmitter } = props;
 
   return (
     <>
@@ -44,7 +41,7 @@ const Page = (props) => {
             </Grid>
 
             <Grid item lg={5} md={5} xl={5} xs={5}>
-              <InterlockList sx={{ height: "100%" }} />
+              <InterlockList sx={{ height: "100%" }} event={myEmitter} />
             </Grid>
             <Grid item lg={7} md={7} xl={7} xs={7}>
               <InterlockChart />

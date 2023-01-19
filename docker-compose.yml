@@ -95,9 +95,15 @@ services:
       # - DOCKER_INFLUXDB_INIT_URLS=http://viewerlock_influxdb_1:8086
       - DOCKER_INFLUXDB_INIT_ORG=cn
       - DOCKER_INFLUXDB_INIT_BUCKET=mybucket
+      - DOCKER_INFLUXDB_INIT_BUCKET_SHAPE=vl_shape
+      - DOCKER_INFLUXDB_INIT_BUCKET_LEAK=vl_leak
+      - DOCKER_INFLUXDB_INIT_BUCKET_ASSEM=vl_assem
       - DOCKER_INFLUXDB_INIT_BUCKET_TEST_SHAPE=test_shape
       - DOCKER_INFLUXDB_INIT_BUCKET_TEST_LEAK=test_leak
       - DOCKER_INFLUXDB_INIT_BUCKET_TEST_ASSEM=test_assem
+      - DOCKER_INFLUXDB_INIT_BUCKET_INSERT_SHAPE=insert_shape
+      - DOCKER_INFLUXDB_INIT_BUCKET_INSERT_LEAK=insert_leak
+      - DOCKER_INFLUXDB_INIT_BUCKET_INSERT_ASSEM=insert_assem
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
       - DOCKER_GRAFANA_WS_INIT_URL=ws://host.docker.internal:3000/api/live/push/custom_stream_id
       # - DOCKER_GRAFANA_WS_INIT_URL=ws://viewerlock_grafana_1:3000/api/live/push/custom_stream_id

@@ -24,7 +24,6 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 
 const Page = (props) => {
-  const { myEmitter } = props;
   // const [cookies, setCookie /*, removeCookie*/] = useCookies(["apiToken"]);
   // const [test, setTest] = useState(null);
   // console.log("index-dashboard:", props);
@@ -34,10 +33,11 @@ const Page = (props) => {
 
   // console.log(props);
 
+  const { myEmitter } = props;
   useEffect(() => {
-    myEmitter.on("testEvent", (msg) => {
-      console.log(msg);
-    });
+    // myEmitter.on("testEvent", (msg) => {
+    //   console.log(msg);
+    // });
 
     return () => {
       myEmitter.removeAllListeners();
