@@ -47,10 +47,10 @@ export const InterlockList = (props) => {
       const { data } = obj;
       const tempData = createData(
         data.setting_model,
-        data.intuition1,
-        data.intuition2,
-        data.modeling1,
-        data.modeling2,
+        data.beeline1,
+        data.beeline2,
+        data.shape1,
+        data.shape2,
         data.cut1,
         data.cut2
       );

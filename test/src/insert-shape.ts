@@ -17,10 +17,10 @@ interface KeyValuePair {
 }
 
 const shapeData: KeyValuePair = {
-  intuition1: 0,
-  intuition2: 0,
-  modeling1: 0,
-  modeling2: 0,
+  beeline1: 0,
+  beeline2: 0,
+  shape1: 0,
+  shape2: 0,
   cut1: 0,
   cut2: 0,
   production: 0,
@@ -30,40 +30,40 @@ const shapeData: KeyValuePair = {
 function getModel(model: number) {
   if (model === 1000) {
     return {
-      intuition1: 0,
-      intuition2: 0,
-      modeling1: 0,
-      modeling2: 0,
+      beeline1: 0,
+      beeline2: 0,
+      shape1: 0,
+      shape2: 0,
       cut1: 0,
       cut2: 0,
       setting_model: 1000,
     };
   } else if (model === 1200) {
     return {
-      intuition1: 900,
-      intuition2: 1800,
-      modeling1: 9510,
-      modeling2: 9511,
+      beeline1: 900,
+      beeline2: 1800,
+      shape1: 9510,
+      shape2: 9511,
       cut1: 10130,
       cut2: 10130,
       setting_model: 1200,
     };
   } else if (model === 1500) {
     return {
-      intuition1: 900,
-      intuition2: 1750,
-      modeling1: 11990,
-      modeling2: 11991,
+      beeline1: 900,
+      beeline2: 1750,
+      shape1: 11990,
+      shape2: 11991,
       cut1: 10180,
       cut2: 10180,
       setting_model: 1500,
     };
   } else if (model === 1800) {
     return {
-      intuition1: 0,
-      intuition2: 0,
-      modeling1: 0,
-      modeling2: 0,
+      beeline1: 0,
+      beeline2: 0,
+      shape1: 0,
+      shape2: 0,
       cut1: 0,
       cut2: 0,
       setting_model: 1800,

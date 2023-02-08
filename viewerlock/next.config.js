@@ -1,5 +1,5 @@
-const path = require("path");
-const WorkerPlugin = require("worker-plugin");
+// const path = require("path");
+// const WorkerPlugin = require("worker-plugin");
 // const { merge } = require("webpack-merge");
 
 module.exports = {

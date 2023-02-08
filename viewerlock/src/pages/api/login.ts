@@ -53,37 +53,19 @@ function readEnvKeys() {
 }
 
 async function verifyGoogleJwt(googleJwt) {
-  // console.log("googleJwt:", googleJwt);
   const ticket = await googleClient
     .verifyIdToken({
       idToken: googleJwt.credential,
-      // idToken:
-      //   "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijc3Y2MwZWY0YzcxODFjZjRjMGRjZWY3YjYwYWUyOGNjOTAyMmM3NmIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYmYiOjE2NjY4NjQ2MTIsImF1ZCI6Ijk1MjA0NzUyMTA4MS05NDcwazV2YjBsb21zNGpwbWpsbjAxaTZzNWdvZ3FnZC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjEwMzg3MzQwMzMwMzY5Mjc2NDI2NSIsImVtYWlsIjoic29hcmNobWFAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF6cCI6Ijk1MjA0NzUyMTA4MS05NDcwazV2YjBsb21zNGpwbWpsbjAxaTZzNWdvZ3FnZC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsIm5hbWUiOiLrsLHsirntmZQiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUxtNXd1MXRrTWJjRE5BcVlyS054TE9yOHR3ZFlWZUtVT2o0OEFFVk8yeVJnZz1zOTYtYyIsImdpdmVuX25hbWUiOiLsirntmZQiLCJmYW1pbHlfbmFtZSI6IuuwsSIsImlhdCI6MTY2Njg2NDkxMiwiZXhwIjoxNjY2ODY4NTEyLCJqdGkiOiJjNTUxMTk1YWVkYmI5YjFjNjM1OTQ1ZmE3MDI1NDMwODY0ODdmYjE4In0.CRZsbVk8Yz_8zdp_m-W_itF-uqZAQxrEuZKp3Nl7j0CGTDJirTzdraXupjeEQTzH5XLcNjL--CG8Ywb7yw5HdsXydTdXr7bSqNJrVA3EMj6tLeiGsa5NQtml1HseYGtkUSdTOAeBhMVRnZPyMQ3PXtFKOnOdRUiIUr9PM69c1diCkru6U94qHrBXIOZl0Z2aORBG6Gcw8Mg2qIDSJDVPoFd-Dae0Fu2m1W8iITG0dvboPnGwskNh1Um-ud4uvBpbrXWLzLSetauXbkwyDX06c0kfrT0YrPbJcKWZvdAO7C1fMxTWBg203M7i-0awN-5aM3aZO7aTsY9mgwPInyNEGQ",
-      // audience: googleClientId, // Specify the CLIENT_ID of the app that accesses the backend
-      // Or, if multiple clients access the backend:
-      //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
     })
     .then((res) => {
-      // console.log("asdf:", res);
-      // TODO: DB에서 이메일 체크
       return res;
     })
     .catch((err) => {
       console.log("ERROR!!! verifyGoogleJwt()", err);
-      // TODO: 세밀한 에러 처리
       return null;
     });
 
   return ticket;
-
-  // if (ticket) {
-  //   // console.log("ticket >>>>>>>>>>>>>>>>>>>>>>>>>", ticket);
-  //   const payload = ticket.getPayload();
-  //   // const apiToken = createApiToken(payload);
-
-  //   return payload;
-  // }
-  return null;
 }
 
 const createApiToken = (payload) => {

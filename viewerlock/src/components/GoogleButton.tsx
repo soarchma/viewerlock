@@ -121,7 +121,7 @@ const GoogleButton = (props) => {
   }, [credentialResponse]);
 
   return (
-    // <GoogleOAuthProvider clientId={clientId} onScriptLoadSuccess={() => console.log("hahahahaha")}>
+    // <GoogleOAuthProvider clientId={clientId} onScriptLoadSuccess={() => console.log("GoogleOAuthProvider -> onScriptLoadSuccess")}>
     <GoogleLogin
       onSuccess={(credentialResponse) => {
         setCredentialResponse(credentialResponse);

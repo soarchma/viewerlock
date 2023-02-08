@@ -65,10 +65,10 @@ const shapeData: any = {
   update: [],
   test: true,
   data: {
-    intuition1: 900, // 직관 1ST 설정치
-    intuition2: 1950, // 직관 2ST 설정치
-    modeling1: 8700, // 성형 1ST 설정치
-    modeling2: 8701, // 성형 2ST 설정치
+    beeline1: 900, // 직관 1ST 설정치
+    beeline2: 1950, // 직관 2ST 설정치
+    shape1: 8700, // 성형 1ST 설정치
+    shape2: 8701, // 성형 2ST 설정치
     cut1: 10040, // CUT 1 설정치
     cut2: 10040, // CUT 2 설정치
     production: 0, // 생산수량
@@ -80,7 +80,7 @@ const leakData: any = {
   type: "leak",
   active: false,
   update: [],
-  test: true,
+  test: false,
   data: {
     leak1: 0,
     leak2: 0,
@@ -112,9 +112,12 @@ let intervalId: any = undefined;
 
 const mqttClient = mqtt.connect("mqtt://localhost");
 const topics = {
-  shape: "ktcc/test/shape",
-  leak: "ktcc/test/leak",
-  assem: "ktcc/test/assem",
+  // shape: "ktcc/test/shape",
+  // leak: "ktcc/test/leak",
+  // assem: "ktcc/test/assem",
+  shape: "viewerlock/sj/shape",
+  leak: "viewerlock/sj/leak",
+  assem: "viewerlock/sj/assem",
 };
 
 mqttClient.on("connect", () => {

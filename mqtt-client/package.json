@@ -16,7 +16,6 @@
     "ip": "^1.1.8",
     "mqtt": "^4.3.7",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4",
     "yallist": "^4.0.0"
   },
   "packageManager": "yarn@3.3.1",
@@ -26,6 +25,13 @@
     "@types/node": "^18.11.18",
     "@types/ws": "^8.5.4",
     "@types/yallist": "^4.0.1",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "@yarnpkg/sdks": "^2.7.0",
+    "eslint": "latest",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-react": "latest",
+    "typescript": "4.4.4",
     "ws": "^8.12.0"
   }
 }

@@ -30,18 +30,9 @@ export const AccountPopover = (props) => {
     if (authSkipped) {
       // Cleanup the skip auth state
       globalThis.sessionStorage.removeItem("skip-auth");
-
-      // console.log("쿠키삭제", authContext.user);
-      // removeCookie("apiToken");
       const response = await axios
         .post("./api/logout")
         .then((response) => {
-          // Redirect to sign-in page
-          // Router
-          // .push("/sign-in")
-          // .push("/login")
-          // .catch(console.error);
-          // return;
           return response;
         })
         .catch((err) => {
@@ -59,17 +50,10 @@ export const AccountPopover = (props) => {
     }
 
     try {
-      // This can be call inside AuthProvider component, but we do it here for simplicity
-      // await auth.signOut();
-      // console.log("쿠키삭제");
-      // removeCookie("apiToken");
-
-      // Update Auth Context state
       authContext.signOut();
 
       // Redirect to sign-in page
       Router
-        // .push("/sign-in")
         .push("/login")
         .catch(console.error);
     } catch (err) {

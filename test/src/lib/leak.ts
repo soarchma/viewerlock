@@ -3,7 +3,8 @@ let state = "zero";
 let oldState = "zero";
 let countZero = 100;
 let countMax = 50;
-let countIncDec = 3;
+let countInc = 6;
+let countDec = 3;
 let maxVal = 0;
 let minVal = 0;
 let errVal = 0;
@@ -15,7 +16,6 @@ interface KeyValuePair {
   [key: string]: number;
 }
 export const leakFunc = (leakData: any) => {
-  //
   Object.keys(leakData.data).forEach((key: string, index: number) => {
     if (index === 0) {
       if (state === "zero") {
@@ -29,20 +29,17 @@ export const leakFunc = (leakData: any) => {
           countZero = Math.floor(Math.random() * (120 - 80) + 80);
         }
       } else if (state === "inc") {
-        countIncDec -= 1;
-        maxVal = Math.floor(Math.random() * (200 - 180) + 180);
-        minVal = Math.floor(Math.random() * (200 - 160) + 160);
-        if (countIncDec === 0) {
+        countInc -= 1;
+        maxVal = Math.floor(Math.random() * (100 - 90) + 90);
+        minVal = Math.floor(Math.random(  ) * (100 - 80) + 80);
+        if (countInc === 0) {
           oldState = state;
           state = "max";
           leakData.active = true;
-          // minVal = maxVal = 600;
-          countIncDec = 3;
+          countInc = 6;
         }
       } else if (state === "max") {
         countMax -= 1;
-        // maxVal = Math.floor(Math.random() * (2 - 0) + 0);
-        // minVal = Math.floor(Math.random() * (2 - 0) + 0);
         if (countMax === 0) {
           oldState = state;
           state = "dec";
@@ -51,14 +48,14 @@ export const leakFunc = (leakData: any) => {
           errVal = 0;
         }
       } else if (state === "dec") {
-        countIncDec -= 1;
+        countDec -= 1;
         maxVal = Math.floor(Math.random() * (200 - 180) + 180);
         minVal = Math.floor(Math.random() * (200 - 160) + 160);
-        if (countIncDec === 0) {
+        if (countDec === 0) {
           oldState = state;
           state = "zero";
           leakData.active = false;
-          countIncDec = 3;
+          countDec = 3;
           endOfTerm = true;
         }
       }
@@ -75,6 +72,9 @@ export const leakFunc = (leakData: any) => {
         // errVal = Math.floor(Math.random() * (20 - 10) + 10);
         errKey.push(key);
       }
+      // if (key === "leak4") errKey.push(key);
+      // if (key === "leak6") errKey.push(key);
+      // if (key === "leak3") errKey.push(key);
     }
 
     if (oldState === "zero") {
@@ -94,7 +94,17 @@ export const leakFunc = (leakData: any) => {
         Math.random() * (maxVal - minVal) + minVal
       );
       if (errKey.includes(key)) {
-        leakData.data[key] -= Math.floor(Math.random() * (7 - 2) + 2);
+        const maxVal = [
+          Math.floor(Math.random() * (120 - 10) + 10),
+          Math.floor(Math.random() * (30 - 20) + 20),
+          Math.floor(Math.random() * (10 - 5) + 5),
+        ];
+        const id = Math.floor(Math.random() * (2 - 0) + 0);
+        // let id = 0;
+        // if (key === "leak2" || key === "leak4") id = 1;
+        // if (key === "leak3" || key === "leak5") id = 2;
+
+        leakData.data[key] -= Math.floor(Math.random() * (maxVal[id] - 2) + 2);
       }
     } else {
       leakData.data[key] -= Math.floor(

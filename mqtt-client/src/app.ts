@@ -4,7 +4,7 @@ import WebSocket, { WebSocketServer } from "ws";
 // import express from "express";
 import * as mqtt from "mqtt";
 import { EventEmitter } from "events";
-import yallist from "yallist";
+// import yallist from "yallist";
 
 // let myList = yallist.create([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 // myList.forEach(function (k) {
@@ -54,12 +54,12 @@ const wss = new WebSocketServer({
   },
 });
 
-wss.on("connection", (ws) => {
+wss.on("connection", (ws: any) => {
   console.log("WebSocket server connection!");
-  ws.on("message", (data) => {
+  ws.on("message", (data: any) => {
     console.log("received: %s", data);
   });
-  ws.on("close", (code, reason) => {
+  ws.on("close", (code: any, reason: any) => {
     console.log("close", code, reason);
   });
   //////////////////////////////////////////
@@ -98,6 +98,13 @@ let isStarting = false;
 let isTesting = false;
 let isWaiting = false;
 
+const state: { [key: string]: number } = {
+  ready: 0,
+  starting: 1,
+  gathering: 2,
+  waiting: 4,
+};
+
 /*
 model_no: 4, // 생산모델
 prod: 0, // 금일 생산수량
@@ -119,16 +126,16 @@ ng2_2b: 0, // NG 2-1 수량 (O-링)
 type myType = {
   [key: string]: any;
 };
-const assemLists: myType = {
-  model_no: yallist.create([]),
-  prod: yallist.create([]),
-  ng1_1: yallist.create([]),
-  ng1_2a: yallist.create([]),
-  ng1_2b: yallist.create([]),
-  ng2_1: yallist.create([]),
-  ng2_2a: yallist.create([]),
-  ng2_2b: yallist.create([]),
-};
+// const assemLists: myType = {
+//   model_no: yallist.create([]),
+//   prod: yallist.create([]),
+//   ng1_1: yallist.create([]),
+//   ng1_2a: yallist.create([]),
+//   ng1_2b: yallist.create([]),
+//   ng2_1: yallist.create([]),
+//   ng2_2a: yallist.create([]),
+//   ng2_2b: yallist.create([]),
+// };
 
 mqttIjoon.on("message", (topic: string, msg: any) => {
   let today = new Date();
@@ -197,7 +204,7 @@ mqttIjoon.on("message", (topic: string, msg: any) => {
         temp += leakData[key];
         count += 1;
       }
-    });
+    }); // forEach()
 
     if (cnt > 3) {
       console.log("Drop garbage!!!", wsData);
@@ -236,7 +243,7 @@ mqttIjoon.on("message", (topic: string, msg: any) => {
       }
 
       wsData.active = true;
-    }                                                                                                   
+    }
     // FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:
 
     oldLeakData = JSON.parse(JSON.stringify(leakData));
@@ -383,15 +390,11 @@ const topicList = [
   "ijoon/sj/fac-cam-sj002/SJ-OCT-02/data",
   "ijoon/sj/fac-cam-sj003/SJ-OCT-03/data",
 ];
+
 mqttIjoon.on("connect", () => {
   console.log("MQTT SUB server connected!");
-  mqttIjoon.subscribe(topicList, (err) => {
-    if (!err) {
-      // setInterval(() => {
-      //   // console.log("AAAA", Math.random());
-      //   mqttIjoon.publish("test_topic", Math.random().toString());
-      // }, 1000);
-    } else {
+  mqttIjoon.subscribe(topicList, (err: any) => {
+    if (err) {
       console.log(err);
     }
   });

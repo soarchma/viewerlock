@@ -17,10 +17,10 @@ const shapeData: any = {
   update: [],
   test: true,
   data: {
-    intuition1: 900, // 직관 1ST 설정치
-    intuition2: 1800, // 직관 2ST 설정치
-    modeling1: 9510, // 성형 1ST 설정치
-    modeling2: 9511, // 성형 2ST 설정치
+    beeline1: 900, // 직관 1ST 설정치
+    beeline2: 1800, // 직관 2ST 설정치
+    shape1: 9510, // 성형 1ST 설정치
+    shape2: 9511, // 성형 2ST 설정치
     cut1: 10130, // CUT 1 설정치
     cut2: 10130, // CUT 2 설정치
     production: 0, // 생산수량

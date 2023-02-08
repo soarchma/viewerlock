@@ -12,10 +12,10 @@
 // let endOfTerm = false;
 
 const defData_1200: any = {
-  intuition1: 900, // 직관 1ST 설정치
-  intuition2: 1950, // 직관 2ST 설정치
-  modeling1: 8700, // 성형 1ST 설정치
-  modeling2: 8701, // 성형 2ST 설정치
+  beeline1: 900, // 직관 1ST 설정치
+  beeline2: 1950, // 직관 2ST 설정치
+  shape1: 8700, // 성형 1ST 설정치
+  shape2: 8701, // 성형 2ST 설정치
   cut1: 10040, // CUT 1 설정치
   cut2: 10040, // CUT 2 설정치
   production: 0, // 생산수량
@@ -23,10 +23,10 @@ const defData_1200: any = {
 };
 
 const defData_1500: any = {
-  intuition1: 900, // 직관 1ST 설정치
-  intuition2: 1920, // 직관 2ST 설정치
-  modeling1: 11690, // 성형 1ST 설정치
-  modeling2: 11691, // 성형 2ST 설정치
+  beeline1: 900, // 직관 1ST 설정치
+  beeline2: 1920, // 직관 2ST 설정치
+  shape1: 11690, // 성형 1ST 설정치
+  shape2: 11691, // 성형 2ST 설정치
   cut1: 10050, // CUT 1 설정치
   cut2: 10050, // CUT 2 설정치
   production: 0, // 생산수량
