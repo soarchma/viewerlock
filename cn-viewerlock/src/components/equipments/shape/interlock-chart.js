@@ -79,7 +79,7 @@ const data = [
 
 export const InterlockChart = (props) => {
   const graphSrc =
-    "http://localhost:3000/d-solo/udWnXn0Vz/new-dashboard?orgId=1&refresh=10s&panelId=14" +
+    "http://localhost:3000/d-solo/udWnXn0Vz/new-dashboard?orgId=1&refresh=10s&panelId=14&theme=light" +
     `&from=${getDateStamp(6)}&to=${Date.now() + 1000 * 360}`;
   return (
     <Card {...props}>

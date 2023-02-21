@@ -129,31 +129,31 @@ services:
     depends_on:
       - mosquitto
 
-  viewerlock:
-    container_name: "viewerlock"
+  cn-viewerlock:
+    container_name: "cn-viewerlock"
     restart: "always"
     build:
-      context: ./viewerlock
+      context: ./cn-viewerlock
       dockerfile: Dockerfile
     volumes:
       # hot reload를 위해 mount
-      - "./viewerlock:/usr/src/viewerlock"
-      - "/usr/src/viewerlock/node_modules"
-      - "/usr/src/viewerlock/.viewerlock"
+      - "./cn-viewerlock:/usr/src/cn-viewerlock"
+      - "/usr/src/cn-viewerlock/node_modules"
+      - "/usr/src/cn-viewerlock/.cn-viewerlock"
     ports:
       - "8080:8080"
 
-  testapp:
-    container_name: "testapp"
+  cn-gs-test:
+    container_name: "cn-gs-test"
     restart: always
     build:
-      context: ./testapp
+      context: ./cn-gs-test
       dockerfile: Dockerfile
     volumes:
       # hot reload를 위해 mount
-      - "./testapp:/usr/src/testapp"
-      - "/usr/src/testapp/node_modules"
-      - "/usr/src/testapp/.testapp"
+      - "./cn-gs-test:/usr/src/cn-gs-test"
+      - "/usr/src/cn-gs-test/node_modules"
+      - "/usr/src/cn-gs-test/.cn-gs-test"
     ports:
       - "8070:8070"
 

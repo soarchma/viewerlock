@@ -65,7 +65,7 @@ export const Production = (props) => {
   if (type === "shape") panelId = 8;
   else if (type === "leak") panelId = 10;
   else if (type === "assemble") panelId = 6;
-  const graphSrc = `http://localhost:3000/d-solo/udWnXn0Vz/new-dashboard?orgId=1&refresh=10s&panelId=${panelId}&from=${getDateStamp(
+  const graphSrc = `http://localhost:3000/d-solo/udWnXn0Vz/new-dashboard?orgId=1&refresh=10s&theme=light&panelId=${panelId}&from=${getDateStamp(
     6
   )}&to=${Date.now() + 1000 * 360}`;
 

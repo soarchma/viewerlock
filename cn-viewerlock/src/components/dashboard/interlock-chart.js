@@ -1,6 +1,5 @@
 import { formatDistanceToNow, subHours } from "date-fns";
 import { v4 as uuid } from "uuid";
-import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -33,37 +32,50 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { getDateStamp } from "../../../lib/common";
+import { getDateStamp } from "../../lib/common";
 
-const urlReal =
-  "http://localhost:3000/d-solo/3Qi9Uxh4k/viewerlock?orgId=1&refresh=5s&from=now-1m&to=now&panelId=6";
-const urlTest =
-  "http://localhost:3000/d-solo/hXeL8624z/test?orgId=1&from=now-1m&to=now&refresh=5s&panelId=2";
+const data = [
+  {
+    name: "16",
+    "자동 성형기": 2,
+    "리크 측정기": 1,
+    "자동 조립기": 4,
+  },
+  {
+    name: "17",
+    "자동 성형기": 2,
+    "리크 측정기": 1,
+    "자동 조립기": 5,
+  },
+  {
+    name: "18",
+    "자동 성형기": 7,
+    "리크 측정기": 2,
+    "자동 조립기": 2,
+  },
+  {
+    name: "19",
+    "자동 성형기": 5,
+    "리크 측정기": 2,
+    "자동 조립기": 2,
+  },
+  {
+    name: "20",
+    "자동 성형기": 3,
+    "리크 측정기": 4,
+    "자동 조립기": 1,
+  },
+];
 
-export const InterlockReal = (props) => {
-  const { event } = props;
-  const [url, setUrl] = useState(urlReal);
-
-  useEffect(() => {
-    event.on("leak", (msg) => {
-      const obj = JSON.parse(msg);
-      // console.log(obj);
-      if (obj.test) {
-        setUrl(urlTest);
-      } else {
-        setUrl(urlReal);
-      }
-    });
-
-    return () => {
-      event.removeAllListeners();
-    };
-  }, []);
+export const InterlockChart = (props) => {
+  const graphSrc =
+    "http://localhost:3000/d-solo/udWnXn0Vz/new-dashboard?orgId=1&refresh=10s&panelId=19&theme=light" +
+    `&from=${getDateStamp(6)}&to=${Date.now() + 1000 * 360}`;
 
   return (
     <Card {...props}>
       <CardHeader
-        title="실시간 데이터"
+        title="인터락 트랜드"
         sx={{
           mb: -1,
           height: 60,
@@ -75,21 +87,21 @@ export const InterlockReal = (props) => {
           sx={{
             paddingTop: 0,
             paddingBottom: 0,
-            height: 350,
+            height: 250,
             position: "relative",
           }}
         >
-          <iframe src={url} width="100%" height="100%" frameBorder="0"></iframe>
+          <iframe src={graphSrc} width="100%" height="100%" frameBorder="0"></iframe>
           {/* <ResponsiveContainer width="100%" height="100%">
             <LineChart
               // width={440}
               // height={320}
               data={data}
               margin={{
-                top: 5,
+                top: 0,
                 right: 30,
                 left: -10,
-                bottom: 5,
+                bottom: -12,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
@@ -97,11 +109,9 @@ export const InterlockReal = (props) => {
               <YAxis />
               <Tooltip />
               <Legend wrapperStyle={{ fontSize: "14px" }} />
-              <Line type="number" dataKey="유닛-1" strokeWidth={2} stroke="#8884d8" />
-              <Line type="number" dataKey="유닛-2" strokeWidth={2} stroke="#82ca9d" />
-              <Line type="number" dataKey="유닛-3" strokeWidth={2} stroke="#f20f0d" />
-              <Line type="number" dataKey="유닛-4" strokeWidth={2} stroke="#020fFd" />
-              <Line type="number" dataKey="유닛-5" strokeWidth={2} stroke="#02Ff0d" />
+              <Line type="number" dataKey="자동 성형기" strokeWidth={5} stroke="#82ca9d" />
+              <Line type="number" dataKey="리크 측정기" strokeWidth={5} stroke="#eb6491" />
+              <Line type="number" dataKey="자동 조립기" strokeWidth={5} stroke="#8884d8" />
             </LineChart>
           </ResponsiveContainer> */}
         </Box>
