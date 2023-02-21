@@ -45,10 +45,10 @@ export const InterlockList = (props) => {
   const { event } = props;
   const [leakData, setLeakData] = useState(undefined);
   useEffect(() => {
-    event.on("leakEvent", (msg) => {
+    event.on("leak", (msg) => {
       const obj = JSON.parse(msg);
       if (obj.active) {
-        console.log(obj);
+        // console.log(obj.update);
       }
       setLeakData(obj);
     });
@@ -125,7 +125,7 @@ export const InterlockList = (props) => {
                     "&:last-child td, &:last-child th": {
                       border: 0,
                     },
-                    // bgcolor: row.isInterlock ? "red" : null,
+                    bgcolor: row.isInterlock ? "red" : null,
                   }}
                 >
                   <TableCell align="center" component="th" scope="row">

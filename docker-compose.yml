@@ -2,6 +2,20 @@ version: "3"
 # net stop hns
 # net start hns
 services:
+  db:
+    image: mariadb:10
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker-vol/db/conf.d:/etc/mysql/conf.d
+      - ./docker-vol/db/data:/var/lib/mysql
+      - ./docker-vol/db/initdb.d:/docker-entrypoint-initdb.d
+    env_file: ./docker-vol/db/.env
+    environment:
+      TZ: Asia/Seoul
+    # networks:
+    # - backend
+    restart: always
   influxdb:
     image: influxdb:2.4-alpine
     volumes:
@@ -117,7 +131,7 @@ services:
 
   viewerlock:
     container_name: "viewerlock"
-    restart: "on-failure"
+    restart: "always"
     build:
       context: ./viewerlock
       dockerfile: Dockerfile
@@ -129,57 +143,71 @@ services:
     ports:
       - "8080:8080"
 
-  rtsp_simple_server:
-    image: aler9/rtsp-simple-server
-    # network_mode: "host"
-    links:
-      - influxdb
-    ports:
-      - "8554:8554"
-      - "8888:8888"
+  testapp:
+    container_name: "testapp"
+    restart: always
+    build:
+      context: ./testapp
+      dockerfile: Dockerfile
     volumes:
-      - .\docker-vol\rtsp-simple-server\rtsp-simple-server.yml:/rtsp-simple-server.yml:rw
-    environment:
-      - RTSP_PROTOCOLS=tcp
-    restart: always
+      # hot reload를 위해 mount
+      - "./testapp:/usr/src/testapp"
+      - "/usr/src/testapp/node_modules"
+      - "/usr/src/testapp/.testapp"
+    ports:
+      - "8070:8070"
 
-  ffmpeg_leak:
-    image: jrottenberg/ffmpeg:latest
-    links:
-      - influxdb
-    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -c copy -an -f rtsp rtsp://host.docker.internal:8554/leak
-    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=420:240 -an -f rtsp rtsp://host.docker.internal:8554/leak
-    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -filter:v fps=fps=3 -update 1 /images/leak.jpg -y
-    # volumes:
-    #   - .\docker-vol\ffmpeg\images:/images:rw
-    restart: always
-    depends_on:
-      - rtsp_simple_server
+  # rtsp_simple_server:
+  #   image: aler9/rtsp-simple-server
+  #   # network_mode: "host"
+  #   links:
+  #     - influxdb
+  #   ports:
+  #     - "8554:8554"
+  #     - "8888:8888"
+  #   volumes:
+  #     - .\docker-vol\rtsp-simple-server\rtsp-simple-server.yml:/rtsp-simple-server.yml:rw
+  #   environment:
+  #     - RTSP_PROTOCOLS=tcp
+  #   restart: always
 
-  ffmpeg_shape:
-    image: jrottenberg/ffmpeg:latest
-    links:
-      - influxdb
-    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -c copy -an -f rtsp rtsp://host.docker.internal:8554/shape
-    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=210:120 -an -f rtsp rtsp://host.docker.internal:8554/shape
-    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -filter:v fps=fps=3 -update 1 /images/shape.jpg -y
-    # volumes:
-    # - .\docker-vol\ffmpeg\images:/images:rw
-    restart: always
-    depends_on:
-      - rtsp_simple_server
+  # ffmpeg_leak:
+  #   image: jrottenberg/ffmpeg:latest
+  #   links:
+  #     - influxdb
+  #   command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -c copy -an -f rtsp rtsp://host.docker.internal:8554/leak
+  #   # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=420:240 -an -f rtsp rtsp://host.docker.internal:8554/leak
+  #   # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -filter:v fps=fps=3 -update 1 /images/leak.jpg -y
+  #   # volumes:
+  #   #   - .\docker-vol\ffmpeg\images:/images:rw
+  #   restart: always
+  #   depends_on:
+  #     - rtsp_simple_server
 
-  ffmpeg_assemble:
-    image: jrottenberg/ffmpeg:latest
-    links:
-      - influxdb
-    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -c copy -an -f rtsp rtsp://host.docker.internal:8554/assemble
-    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=210:120 -an -f rtsp rtsp://host.docker.internal:8554/assemble
-    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -filter:v fps=fps=3 -update 1 /images/assemble.jpg -y
-    # volumes:
-    #   - .\docker-vol\ffmpeg\images:/images:rw
-    restart: always
-    depends_on:
-      - rtsp_simple_server
+  # ffmpeg_shape:
+  #   image: jrottenberg/ffmpeg:latest
+  #   links:
+  #     - influxdb
+  #   command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -c copy -an -f rtsp rtsp://host.docker.internal:8554/shape
+  #   # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=210:120 -an -f rtsp rtsp://host.docker.internal:8554/shape
+  #   # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -filter:v fps=fps=3 -update 1 /images/shape.jpg -y
+  #   # volumes:
+  #   # - .\docker-vol\ffmpeg\images:/images:rw
+  #   restart: always
+  #   depends_on:
+  #     - rtsp_simple_server
+
+  # ffmpeg_assemble:
+  #   image: jrottenberg/ffmpeg:latest
+  #   links:
+  #     - influxdb
+  #   command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -c copy -an -f rtsp rtsp://host.docker.internal:8554/assemble
+  #   # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=210:120 -an -f rtsp rtsp://host.docker.internal:8554/assemble
+  #   # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -filter:v fps=fps=3 -update 1 /images/assemble.jpg -y
+  #   # volumes:
+  #   #   - .\docker-vol\ffmpeg\images:/images:rw
+  #   restart: always
+  #   depends_on:
+  #     - rtsp_simple_server
 # volumes:
 #   influxdb2:

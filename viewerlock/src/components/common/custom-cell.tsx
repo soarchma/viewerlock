@@ -7,25 +7,33 @@ export const CustomCell = (props) => {
   const [update, setUpdate] = useState(false);
 
   useEffect(() => {
-    event.on("assemEvent", (msg) => {
+    event.on("assem", (msg) => {
       const rawData = JSON.parse(msg);
-      if (rawData.data[name]) {
-        setVal(rawData.data[name]);
-        if (rawData.update.find((v) => v === name)) {
-          setUpdate(true);
-        } else {
-          setUpdate(false);
+      const { data } = rawData;
+      // console.log(data);
+
+      if (data[name]) {
+        if (val != data[name]) {
+          setVal(data[name]);
         }
       }
-      // console.log(obj);
-      // setRawData(obj);
-      // const { data } = obj;
-      // let temp = JSON.parse(JSON.stringify(ng1));
-      // temp[0] = createData1("Day", data.ng1_1, data.ng1_2a, data.ng1_2b);
-      // setNg1(temp);
-      // temp = JSON.parse(JSON.stringify(ng2));
-      // temp[0] = createData2("Day", data.ng2_1, data.ng2_2a, data.ng2_2b);
-      // setNg2(temp);
+    });
+
+    event.on("newIl", (msg) => {
+      const rawData = JSON.parse(msg);
+      // console.log(name, rawData);
+      const { type, unit, data } = rawData;
+      // console.log(name, rawData.data[name]);
+      if (unit === "assem") {
+        // console.log(data.update);
+        if (data.data[name]) {
+          if (data.update.find((v) => v === name)) {
+            setUpdate(true);
+          } else {
+            setUpdate(false);
+          }
+        }
+      }
     });
 
     return () => {
@@ -33,6 +41,10 @@ export const CustomCell = (props) => {
       console.log("111111 ==> Clean Up~!");
     };
   }, []);
+
+  // console.log(
+  //   `#FF${cellColor.toString(16).padStart(2, "0")}${cellColor.toString(16).padStart(2, "0")}`
+  // );
 
   return (
     <TableCell align="center" sx={{ bgcolor: update ? "#FF0000" : null }}>

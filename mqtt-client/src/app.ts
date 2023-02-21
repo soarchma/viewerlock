@@ -106,35 +106,35 @@ const state: { [key: string]: number } = {
 };
 
 /*
-model_no: 4, // 생산모델
-prod: 0, // 금일 생산수량
-ng1_1: 0, // NG 1-1 수량 (확관)
-ng1_2a: 0, // NG 1-2 수량 (레듀샤)
-ng1_2b: 0, // NG 1-2 수량 (O-링)
-ng2_1: 0, // NG 2-1 수량 (확관)
-ng2_2a: 0, // NG 2-1 수량 (니쁠)
-ng2_2b: 0, // NG 2-1 수량 (O-링)
+model: 4, // 생산모델
+cnt: 0, // 금일 생산수량
+exp1: 0, // NG 1-1 수량 (확관)
+redu: 0, // NG 1-2 수량 (레듀샤)
+oring1: 0, // NG 1-2 수량 (O-링)
+exp2: 0, // NG 2-1 수량 (확관)
+nipple: 0, // NG 2-1 수량 (니쁠)
+oring2: 0, // NG 2-1 수량 (O-링)
 */
-// const model_no = [] as any;
-// const prod = [] as any;
-// const ng1_1 = [] as any;
-// const ng1_2a = [] as any;
-// const ng1_2b = [] as any;
-// const ng2_1 = [] as any;
-// const ng2_2a = [] as any;
-// const ng2_2b = [] as any;
+// const model = [] as any;
+// const cnt = [] as any;
+// const exp1 = [] as any;
+// const redu = [] as any;
+// const oring1 = [] as any;
+// const exp2 = [] as any;
+// const nipple = [] as any;
+// const oring2 = [] as any;
 type myType = {
   [key: string]: any;
 };
 // const assemLists: myType = {
-//   model_no: yallist.create([]),
-//   prod: yallist.create([]),
-//   ng1_1: yallist.create([]),
-//   ng1_2a: yallist.create([]),
-//   ng1_2b: yallist.create([]),
-//   ng2_1: yallist.create([]),
-//   ng2_2a: yallist.create([]),
-//   ng2_2b: yallist.create([]),
+//   model: yallist.create([]),
+//   cnt: yallist.create([]),
+//   exp1: yallist.create([]),
+//   redu: yallist.create([]),
+//   oring1: yallist.create([]),
+//   exp2: yallist.create([]),
+//   nipple: yallist.create([]),
+//   oring2: yallist.create([]),
 // };
 
 mqttIjoon.on("message", (topic: string, msg: any) => {
@@ -317,9 +317,9 @@ mqttIjoon.on("message", (topic: string, msg: any) => {
     Object.keys(raw).forEach((key: string, index: number) => {
       let isOk = false;
       // 1. 항목별 한계 수치 검사
-      if (key === "model_no") {
+      if (key === "model") {
         if (raw[key] > 0 && raw[key] < 6) isOk = true; // 1 ~ 5
-      } else if (key === "prod") {
+      } else if (key === "cnt") {
         if (raw[key] >= 0 && raw[key] <= 1000) isOk = true; // 0 ~ 1000
       } else {
         if (raw[key] >= 0 && raw[key] <= 200) isOk = true; // 0 ~ 200
@@ -374,7 +374,7 @@ mqttIjoon.on("message", (topic: string, msg: any) => {
   ////////////////////////////////////////////////////////////////////
 });
 
-mqttClient.on("error", (err) => {
+mqttClient.on("error", (err: any) => {
   console.log(err);
 });
 
@@ -419,7 +419,7 @@ mqttIjoon.on("connect", () => {
 //   }
 // });
 
-mqttIjoon.on("error", (err) => {
+mqttIjoon.on("error", (err: any) => {
   console.log(err);
 });
 

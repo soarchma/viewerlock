@@ -1,3 +1,8 @@
+// TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:
+// TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:
+// TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:
+// TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:
+// TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:
 import * as mqtt from "mqtt";
 import WebSocket, { WebSocketServer } from "ws";
 import { shapeFunc } from "./lib/shape";
@@ -17,14 +22,14 @@ const shapeData: any = {
   update: [],
   test: true,
   data: {
+    model: 1200, // 설정 모델
+    cnt: 0, // 생산수량
     beeline1: 900, // 직관 1ST 설정치
     beeline2: 1800, // 직관 2ST 설정치
     shape1: 9510, // 성형 1ST 설정치
     shape2: 9511, // 성형 2ST 설정치
     cut1: 10130, // CUT 1 설정치
     cut2: 10130, // CUT 2 설정치
-    production: 0, // 생산수량
-    setting_model: 1200, // 설정 모델
   },
 };
 
@@ -49,14 +54,14 @@ const assemData: any = {
   update: [],
   test: true,
   data: {
-    model_no: 4, // 생산모델
-    prod: 0, // 금일 생산수량
-    ng1_1: 0, // NG 1-1 수량 (확관)
-    ng1_2a: 0, // NG 1-2 수량 (레듀샤)
-    ng1_2b: 0, // NG 1-2 수량 (O-링)
-    ng2_1: 0, // NG 2-1 수량 (확관)
-    ng2_2a: 0, // NG 2-1 수량 (니쁠)
-    ng2_2b: 0, // NG 2-1 수량 (O-링)
+    model: 4, // 생산모델
+    cnt: 0, // 금일 생산수량
+    exp1: 0, // NG 1-1 수량 (확관)
+    redu: 0, // NG 1-2 수량 (레듀샤)
+    oring1: 0, // NG 1-2 수량 (O-링)
+    exp2: 0, // NG 2-1 수량 (확관)
+    nipple: 0, // NG 2-1 수량 (니쁠)
+    oring2: 0, // NG 2-1 수량 (O-링)
   },
 };
 

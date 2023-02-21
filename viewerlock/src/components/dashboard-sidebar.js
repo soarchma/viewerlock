@@ -56,11 +56,11 @@ const items = [
     icon: <ComputerIcon fontSize="small" />,
     title: "System",
   },
-  {
-    href: "/settings",
-    icon: <CogIcon fontSize="small" />,
-    title: "Settings",
-  },
+  // {
+  //   href: "/settings",
+  //   icon: <CogIcon fontSize="small" />,
+  //   title: "Settings",
+  // },
   // {
   //   href: "/account",
   //   icon: <UserIcon fontSize="small" />,

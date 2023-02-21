@@ -4,6 +4,7 @@ import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Legend, Tooltip, Labe
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import PhoneIcon from "@mui/icons-material/Phone";
 import TabletIcon from "@mui/icons-material/Tablet";
+import { getDateStamp } from "../../lib/common";
 
 const data = [
   { name: "가동률", value: 60 },
@@ -49,6 +50,14 @@ export const Capacity = (props) => {
       color: "#E53935",
     },
   ];
+  const { type } = props;
+  let panelId = 0;
+  if (type === "shape") panelId = 25;
+  else if (type === "leak") panelId = 27;
+  else if (type === "assemble") panelId = 29;
+  const graphSrc = `http://localhost:3000/d-solo/udWnXn0Vz/new-dashboard?orgId=1&refresh=10s&panelId=${panelId}&from=${getDateStamp(
+    6
+  )}&to=${Date.now() + 1000 * 360}`;
 
   return (
     <Card {...props}>
@@ -60,15 +69,18 @@ export const Capacity = (props) => {
         }}
       />
       <Divider />
-      <CardContent>
+      <CardContent sx={{ padding: 0 }}>
         <Box
           sx={{
-            height: 300,
+            paddingTop: 0,
+            paddingBottom: 0,
+            height: 320,
             position: "relative",
           }}
         >
+          <iframe src={graphSrc} width="100%" height="100%" frameBorder="0"></iframe>
           {/* <Doughnut data={data} options={options} /> */}
-          <ResponsiveContainer width="100%" height="100%">
+          {/* <ResponsiveContainer width="100%" height="100%">
             <PieChart width={300} height={300} onMouseEnter={null}>
               <Pie
                 data={data}
@@ -82,9 +94,6 @@ export const Capacity = (props) => {
                 paddingAngle={0}
                 dataKey="value"
               >
-                {/* {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))} */}
                 <Label
                   // width={20}
                   position="center"
@@ -92,34 +101,9 @@ export const Capacity = (props) => {
                 ></Label>
               </Pie>
               <Legend wrapperStyle={{ fontSize: "14px" }} />
-              {/* <Tooltip /> */}
             </PieChart>
-          </ResponsiveContainer>
+          </ResponsiveContainer> */}
         </Box>
-        {/* <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            pt: 2,
-          }}
-        >
-          {devices.map(({ color, icon: Icon, title, value }) => (
-            <Box
-              key={title}
-              sx={{
-                p: 1,
-                textAlign: "center",
-              }}
-            >
-              <Typography color="textPrimary" variant="body1">
-                {title}
-              </Typography>
-              <Typography style={{ color }} variant="h4">
-                {value}%
-              </Typography>
-            </Box>
-          ))}
-        </Box> */}
       </CardContent>
     </Card>
   );

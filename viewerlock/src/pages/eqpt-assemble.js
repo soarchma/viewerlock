@@ -30,11 +30,11 @@ const Page = (props) => {
       >
         <Container maxWidth={false}>
           <Grid container spacing={1}>
-            <Grid item lg={4} md={4} xl={4} xs={4}>
-              <Production />
+            <Grid item lg={5} md={5} xl={5} xs={5}>
+              <Production sx={{ height: "100%" }} type="assemble" />
             </Grid>
-            <Grid item lg={3} md={3} xl={3} xs={3}>
-              <Capacity sx={{ height: "100%" }} />
+            <Grid item lg={2} md={2} xl={2} xs={2}>
+              <Capacity sx={{ height: "100%" }} type="assemble" />
             </Grid>
             <Grid item lg={5} md={5} xl={5} xs={5}>
               <Camera sx={{ height: "100%" }} type="assemble" />
@@ -44,7 +44,7 @@ const Page = (props) => {
               <InterlockList sx={{ height: "100%" }} event={myEmitter} />
             </Grid>
             <Grid item lg={7} md={7} xl={7} xs={7}>
-              <InterlockChart />
+              <InterlockChart sx={{ height: "100%" }} />
             </Grid>
           </Grid>
         </Container>

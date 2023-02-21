@@ -12,4 +12,11 @@ const username = "shbaek";
 /**InfluxDB password  */
 const password = "tmdghkqor0";
 
+export const db_username = "root";
+export const db_password = "root";
+export const db_database = "viewerlock";
+export const db_host = "127.0.0.1";
+export const db_port = "3306";
+export const db_dialect = "mysql";
+
 export { url, token, org, bucket, username, password };

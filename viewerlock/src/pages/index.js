@@ -22,6 +22,7 @@ import { NextPageContext } from "next";
 import { default as getProps } from "../lib/getProps";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
+// import axios from "axios";
 
 const Page = (props) => {
   // const [cookies, setCookie /*, removeCookie*/] = useCookies(["apiToken"]);
@@ -34,9 +35,34 @@ const Page = (props) => {
   // console.log(props);
 
   const { myEmitter } = props;
+  // const [dbData, setDbData] = useState({});
   useEffect(() => {
-    // myEmitter.on("testEvent", (msg) => {
-    //   console.log(msg);
+    // myEmitter.on("assem", (msg) => {
+    //   const getStatData = async () => {
+    //     const response = await axios
+    //       .post("./api/get-data")
+    //       .then((response) => {
+    //         return response;
+    //       })
+    //       .catch((err) => {
+    //         if (err.response) {
+    //           return err.response;
+    //         } else if (err.request) {
+    //           console.error("getStatData() - request:", err.request);
+    //           return null;
+    //         } else {
+    //           console.error("getStatData() - message:", err.message);
+    //         }
+    //         console.error("getStatData() - config:", err.config);
+    //         return null;
+    //       });
+    //     console.log(msg);
+    //     if (response && response.data) {
+    //       console.log(response.data);
+    //       setDbData(response.data);
+    //     }
+    //   };
+    //   getStatData();
     // });
 
     return () => {
@@ -54,16 +80,16 @@ const Page = (props) => {
         component="main"
         sx={{
           flexGrow: 1,
-          py: 3,
+          py: 2,
         }}
       >
         <Container maxWidth={false}>
-          <Grid container rowSpacing={1} columnSpacing={5}>
+          <Grid container rowSpacing={1} columnSpacing={1}>
             <Grid item lg={6} sm={6} xl={6} xs={6}>
-              <ProductionList />
+              <ProductionList event={myEmitter} />
             </Grid>
             <Grid item xl={6} lg={6} sm={6} xs={6}>
-              <InterlockList />
+              <InterlockList event={myEmitter} />
             </Grid>
 
             <Grid item lg={6} sm={6} xl={6} xs={6}>

@@ -1,5 +1,7 @@
-import { formatDistanceToNow, subHours } from "date-fns";
-import { v4 as uuid } from "uuid";
+// import { formatDistanceToNow, subHours } from "date-fns";
+// import { v4 as uuid } from "uuid";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import {
   Box,
   Button,
@@ -19,20 +21,71 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+// import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+// import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-function createData(unit, lowerLimit, targetVal, realVal, isInterlock) {
-  return { unit, lowerLimit, targetVal, realVal, isInterlock };
+function createData(unit, prodCnt, capacity) {
+  return { unit, prodCnt, capacity };
 }
 
-const rows = [
-  createData("자동 성형기", 159, 6.0),
-  createData("리크 측정기", "-", 9.0),
-  createData("자동 조립기", 262, 16.0),
+const defRows = [
+  createData("자동 성형기", "-", "-"),
+  createData("리크 측정기", "-", "-"),
+  createData("자동 조립기", "-", "-"),
 ];
 
 export const ProductionList = (props) => {
+  const { event } = props;
+  const [rows, setRows] = useState(defRows);
+
+  useEffect(() => {
+    event.on("newProd", (msg) => {
+      // console.log("newProd", msg);
+      const getStatData = async () => {
+        const response = await axios
+          .post("./api/get-data?t=prod")
+          .then((response) => {
+            return response;
+          })
+          .catch((err) => {
+            if (err.response) {
+              return err.response;
+            } else if (err.request) {
+              console.error("getStatData() - request:", err.request);
+              return null;
+            } else {
+              console.error("getStatData() - message:", err.message);
+            }
+            console.error("getStatData() - config:", err.config);
+            return null;
+          });
+        if (response && response.data && response.data.prod) {
+          // console.log(response.data);
+          const temp = rows.slice(0);
+          if (response.data.prod.shape) temp[0].prodCnt = response.data.prod.shape;
+          if (response.data.prod.leak) temp[1].prodCnt = response.data.prod.leak;
+          if (response.data.prod.assem) temp[2].prodCnt = response.data.prod.assem;
+
+          if (response.data.prod.shape)
+            temp[0].capacity = ((response.data.prod.shape / 11000) * 100).toFixed(1);
+          if (response.data.prod.leak)
+            temp[1].capacity = ((response.data.prod.leak / 1300) * 100).toFixed(1);
+          if (response.data.prod.assem)
+            temp[2].capacity = ((response.data.prod.assem / 900) * 100).toFixed(1);
+          setRows(temp);
+        } else {
+          console.log("!!!!!!!!!!!!!!!!!!!!!!", response);
+        }
+      };
+      getStatData();
+    });
+
+    return () => {
+      event.removeAllListeners();
+      console.log("index.js ==> Clean Up~!");
+    };
+  }, []);
+
   return (
     <Card {...props}>
       <CardHeader
@@ -67,8 +120,8 @@ export const ProductionList = (props) => {
                   <TableCell align="center" component="th" scope="row">
                     {row.unit}
                   </TableCell>
-                  <TableCell align="center">{row.lowerLimit}</TableCell>
-                  <TableCell align="center">{row.targetVal}</TableCell>
+                  <TableCell align="center">{row.prodCnt}</TableCell>
+                  <TableCell align="center">{row.capacity}</TableCell>
                 </TableRow>
               );
             })}

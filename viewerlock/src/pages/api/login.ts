@@ -7,8 +7,58 @@ import JWT from "jsonwebtoken";
 // import rsaPemToJwk from "rsa-pem-to-jwk";
 import fs from "fs";
 import store from "store2";
+import { connect } from "http2";
 // import jwksClient, { JwksClient } from "jwks-rsa";
 // import { bodyStreamToNodeStream } from "next/dist/server/body-streams";
+
+/////////////////////////////////////////////////////////////////////
+// get the client
+const mysql = require("mysql2/promise");
+
+async function dbConnect() {
+  // create the connection to database
+  const connection = await mysql.createConnection({
+    host: "host.docker.internal",
+    user: "root",
+    password: "root!",
+    database: "viewerlock",
+    port: "3306",
+  });
+
+  return connection;
+}
+
+async function checkUserEmail(connection, mail) {
+  // simple query
+  try {
+    const [rows, fields] = await connection.execute("SELECT * FROM users");
+    console.log(rows);
+
+    console.log("??????????", mail, rows);
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i].mail === mail) {
+        return true;
+      }
+    }
+    return false;
+  } catch (e) {
+    console.log("ERROR", e);
+    return false;
+  }
+  return false;
+}
+
+async function userLog(connection, mail, sucess) {
+  // simple query
+  try {
+    await connection.execute(
+      `INSERT INTO user_log(TIME, mail, sucess, note) VALUES (CURRENT_TIMESTAMP, "${mail}", ${sucess}, "Login")`
+    );
+  } catch (e) {
+    console.log("ERROR", e);
+  }
+}
+/////////////////////////////////////////////////////////////////////
 
 const googleClientId = "952047521081-9470k5vb0loms4jpmjln01i6s5gogqgd.apps.googleusercontent.com";
 const googleClient = new OAuth2Client(googleClientId);
@@ -212,6 +262,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   // signature 에러 시뮬레이션
   // const publicKey = fs.readFileSync("public.pem");
 
+  // TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:
+  // 이메일 비교
+  const connection = await dbConnect();
+  const userExist = await checkUserEmail(connection, payload.email);
+  await userLog(connection, payload.email, userExist);
+  if (!userExist) {
+    console.log("Unapproved Email!!!");
+    return res.status(401).json({
+      text: "Unapproved Email.",
+      code: -2,
+    });
+  }
+  connection.end();
+  // TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:
+
   // apiToken 생성
   const apiToken = createApiToken(payload);
   // console.log(apiToken);
@@ -229,7 +294,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         // }
         // store(decoded.email, apiToken);
         // cookie에 apiToken 저장 - 기존 apiToken은 삭제됨.
-        res.setHeader("Set-Cookie", `apiToken=${apiToken}; path=/; httponly;`);
+        res.setHeader("Set-Cookie", `apiToken=${apiToken}; path=/; Max-Age=28800; httponly;`); // 8시간 후 만료
         // response
         res.status(200);
         return res.json({

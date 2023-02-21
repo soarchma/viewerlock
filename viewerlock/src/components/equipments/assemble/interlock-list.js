@@ -19,11 +19,11 @@ import {
 import { create } from "domain";
 import { CustomCell } from "../../common/custom-cell";
 
-function createData1(type, ng1_1, ng1_2a, ng1_2b) {
-  return { type, ng1_1, ng1_2a, ng1_2b };
+function createData1(type, exp1, redu, oring1) {
+  return { type, exp1, redu, oring1 };
 }
-function createData2(type, ng2_1, ng2_2a, ng2_2b) {
-  return { type, ng2_1, ng2_2a, ng2_2b };
+function createData2(type, exp2, nipple, oring2) {
+  return { type, exp2, nipple, oring2 };
 }
 
 const rows_1 = [
@@ -45,16 +45,16 @@ export const InterlockList = (props) => {
   // const [rawData, setRawData] = useState(null);
 
   // useEffect(() => {
-  //   event.on("assemEvent", (msg) => {
+  //   event.on("assem", (msg) => {
   //     const obj = JSON.parse(msg);
   //     // console.log(obj);
   //     // setRawData(obj);
   //     const { data } = obj;
   //     let temp = JSON.parse(JSON.stringify(ng1));
-  //     temp[0] = createData1("Day", data.ng1_1, data.ng1_2a, data.ng1_2b);
+  //     temp[0] = createData1("Day", data.exp1, data.redu, data.oring1);
   //     // setNg1(temp);
   //     temp = JSON.parse(JSON.stringify(ng2));
-  //     temp[0] = createData2("Day", data.ng2_1, data.ng2_2a, data.ng2_2b);
+  //     temp[0] = createData2("Day", data.exp2, data.nipple, data.oring2);
   //     // setNg2(temp);
   //   });
 
@@ -77,13 +77,13 @@ export const InterlockList = (props) => {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 300 }} size="small" aria-label="simple table">
           <TableHead>
-            <TableRow>
+            <TableRow style={{ height: 50 }} sx={{ bgcolor: "#dbdbdb" }}>
               <TableCell align="center" colSpan={4}>
                 Unit-1
               </TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell align="center">주기</TableCell>
+            <TableRow style={{ height: 50 }}>
+              {/* <TableCell align="center">주기</TableCell> */}
               <TableCell align="center">확관 불량</TableCell>
               <TableCell align="center">레듀샤 체결불량</TableCell>
               <TableCell align="center">O-링 삽입불량</TableCell>
@@ -97,14 +97,14 @@ export const InterlockList = (props) => {
                   border: 0,
                 },
               }}
-              style={{ height: 64 }}
+              style={{ height: 90 }}
             >
-              <TableCell align="center" sx={{}} component="th" scope="row">
+              {/* <TableCell align="center" sx={{}} component="th" scope="row">
                 {"Day"}
-              </TableCell>
-              <CustomCell event={event} name={"ng1_1"} />
-              <CustomCell event={event} name={"ng1_2a"} />
-              <CustomCell event={event} name={"ng1_2b"} />
+              </TableCell> */}
+              <CustomCell event={event} name={"exp1"} />
+              <CustomCell event={event} name={"redu"} />
+              <CustomCell event={event} name={"oring1"} />
             </TableRow>
           </TableBody>
         </Table>
@@ -115,13 +115,13 @@ export const InterlockList = (props) => {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 300 }} size="small" aria-label="simple table">
           <TableHead>
-            <TableRow>
+            <TableRow style={{ height: 50 }} sx={{ bgcolor: "#dbdbdb" }}>
               <TableCell align="center" colSpan={4}>
                 Unit-2
               </TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell align="center">주기</TableCell>
+            <TableRow style={{ height: 50 }}>
+              {/* <TableCell align="center">주기</TableCell> */}
               <TableCell align="center">확관 불량</TableCell>
               <TableCell align="center">니쁠 체결불량</TableCell>
               <TableCell align="center">O-링 삽입불량</TableCell>
@@ -135,14 +135,14 @@ export const InterlockList = (props) => {
                   border: 0,
                 },
               }}
-              style={{ height: 64 }}
+              style={{ height: 90 }}
             >
-              <TableCell align="center" sx={{}} component="th" scope="row">
+              {/* <TableCell align="center" sx={{}} component="th" scope="row">
                 {"Day"}
-              </TableCell>
-              <CustomCell event={event} name={"ng2_1"} />
-              <CustomCell event={event} name={"ng2_2a"} />
-              <CustomCell event={event} name={"ng2_2b"} />
+              </TableCell> */}
+              <CustomCell event={event} name={"exp2"} />
+              <CustomCell event={event} name={"nipple"} />
+              <CustomCell event={event} name={"oring2"} />
             </TableRow>
           </TableBody>
         </Table>

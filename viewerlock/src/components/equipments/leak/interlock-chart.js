@@ -32,6 +32,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { getDateStamp } from "../../../lib/common";
 
 const data = [
   {
@@ -77,6 +78,9 @@ const data = [
 ];
 
 export const InterlockChart = (props) => {
+  const graphSrc =
+    "http://localhost:3000/d-solo/udWnXn0Vz/new-dashboard?orgId=1&refresh=10s&panelId=12" +
+    `&from=${getDateStamp(6)}&to=${Date.now() + 1000 * 360}`;
   return (
     <Card {...props}>
       <CardHeader
@@ -87,14 +91,17 @@ export const InterlockChart = (props) => {
         }}
       />
       <Divider />
-      <CardContent>
+      <CardContent sx={{ paddingTop: 0, paddingBottom: 0 }}>
         <Box
           sx={{
-            height: 300,
+            paddingTop: 0,
+            paddingBottom: 0,
+            height: 350,
             position: "relative",
           }}
         >
-          <ResponsiveContainer width="100%" height="100%">
+          <iframe src={graphSrc} width="100%" height="100%" frameBorder="0"></iframe>
+          {/* <ResponsiveContainer width="100%" height="100%">
             <LineChart
               // width={440}
               // height={320}
@@ -110,7 +117,6 @@ export const InterlockChart = (props) => {
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              {/* <Legend /> */}
               <Legend wrapperStyle={{ fontSize: "14px" }} />
               <Line type="number" dataKey="유닛-1" strokeWidth={2} stroke="#8884d8" />
               <Line type="number" dataKey="유닛-2" strokeWidth={2} stroke="#82ca9d" />
@@ -118,7 +124,7 @@ export const InterlockChart = (props) => {
               <Line type="number" dataKey="유닛-4" strokeWidth={2} stroke="#020fFd" />
               <Line type="number" dataKey="유닛-5" strokeWidth={2} stroke="#02Ff0d" />
             </LineChart>
-          </ResponsiveContainer>
+          </ResponsiveContainer> */}
         </Box>
       </CardContent>
     </Card>

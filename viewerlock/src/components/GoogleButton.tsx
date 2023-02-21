@@ -70,36 +70,47 @@ const GoogleButton = (props) => {
           // TODO: 정상. 응답 처리 - 쿠키 저장 및 페이지 이동
           console.log("postCredential() - OK~~~~", response);
           console.log("cookies:", document.cookie);
-          // if (response.data) {
-          //   if (response.data["token"]) {
-          //     const expires = new Date();
-          //     // expires.setHours(expires.getHours() + 8); // 쿠키 만료 8 시간
-          //     expires.setHours(expires.getHours() + 1); // 쿠키 만료 1 시간
-          //     // expires.setMinutes(expires.getMinutes() + 1); // 쿠키 만료 1 분
-          //     setCookie("apiToken", response.data["token"], {
-          //       expires,
-          //       // httpOnly: true,
-          //     });
-          //     // const test = jwtDecode(response.data["token"]);
-          //     // console.log("test: ", test);
+          if (response.data) {
+            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^111111", response.data);
+            // if (response.data["token"]) {
+            //   const expires = new Date();
+            //   // expires.setHours(expires.getHours() + 8); // 쿠키 만료 8 시간
+            //   // expires.setHours(expires.getHours() + 1); // 쿠키 만료 1 시간
+            //   expires.setMinutes(expires.getMinutes() + 1); // 쿠키 만료 1 분
+            //   console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^2222222");
+            //   setCookie("apiToken", response.data["token"], {
+            //     expires,
+            //     // httpOnly: true,
+            //   });
+            //   // const test = jwtDecode(response.data["token"]);
+            //   // console.log("test: ", test);
 
-          //     // Persist the skip for AuthProvider initialize call
-          //     globalThis.sessionStorage.setItem("skip-auth", "true");
+            //   // Persist the skip for AuthProvider initialize call
+            //   globalThis.sessionStorage.setItem("skip-auth", "true");
 
-          //     Router.push("/");
-          //   }
-          // }
-          // Persist the skip for AuthProvider initialize call
-          // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-          authContext.signIn(user);
-          globalThis.sessionStorage.setItem("skip-auth", "true");
-          Router.push("/");
+            //   Router.push("/");
+            // }
+            // const expires = new Date();
+            // // expires.setHours(expires.getHours() + 8); // 쿠키 만료 8 시간
+            // // expires.setHours(expires.getHours() + 1); // 쿠키 만료 1 시간
+            // expires.setMinutes(expires.getMinutes() + 1); // 쿠키 만료 1 분
+            // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^2222222");
+            // setCookie("apiToken", response.data["token"], {
+            //   expires,
+            //   // httpOnly: true,
+            // });
+            // Persist the skip for AuthProvider initialize call
+            authContext.signIn(user);
+            globalThis.sessionStorage.setItem("skip-auth", "true");
+            Router.push("/");
+          }
         } else if (response.status === 401) {
           // TODO: 토큰 인증 불가 - 토큰 오류 or 미등록 이메일
           if (response.data.code === -1) {
-            console.log("토큰 오류.");
+            console.log("토큰 오류");
           } else if (response.data.code === -2) {
-            console.log("미등록 이메일.");
+            console.log("미등록 이메일");
+            alert("미등록 이메일");
           } else {
             console.log("알 수 없는 오류.", response.data);
           }

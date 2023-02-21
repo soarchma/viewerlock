@@ -10,56 +10,19 @@ import { createEmotionCache } from "../utils/create-emotion-cache";
 import { registerChartJs } from "../utils/register-chart-js";
 import { theme } from "../theme";
 import { EventEmitter } from "events";
-
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 registerChartJs();
 
 const clientId = "952047521081-9470k5vb0loms4jpmjln01i6s5gogqgd.apps.googleusercontent.com";
-
 const clientSideEmotionCache = createEmotionCache();
-
 const myEmitter = new EventEmitter();
-
-const connet = (oldWs) => {
-  let ws = new WebSocket("ws://host.docker.internal:8070"); // real server
-  // let ws = new WebSocket("ws://localhost:8070"); // test server
-
-  ws.onclose = (ev) => {
-    console.log("onclose", ev);
-    // const timeout = setTimeout( () => {
-    //   window.location.replace("/");
-    // }, 3000);
-  };
-  ws.onerror = (ev) => {
-    console.log("onerror", ev);
-  };
-  ws.onmessage = (ev) => {
-    // console.log("onmessage", ev.data);
-    const obj = JSON.parse(ev.data);
-    let eventType = "";
-    if (obj.type) {
-      if (obj.type === "leak") eventType = "leakEvent";
-      else if (obj.type === "shape") eventType = "shapeEvent";
-      else if (obj.type === "assem") eventType = "assemEvent";
-      if (eventType != "") myEmitter.emit(eventType, ev.data);
-    }
-  };
-  ws.onopen = (ev) => {
-    console.log("onopen", ev);
-  };
-
-  return ws;
-};
-
-const disConnet = (ws) => {
-  if (ws) {
-    ws.close();
-  }
-};
+const listenEvents = ["shape", "leak", "assem", "newProd", "newIl"];
+let tempWs = null;
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const [ws, setWs] = useState(undefined);
 
   const getLayout =
     Component.getLayout ??
@@ -70,28 +33,78 @@ const App = (props) => {
 
   Object.assign(pageProps, { myEmitter: myEmitter });
 
-  // console.log("_app:", pageProps);
-  const [ws, setWs] = useState(undefined);
+  const connet = () => {
+    console.log("_app.js ===> Websocket connet()");
+    // const fileReader = new FileReader();
+    let _ws = new WebSocket("ws://host.docker.internal:8070"); // real server
+    // let _ws = new WebSocket("ws://localhost:8070"); // test server
+
+    _ws.onclose = (ev) => {
+      console.log("onclose", ev);
+      // const timeout = setTimeout(() => {
+      //   console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      //   window.location.replace("/");
+      // }, 3000);
+      setWs(null);
+    };
+    _ws.onerror = (ev) => {
+      console.log("onerror", ev);
+    };
+    _ws.onmessage = (ev) => {
+      // console.log("onmessage...", ev.data);
+      const obj = JSON.parse(ev.data);
+      // console.log("onmessage...", obj);
+      if (listenEvents.indexOf(obj.type) >= 0) {
+        myEmitter.emit(obj.type, ev.data);
+      }
+    };
+    _ws.onopen = (ev) => {
+      console.log("onopen", ev);
+    };
+
+    return _ws;
+  };
+
+  const disConnet = (ws) => {
+    console.log("_app.js ===> Websocket disConnet()", ws);
+    if (ws) {
+      ws.close();
+    }
+  };
+
   useEffect(() => {
     return function cleanUp() {
-      disConnet(ws);
+      // app 종료 및 새로고침 시 웹소켓 종료
+      console.log("_app.js ===> CleanUp!!!", ws);
+      console.log("tempWs==========================", tempWs);
+      disConnet(tempWs);
       setWs(null);
     };
   }, []);
 
   useEffect(() => {
     if (!pageProps.user) {
+      // 로그아웃 시 웹소켓 종료
       disConnet(ws);
       setWs(null);
     } else {
+      console.log("_app.js ===> useEffect[pageProps]", ws);
+      // 로그인 시 웹소켓 시작
+      if (!ws) {
+        setWs(0);
+      }
+    }
+  }, [pageProps]);
+
+  useEffect(() => {
+    if (pageProps.user) {
+      console.log("_app.js ===> useEffect[ws]", ws);
       if (!ws) {
         setWs(connet(ws));
       }
     }
-    // return () => {
-    //   console.log("_app.js ============> Clean Up~!", ws);
-    // };
-  }, [pageProps]);
+    tempWs = ws;
+  }, [ws]);
 
   return (
     <CacheProvider value={emotionCache}>

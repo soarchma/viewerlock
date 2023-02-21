@@ -13,6 +13,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { getDateStamp } from "../../lib/common";
 
 export const Production = (props) => {
   const data = [
@@ -59,21 +60,29 @@ export const Production = (props) => {
       amt: 2100,
     },
   ];
+  const { type } = props;
+  let panelId = 0;
+  if (type === "shape") panelId = 8;
+  else if (type === "leak") panelId = 10;
+  else if (type === "assemble") panelId = 6;
+  const graphSrc = `http://localhost:3000/d-solo/udWnXn0Vz/new-dashboard?orgId=1&refresh=10s&panelId=${panelId}&from=${getDateStamp(
+    6
+  )}&to=${Date.now() + 1000 * 360}`;
 
   return (
     <Card {...props}>
       <CardHeader
-        action={
-          <Button
-            sx={{
-              mt: -2,
-            }}
-            endIcon={<ArrowDropDownIcon fontSize="small" />}
-            size="small"
-          >
-            Last 7 days
-          </Button>
-        }
+        // action={
+        //   <Button
+        //     sx={{
+        //       mt: -2,
+        //     }}
+        //     endIcon={<ArrowDropDownIcon fontSize="small" />}
+        //     size="small"
+        //   >
+        //     Last 7 days
+        //   </Button>
+        // }
         title="생산 현황"
         sx={{
           mb: -1,
@@ -81,15 +90,18 @@ export const Production = (props) => {
         }}
       />
       <Divider />
-      <CardContent>
+      <CardContent sx={{ paddingTop: 0, paddingBottom: 0 }}>
         <Box
           sx={{
-            height: 300,
+            paddingTop: 0,
+            paddingBottom: 0,
+            height: 320,
             position: "relative",
           }}
         >
+          <iframe src={graphSrc} width="100%" height="100%" frameBorder="0"></iframe>
           {/* <Bar data={data} options={options} /> */}
-          <ResponsiveContainer width="100%" height="100%">
+          {/* <ResponsiveContainer width="100%" height="100%">
             <BarChart
               // width={440}
               // height={320}
@@ -105,12 +117,11 @@ export const Production = (props) => {
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              {/* <Legend /> */}
               <Legend wrapperStyle={{ fontSize: "14px" }} />
               <Bar dataKey="pv" fill="#8884d8" />
               <Bar dataKey="uv" fill="#82ca9d" />
             </BarChart>
-          </ResponsiveContainer>
+          </ResponsiveContainer> */}
         </Box>
       </CardContent>
     </Card>

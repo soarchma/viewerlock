@@ -4,12 +4,34 @@
 
 module.exports = {
   reactStrictMode: false,
-  async rewrites() {
-    console.log("Rewrites called");
+
+  async redirects() {
+    console.log("redirects called");
     return [
       {
-        source: "/customers",
+        source: "/eqpt-shape",
         destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/eqpt-leak",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/eqpt-assemble",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/system",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/settings",
+        destination: "/",
+        permanent: true,
       },
     ];
   },

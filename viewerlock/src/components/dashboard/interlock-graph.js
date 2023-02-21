@@ -13,6 +13,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { getDateStamp } from "../../lib/common";
 
 export const InterlockGraph = (props) => {
   const data = [
@@ -59,21 +60,24 @@ export const InterlockGraph = (props) => {
       "리크 측정기": 2100,
     },
   ];
+  const graphSrc =
+    "http://localhost:3000/d-solo/udWnXn0Vz/new-dashboard?orgId=1&refresh=10s&panelId=21" +
+    `&from=${getDateStamp(6)}&to=${Date.now() + 1000 * 360}`;
 
   return (
     <Card {...props}>
       <CardHeader
-        action={
-          <Button
-            sx={{
-              mt: -2,
-            }}
-            endIcon={<ArrowDropDownIcon fontSize="small" />}
-            size="small"
-          >
-            Last 7 days
-          </Button>
-        }
+        // action={
+        //   <Button
+        //     sx={{
+        //       mt: -2,
+        //     }}
+        //     endIcon={<ArrowDropDownIcon fontSize="small" />}
+        //     size="small"
+        //   >
+        //     Last 7 days
+        //   </Button>
+        // }
         title="인터락 발생"
         sx={{
           mb: -1,
@@ -81,15 +85,18 @@ export const InterlockGraph = (props) => {
         }}
       />
       <Divider />
-      <CardContent>
+      <CardContent sx={{ paddingTop: 0, paddingBottom: 0 }}>
         <Box
           sx={{
+            paddingTop: 0,
+            paddingBottom: 0,
             height: 250,
             position: "relative",
           }}
         >
+          <iframe src={graphSrc} width="100%" height="100%" frameBorder="0"></iframe>
           {/* <Bar data={data} options={options} /> */}
-          <ResponsiveContainer width="100%" height="100%">
+          {/* <ResponsiveContainer width="100%" height="100%">
             <BarChart
               // width={440}
               // height={320}
@@ -105,13 +112,12 @@ export const InterlockGraph = (props) => {
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              {/* <Legend /> */}
               <Legend wrapperStyle={{ fontSize: "14px" }} />
               <Bar dataKey="자동 성형기" fill="#82ca9d" />
               <Bar dataKey="리크 측정기" fill="#eb6491" />
               <Bar dataKey="자동 조립기" fill="#8884d8" />
             </BarChart>
-          </ResponsiveContainer>
+          </ResponsiveContainer> */}
         </Box>
       </CardContent>
     </Card>

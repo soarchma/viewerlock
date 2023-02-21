@@ -70,7 +70,7 @@ export default async function getServerSideProps(context) {
   readEnvKeys();
   const cookies = cookie.parse(context.req.headers.cookie ? context.req.headers.cookie : "");
   let decoded = {};
-
+  console.log("*****************************************************************************");
   // console.log(context.req);
   // const temp = await withIronSessionApiRoute();
   // console.log("temp", temp);

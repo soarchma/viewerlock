@@ -14,6 +14,7 @@ import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import PhoneIcon from "@mui/icons-material/Phone";
 import TabletIcon from "@mui/icons-material/Tablet";
 import { Capacity } from "./capacity";
+import { getDateStamp } from "../../lib/common";
 
 const data = [
   { name: "가동률", value: 60 },
@@ -59,6 +60,9 @@ export const CapacityLayout = (props) => {
   //     color: "#E53935",
   //   },
   // ];
+  const graphSrc = `http://localhost:3000/d-solo/udWnXn0Vz/new-dashboard?orgId=1&refresh=10s&panelId=23&from=${getDateStamp(
+    6
+  )}&to=${Date.now() + 1000 * 360}`;
 
   return (
     <Card {...props}>
@@ -70,7 +74,17 @@ export const CapacityLayout = (props) => {
         }}
       />
       <Divider />
-      <Grid container rowSpacing={0} columnSpacing={0}>
+      <CardContent sx={{ paddingTop: 0, paddingBottom: 0 }}>
+        <Box
+          sx={{
+            paddingTop: 0,
+            paddingBottom: 0,
+            height: 250,
+            position: "relative",
+          }}
+        >
+          <iframe src={graphSrc} width="100%" height="100%" frameBorder="0"></iframe>
+          {/* <Grid container rowSpacing={0} columnSpacing={0}>
         <Grid item lg={4} sm={4} xl={4} xs={4}>
           <Capacity val={{ name: "자동 성형기", value: 55 }} color="#82ca9d" />
         </Grid>
@@ -80,7 +94,9 @@ export const CapacityLayout = (props) => {
         <Grid item lg={4} sm={4} xl={4} xs={4}>
           <Capacity val={{ name: "자동 조립기", value: 77 }} color="#8884d8" />
         </Grid>
-      </Grid>
+      </Grid> */}
+        </Box>
+      </CardContent>
     </Card>
   );
 };

@@ -7,8 +7,6 @@ import { InterlockChart } from "../components/equipments/shape/interlock-chart";
 import { Capacity } from "../components/equipments/capacity";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { NextPageContext } from "next";
-// import * as cookie from "cookie";
-// import { rewrites } from "../../next.config";
 import { default as getProps } from "../lib/getProps";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -30,11 +28,11 @@ const Page = (props) => {
       >
         <Container maxWidth={false}>
           <Grid container spacing={1}>
-            <Grid item lg={4} md={4} xl={4} xs={4}>
-              <Production />
+            <Grid item lg={5} md={5} xl={5} xs={5}>
+              <Production sx={{ height: "100%" }} type="shape" />
             </Grid>
-            <Grid item lg={3} md={3} xl={3} xs={3}>
-              <Capacity sx={{ height: "100%" }} />
+            <Grid item lg={2} md={2} xl={2} xs={2}>
+              <Capacity sx={{ height: "100%" }} type="shape" />
             </Grid>
             <Grid item lg={5} md={5} xl={5} xs={5}>
               <Camera sx={{ height: "100%" }} type="shape" />

@@ -17,56 +17,56 @@ interface KeyValuePair {
 }
 
 const shapeData: KeyValuePair = {
+  model: 0,
+  cnt: 0,
   beeline1: 0,
   beeline2: 0,
   shape1: 0,
   shape2: 0,
   cut1: 0,
   cut2: 0,
-  production: 0,
-  setting_model: 0,
 };
 
 function getModel(model: number) {
   if (model === 1000) {
     return {
+      model: 1000,
       beeline1: 0,
       beeline2: 0,
       shape1: 0,
       shape2: 0,
       cut1: 0,
       cut2: 0,
-      setting_model: 1000,
     };
   } else if (model === 1200) {
     return {
+      model: 1200,
       beeline1: 900,
       beeline2: 1800,
       shape1: 9510,
       shape2: 9511,
       cut1: 10130,
       cut2: 10130,
-      setting_model: 1200,
     };
   } else if (model === 1500) {
     return {
+      model: 1500,
       beeline1: 900,
       beeline2: 1750,
       shape1: 11990,
       shape2: 11991,
       cut1: 10180,
       cut2: 10180,
-      setting_model: 1500,
     };
   } else if (model === 1800) {
     return {
+      model: 1800,
       beeline1: 0,
       beeline2: 0,
       shape1: 0,
       shape2: 0,
       cut1: 0,
       cut2: 0,
-      setting_model: 1800,
     };
   } else {
     return null;
@@ -90,7 +90,7 @@ let intervalId: any = undefined;
 mqttClient.on("connect", () => {
   console.time("test/ktcc/shape");
   Object.assign(shapeData, getModel(1000));
-  mqttClient.subscribe(topics.shape, (err) => {
+  mqttClient.subscribe(topics.shape, (err: any) => {
     if (!err) {
       intervalId = setInterval(() => {
         // 데이터 변경 조건 판단
@@ -104,7 +104,7 @@ mqttClient.on("connect", () => {
   });
 });
 
-mqttClient.on("message", (topic, msg) => {
+mqttClient.on("message", (topic: string, msg: any) => {
   // msg is Buffer
   // console.log(msg.toString());
 
