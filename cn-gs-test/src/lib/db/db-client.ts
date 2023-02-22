@@ -1,9 +1,17 @@
-import process from "process";
+// import process from "process";
 import * as db from "./db_action";
-import * as sql from "./sql_action";
+// import * as sql from "./sql_action";
 
-const env = process.env.NODE_ENV || "development";
-const config = require("../../config/config.json")[env];
+// const env = process.env.NODE_ENV || "development";
+// const config = require("../../config/config.json")[env];
+const config = {
+  username: "root",
+  password: "root!",
+  database: "viewerlock",
+  host: "host.docker.internal",
+  port: "3306",
+  dialect: "mysql",
+};
 
 export const endConnection = () => {
   db.end();

@@ -135,11 +135,11 @@ services:
     build:
       context: ./cn-viewerlock
       dockerfile: Dockerfile
-    volumes:
-      # hot reload를 위해 mount
-      - "./cn-viewerlock:/usr/src/cn-viewerlock"
-      - "/usr/src/cn-viewerlock/node_modules"
-      - "/usr/src/cn-viewerlock/.cn-viewerlock"
+    # volumes:
+    #   # hot reload를 위해 mount
+    #   - "./cn-viewerlock:/usr/src/viewerlock"
+    #   - "/usr/src/viewerlock/node_modules"
+    #   - "/usr/src/viewerlock/.viewerlock"
     ports:
       - "8080:8080"
 
@@ -149,11 +149,11 @@ services:
     build:
       context: ./cn-gs-test
       dockerfile: Dockerfile
-    volumes:
-      # hot reload를 위해 mount
-      - "./cn-gs-test:/usr/src/cn-gs-test"
-      - "/usr/src/cn-gs-test/node_modules"
-      - "/usr/src/cn-gs-test/.cn-gs-test"
+    # volumes:
+    # hot reload를 위해 mount
+    # - "./cn-gs-test:/usr/src/testapp"
+    # - "/usr/src/testapp/node_modules"
+    # - "/usr/src/testapp/.testapp"
     ports:
       - "8070:8070"
 
