@@ -7,7 +7,7 @@
 # production
 
 # misc
-/grafana/data/grafana.db
-/grafana/data/alerting
-/influxdb2/data
+# /grafana/data/grafana.db
+# /grafana/data/alerting
+/influxdb2/data/engine
 /telegraf/data
