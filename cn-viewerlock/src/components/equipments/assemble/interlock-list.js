@@ -16,26 +16,26 @@ import {
 // import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 // import MoreVertIcon from "@mui/icons-material/MoreVert";
 // import { useEffect, useState } from "react";
-import { create } from "domain";
+// import { create } from "domain";
 import { CustomCell } from "../../common/custom-cell";
 
-function createData1(type, exp1, redu, oring1) {
-  return { type, exp1, redu, oring1 };
-}
-function createData2(type, exp2, nipple, oring2) {
-  return { type, exp2, nipple, oring2 };
-}
+// function createData1(type, exp1, redu, oring1) {
+//   return { type, exp1, redu, oring1 };
+// }
+// function createData2(type, exp2, nipple, oring2) {
+//   return { type, exp2, nipple, oring2 };
+// }
 
-const rows_1 = [
-  createData1("Day", 0, 0, 0),
-  createData1("Week", 0, 0, 0),
-  createData1("Month", 0, 0, 0),
-];
-const rows_2 = [
-  createData2("Day", 0, 0, 0),
-  createData2("Week", 0, 0, 0),
-  createData2("Month", 0, 0, 0),
-];
+// const rows_1 = [
+//   createData1("Day", 0, 0, 0),
+//   createData1("Week", 0, 0, 0),
+//   createData1("Month", 0, 0, 0),
+// ];
+// const rows_2 = [
+//   createData2("Day", 0, 0, 0),
+//   createData2("Week", 0, 0, 0),
+//   createData2("Month", 0, 0, 0),
+// ];
 
 export const InterlockList = (props) => {
   // const data = createData(1500, 900, 1750, 11990, 11991, 10180, 10180);

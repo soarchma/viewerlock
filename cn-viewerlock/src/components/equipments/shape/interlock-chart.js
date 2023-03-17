@@ -1,89 +1,50 @@
-import { formatDistanceToNow, subHours } from "date-fns";
-import { v4 as uuid } from "uuid";
-import {
-  Box,
-  Button,
-  Card,
-  CardHeader,
-  CardContent,
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { Box, Button, Card, CardHeader, CardContent, Divider, Tooltip } from "@mui/material";
 import { getDateStamp } from "../../../lib/common";
-
-const data = [
-  {
-    name: "16",
-    "모델-1": 4,
-    "모델-2": 2,
-    "모델-3": 1,
-    "모델-4": 5,
-    "모델-5": 3,
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { useState, useEffect, useRef } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+const theme = createTheme({
+  status: {
+    danger: "#e53e3e",
   },
-  {
-    name: "17",
-    "모델-1": 5,
-    "모델-2": 2,
-    "모델-3": 1,
-    "모델-4": 7,
-    "모델-5": 4,
+  palette: {
+    primary: {
+      main: "#0971f1",
+      darker: "#053e85",
+    },
+    neutral: {
+      main: "#64748B",
+      contrastText: "#fff",
+    },
   },
-  {
-    name: "18",
-    "모델-1": 2,
-    "모델-2": 7,
-    "모델-3": 2,
-    "모델-4": 4,
-    "모델-5": 5,
-  },
-  {
-    name: "19",
-    "모델-1": 2,
-    "모델-2": 5,
-    "모델-3": 2,
-    "모델-4": 6,
-    "모델-5": 1,
-  },
-  {
-    name: "20",
-    "모델-1": 1,
-    "모델-2": 3,
-    "모델-3": 4,
-    "모델-4": 2,
-    "모델-5": 5,
-  },
-];
+});
 
 export const InterlockChart = (props) => {
+  const [key, setKey] = useState(0);
   const graphSrc =
     "http://localhost:3000/d-solo/udWnXn0Vz/new-dashboard?orgId=1&refresh=10s&panelId=14&theme=light" +
     `&from=${getDateStamp(6)}&to=${Date.now() + 10000 * 360 * 6}`;
+
   return (
     <Card {...props}>
       <CardHeader
+        action={
+          <ThemeProvider theme={theme}>
+            <Tooltip title="새로고침">
+              <Button
+                variant="contained"
+                color="neutral"
+                sx={{
+                  mt: -6.5,
+                  mr: 1,
+                }}
+                endIcon={<RefreshIcon fontSize="small" sx={{ mr: 1 }} />}
+                size="small"
+                onClick={() => setKey(key + 1)}
+              ></Button>
+            </Tooltip>
+          </ThemeProvider>
+        }
         title="인터락 현황"
         sx={{
           mb: -1,
@@ -93,6 +54,7 @@ export const InterlockChart = (props) => {
       <Divider />
       <CardContent sx={{ paddingTop: 0, paddingBottom: 0 }}>
         <Box
+          key={key}
           sx={{
             paddingTop: 0,
             paddingBottom: 0,
@@ -101,30 +63,6 @@ export const InterlockChart = (props) => {
           }}
         >
           <iframe src={graphSrc} width="100%" height="100%" frameBorder="0"></iframe>
-          {/* <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              // width={440}
-              // height={320}
-              data={data}
-              margin={{
-                top: 5,
-                right: 30,
-                left: -10,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend wrapperStyle={{ fontSize: "14px" }} />
-              <Line type="number" dataKey="모델-1" strokeWidth={2} stroke="#8884d8" />
-              <Line type="number" dataKey="모델-2" strokeWidth={2} stroke="#82ca9d" />
-              <Line type="number" dataKey="모델-3" strokeWidth={2} stroke="#f20f0d" />
-              <Line type="number" dataKey="모델-4" strokeWidth={2} stroke="#020fFd" />
-              <Line type="number" dataKey="모델-5" strokeWidth={2} stroke="#02Ff0d" />
-            </LineChart>
-          </ResponsiveContainer> */}
         </Box>
       </CardContent>
     </Card>

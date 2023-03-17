@@ -17,13 +17,16 @@ const mysql = require("mysql2/promise");
 
 async function dbConnect() {
   // create the connection to database
+  let hostAddr = "host.docker.internal";
+  if (process.env.NODE_ENV === "development") hostAddr = "localhost";
   const connection = await mysql.createConnection({
-    host: "host.docker.internal",
+    host: hostAddr,
     user: "root",
     password: "root!",
     database: "viewerlock",
     port: "3306",
   });
+  console.log("??????????????????????!!!!!!!!!!!!!!", process.env.NODE_ENV);
 
   return connection;
 }

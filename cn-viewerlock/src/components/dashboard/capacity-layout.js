@@ -86,13 +86,13 @@ export const CapacityLayout = (props) => {
           <iframe src={graphSrc} width="100%" height="100%" frameBorder="0"></iframe>
           {/* <Grid container rowSpacing={0} columnSpacing={0}>
         <Grid item lg={4} sm={4} xl={4} xs={4}>
-          <Capacity val={{ name: "자동 성형기", value: 55 }} color="#82ca9d" />
+          <Capacity val={{ name: "자동성형기", value: 55 }} color="#82ca9d" />
         </Grid>
         <Grid item lg={4} sm={4} xl={4} xs={4}>
-          <Capacity val={{ name: "리크 측정기", value: 66 }} color="#eb6491" />
+          <Capacity val={{ name: "리크측정기", value: 66 }} color="#eb6491" />
         </Grid>
         <Grid item lg={4} sm={4} xl={4} xs={4}>
-          <Capacity val={{ name: "자동 조립기", value: 77 }} color="#8884d8" />
+          <Capacity val={{ name: "자동조립기", value: 77 }} color="#8884d8" />
         </Grid>
       </Grid> */}
         </Box>

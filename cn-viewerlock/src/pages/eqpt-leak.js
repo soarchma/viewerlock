@@ -21,7 +21,7 @@ import { useCookies } from "react-cookie";
 
 const Page = (props) => {
   // const [url, setUrl] = useState(urlReal);
-  const { myEmitter } = props;
+  const { myEmitter, simulation } = props;
 
   // useEffect(() => {
   //   myEmitter.on("leak", (msg) => {
@@ -42,7 +42,7 @@ const Page = (props) => {
   return (
     <>
       <Head>
-        <title>Leak 측정기</title>
+        <title>리크측정기</title>
       </Head>
       <Box
         component="main"
@@ -84,7 +84,7 @@ const Page = (props) => {
               <InterlockList sx={{ height: "100%" }} event={myEmitter} />
             </Grid>
             <Grid item lg={4.5} md={4.5} xl={4.5} xs={4.5}>
-              <InterlockReal sx={{ height: "100%" }} event={myEmitter} />
+              <InterlockReal sx={{ height: "100%" }} event={myEmitter} simulation={simulation} />
             </Grid>
             <Grid item lg={4.5} md={4.5} xl={4.5} xs={4.5}>
               <InterlockChart sx={{ height: "100%" }} />

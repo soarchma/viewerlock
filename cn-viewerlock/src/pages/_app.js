@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import Head from "next/head";
 import { CacheProvider } from "@emotion/react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -11,6 +11,7 @@ import { registerChartJs } from "../utils/register-chart-js";
 import { theme } from "../theme";
 import { EventEmitter } from "events";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useCookies } from "react-cookie";
 
 registerChartJs();
 
@@ -23,6 +24,10 @@ let tempWs = null;
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [ws, setWs] = useState(undefined);
+  // const [simul, setSimul] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["simulation"]);
+  const workerRef = useRef();
+  let simul = false;
 
   const getLayout =
     Component.getLayout ??
@@ -30,14 +35,23 @@ const App = (props) => {
       // console.log("PAGE!!!!!!");
       return page;
     });
+  if (cookies.simulation) {
+    if (cookies.simulation.enabled) {
+      simul = true;
+      console.log("SIMULATION!!!!!");
+    }
+  }
 
-  Object.assign(pageProps, { myEmitter: myEmitter });
+  Object.assign(pageProps, { myEmitter: myEmitter, simulation: simul });
 
   const connet = () => {
     console.log("_app.js ===> Websocket connet()");
     // const fileReader = new FileReader();
-    let _ws = new WebSocket("ws://host.docker.internal:8070"); // real server
-    // let _ws = new WebSocket("ws://localhost:8070"); // test server
+    // let _ws = new WebSocket("ws://host.docker.internal:8070"); // real server
+    let wsAddress = "ws://localhost:8071";
+    if (simul) wsAddress = "ws://localhost:8070";
+    console.log("wsAddress", wsAddress);
+    let _ws = new WebSocket(wsAddress); // test server
 
     _ws.onclose = (ev) => {
       console.log("onclose", ev);
@@ -65,31 +79,65 @@ const App = (props) => {
     return _ws;
   };
 
-  const disConnet = (ws) => {
-    console.log("_app.js ===> Websocket disConnet()", ws);
+  const disConnect = (ws) => {
+    console.log("_app.js ===> Websocket disConnect()", ws);
     if (ws) {
       ws.close();
     }
   };
 
   useEffect(() => {
+    workerRef.current = new Worker(new URL("../workers/test.worker.js", import.meta.url));
+    // workerRef.current = new SharedWorker(new URL("../workers/test.worker.js", import.meta.url));
+    // workerRef.current.onmessage = (event) => alert(`WebWorker Response => ${event.data}`);
+    workerRef.current.onmessage = (event) => {
+      console.log("This is _app.js", event.data);
+    };
+
+    // myEmitter.on("toggleSimul", (val) => {
+    //   console.log("toggleSimul", val);
+    //   setSimul(val);
+    // });
+    if (cookies.simulation) {
+      if (cookies.simulation.enabled) {
+      }
+    }
+
     return function cleanUp() {
       // app 종료 및 새로고침 시 웹소켓 종료
       console.log("_app.js ===> CleanUp!!!", ws);
       console.log("tempWs==========================", tempWs);
-      disConnet(tempWs);
+      disConnect(tempWs);
       setWs(null);
+      // TODO: 새로고침 시에 워커에서 소켓을 끊어야 하는지 확인 필요.
+      // workerRef.current?.postMessage("##### Socket close [terminate]");
+      // workerRef.current?.postMessage({
+      //   type: "wsDisconnect",
+      //   data: "Terminate!!!!!",
+      // });
+      // workerRef.current?.terminate();
+      //
     };
   }, []);
 
   useEffect(() => {
     if (!pageProps.user) {
       // 로그아웃 시 웹소켓 종료
-      disConnet(ws);
+      disConnect(ws);
       setWs(null);
+      // workerRef.current?.postMessage("##### Socket close [log-out]");
+      workerRef.current?.postMessage({
+        type: "wsDisconnect",
+        data: "로그아웃",
+      });
     } else {
       console.log("_app.js ===> useEffect[pageProps]", ws);
       // 로그인 시 웹소켓 시작
+      // workerRef.current?.postMessage("##### Socket Open [log-in]");
+      workerRef.current?.postMessage({
+        type: "wsConnect",
+        data: "로그인",
+      });
       if (!ws) {
         setWs(0);
       }
@@ -99,6 +147,11 @@ const App = (props) => {
   useEffect(() => {
     if (pageProps.user) {
       console.log("_app.js ===> useEffect[ws]", ws);
+      // workerRef.current?.postMessage("##### Socket Open [?????]");
+      workerRef.current?.postMessage({
+        type: "wsConnect",
+        data: "?????",
+      });
       if (!ws) {
         setWs(connet(ws));
       }

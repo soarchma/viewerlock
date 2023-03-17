@@ -71,7 +71,7 @@ const GoogleButton = (props) => {
           console.log("postCredential() - OK~~~~", response);
           console.log("cookies:", document.cookie);
           if (response.data) {
-            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^111111", response.data);
+            console.log("postCredential()", response.data);
             // if (response.data["token"]) {
             //   const expires = new Date();
             //   // expires.setHours(expires.getHours() + 8); // 쿠키 만료 8 시간

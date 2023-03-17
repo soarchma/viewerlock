@@ -17,7 +17,7 @@ const Page = (props) => {
   return (
     <>
       <Head>
-        <title>자동 성형기</title>
+        <title>자동성형기</title>
       </Head>
       <Box
         component="main"

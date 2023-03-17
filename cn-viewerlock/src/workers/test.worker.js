@@ -1,43 +1,55 @@
-// const paymentId = process.argv[2];
+//
 
-// console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQssQQ");
-// (async () => {
-//   console.log("aaaaaaaaaaaaaaaaaaaaaaaa", process.argv);
-// })();
+const connet = () => {
+  console.log("worker.js ===> Websocket connet()");
+  // const fileReader = new FileReader();
+  // let _ws = new WebSocket("ws://host.docker.internal:8070"); // real server
+  let _ws = new WebSocket("ws://localhost:8070"); // test server
 
-let intervalId = undefined;
+  _ws.onclose = (ev) => {
+    console.log("worker - onclose", ev);
+  };
+  _ws.onerror = (ev) => {
+    console.log("worker - onerror", ev);
+  };
+  _ws.onmessage = (ev) => {
+    // console.log("onmessage...", ev.data);
+    const obj = JSON.parse(ev.data);
+    console.log("worker - onmessage...", obj);
+    // if (listenEvents.indexOf(obj.type) >= 0) {
+    //   myEmitter.emit(obj.type, ev.data);
+    // }
+  };
+  _ws.onopen = (ev) => {
+    console.log("worker - onopen", ev);
+  };
 
-function start() {
-  intervalId = setInterval(() => process.send("hahahaha"), 1000);
-  console.log(intervalId);
-  process.send("start");
-  setTimeout(() => clearInterval(intervalId), 10000);
-}
-
-function stop() {
-  console.log(intervalId);
-  clearInterval(intervalId);
-  process.send("stop");
-}
-
-const noop = () => {
-  try {
-    process.on("message", (message) => {
-      console.log("wwwwwwwwwwwwwwwwwwwwwww");
-      if (message === "start") {
-        start();
-      } else if (message === "stop") {
-        stop();
-      }
-    });
-    console.log("wwwwwwwwwwwwwadw34ww1wwww");
-  } catch (e) {
-    console.error(e);
-  }
-
-  // setInterval(() => console.log("hahahaha"), 1000);
+  return _ws;
 };
 
-noop();
+const disConnet = (ws) => {
+  console.log("worker.js ===> Websocket disConnet()", ws);
+  if (ws) {
+    ws.close();
+  }
+};
 
-// export default noop;
+// 새로고침 시 초기화 됨.
+let testCnt = 0;
+
+addEventListener("message", (event) => {
+  console.log("This is test worker", event.data);
+  if (event.data && event.data.type) {
+    if (event.data.type === "wsConnect") {
+      console.log("----- wsConnect");
+    } else if (event.data.type === "wsDisconnect") {
+      console.log("----- wsDisconnect");
+    }
+  }
+  postMessage({
+    type: "test",
+    data: ++testCnt,
+  });
+  /**
+   */
+});

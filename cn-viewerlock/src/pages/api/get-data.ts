@@ -21,15 +21,19 @@ const options: IronSessionOptions = {
 // get the client
 const mysql = require("mysql2/promise");
 
-async function dbConnect() {
+async function dbConnect(db: any) {
   // create the connection to database
+  console.log("DATABASE:", db);
+  let hostAddr = "host.docker.internal";
+  if (process.env.NODE_ENV === "development") hostAddr = "localhost";
   const connection = await mysql.createConnection({
-    host: "host.docker.internal",
+    host: hostAddr,
     user: "root",
     password: "root!",
-    database: "viewerlock",
+    database: db,
     port: "3306",
   });
+  if (process.env.NODE_ENV === "development") connection.host = "localhost";
 
   return connection;
 }
@@ -183,8 +187,10 @@ function verifySession(email: string, apiToken: string) {
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log("---------- Get-Data handler ----------", store(), req.query);
   let type = null;
+  let database: any = "cn_viewerlock";
   if (req.query) {
-    type = req.query.t;
+    if (req.query.d) database = req.query.d;
+    if (req.query.t) type = req.query.t;
     if (type != "prod" && type != "il") {
       res.status(400).json({ text: `Wrong request!!! ${type}` });
       return;
@@ -205,7 +211,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   // TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:
-  const connection = await dbConnect();
+  const connection = await dbConnect(database);
   let prodCnt = {};
   let ilCnt = {};
   if (type === "prod") prodCnt = await getProdData(connection);

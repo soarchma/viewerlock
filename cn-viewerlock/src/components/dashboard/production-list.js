@@ -29,21 +29,27 @@ function createData(unit, prodCnt, capacity) {
 }
 
 const defRows = [
-  createData("자동 성형기", "-", "-"),
-  createData("리크 측정기", "-", "-"),
-  createData("자동 조립기", "-", "-"),
+  createData("자동성형기", "-", "-"),
+  createData("리크측정기", "-", "-"),
+  createData("자동조립기", "-", "-"),
 ];
 
 export const ProductionList = (props) => {
-  const { event } = props;
+  const { event, simulation } = props;
   const [rows, setRows] = useState(defRows);
+
+  let database = "cn_viewerlock";
+  if (simulation) {
+    database = "viewerlock";
+  }
 
   useEffect(() => {
     event.on("newProd", (msg) => {
       // console.log("newProd", msg);
       const getStatData = async () => {
+        console.log("???database", database);
         const response = await axios
-          .post("./api/get-data?t=prod")
+          .post(`./api/get-data?d=${database}&t=prod`)
           .then((response) => {
             return response;
           })

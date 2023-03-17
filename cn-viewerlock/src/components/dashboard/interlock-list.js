@@ -29,21 +29,22 @@ function createData(unit, interlockType, ilCnt) {
 }
 
 const defRows = [
-  createData("자동 성형기", "Process", "-"),
-  createData("리크 측정기", "SPC", "-"),
-  createData("자동 조립기", "DCOP", "-"),
+  createData("자동성형기", "Process", "-"),
+  createData("리크측정기", "SPC", "-"),
+  createData("자동조립기", "DCOP", "-"),
 ];
 
 export const InterlockList = (props) => {
-  const { event } = props;
+  const { event, database } = props;
   const [rows, setRows] = useState(defRows);
+  if (!database) database = "cn_viewerlock";
 
   useEffect(() => {
     event.on("newIl", (msg) => {
       // console.log("newIl", msg);
       const getStatData = async () => {
         const response = await axios
-          .post("./api/get-data?t=il")
+          .post(`./api/get-data?d=${database}&t=il`)
           .then((response) => {
             return response;
           })

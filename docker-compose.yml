@@ -98,9 +98,10 @@ services:
       # - /etc/localtime:/etc/localtime:ro
       # Mount for telegraf config
       - .\docker-vol\telegraf\telegraf.conf:/etc/telegraf/telegraf.conf:rw
-      - .\docker-vol\telegraf\test_shape.conf:/etc/telegraf/telegraf.d/test_shape.conf:rw
-      - .\docker-vol\telegraf\test_leak.conf:/etc/telegraf/telegraf.d/test_leak.conf:rw
-      - .\docker-vol\telegraf\test_assem.conf:/etc/telegraf/telegraf.d/test_assem.conf:rw
+      - .\docker-vol\telegraf\rootca.crt:/etc/telegraf/rootca.crt:rw
+      # - .\docker-vol\telegraf\test_shape.conf:/etc/telegraf/telegraf.d/test_shape.conf:rw
+      # - .\docker-vol\telegraf\test_leak.conf:/etc/telegraf/telegraf.d/test_leak.conf:rw
+      # - .\docker-vol\telegraf\test_assem.conf:/etc/telegraf/telegraf.d/test_assem.conf:rw
       # - /var/run/docker.sock:/var/run/docker.sock
     # env_file:
     #   - ./viewerlock.env
@@ -115,33 +116,21 @@ services:
       - DOCKER_INFLUXDB_INIT_BUCKET_TEST_SHAPE=test_shape
       - DOCKER_INFLUXDB_INIT_BUCKET_TEST_LEAK=test_leak
       - DOCKER_INFLUXDB_INIT_BUCKET_TEST_ASSEM=test_assem
-      - DOCKER_INFLUXDB_INIT_BUCKET_INSERT_SHAPE=insert_shape
-      - DOCKER_INFLUXDB_INIT_BUCKET_INSERT_LEAK=insert_leak
-      - DOCKER_INFLUXDB_INIT_BUCKET_INSERT_ASSEM=insert_assem
+      #
+      - DOCKER_INFLUXDB_INIT_BUCKET_CN_SHAPE=cn_vl_shape
+      - DOCKER_INFLUXDB_INIT_BUCKET_CN_LEAK=cn_vl_leak
+      - DOCKER_INFLUXDB_INIT_BUCKET_CN_ASSEM=cn_vl_assem
+      #
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
       - DOCKER_GRAFANA_WS_INIT_URL=ws://host.docker.internal:3000/api/live/push/custom_stream_id
       # - DOCKER_GRAFANA_WS_INIT_URL=ws://viewerlock_grafana_1:3000/api/live/push/custom_stream_id
       # - DOCKER_GRAFANA_INIT_API_KEY=
       - DOCKER_MQTT_INIT_SERVER=tcp://host.docker.internal:1883
+      - DOCKER_MQTT_INIT_SERVER_IJOON=mqtt://123.142.5.131:21984
       # - DOCKER_MQTT_INIT_SERVER=tcp://viewerlock_mosquitto_1:1883
-      # - DOCKER_MQTT_INIT_SERVER=mqtt://123.142.5.131:21984
     restart: always
     depends_on:
       - mosquitto
-
-  cn-viewerlock:
-    container_name: "cn-viewerlock"
-    restart: "always"
-    build:
-      context: ./cn-viewerlock
-      dockerfile: Dockerfile
-    # volumes:
-    #   # hot reload를 위해 mount
-    #   - "./cn-viewerlock:/usr/src/viewerlock"
-    #   - "/usr/src/viewerlock/node_modules"
-    #   - "/usr/src/viewerlock/.viewerlock"
-    ports:
-      - "8080:8080"
 
   cn-gs-test:
     container_name: "cn-gs-test"
@@ -156,58 +145,76 @@ services:
     # - "/usr/src/testapp/.testapp"
     ports:
       - "8070:8070"
+    depends_on:
+      - db
 
-  # rtsp_simple_server:
-  #   image: aler9/rtsp-simple-server
-  #   # network_mode: "host"
-  #   links:
-  #     - influxdb
-  #   ports:
-  #     - "8554:8554"
-  #     - "8888:8888"
-  #   volumes:
-  #     - .\docker-vol\rtsp-simple-server\rtsp-simple-server.yml:/rtsp-simple-server.yml:rw
-  #   environment:
-  #     - RTSP_PROTOCOLS=tcp
-  #   restart: always
+  cn-viewerlock:
+    container_name: "cn-viewerlock"
+    restart: "always"
+    build:
+      context: ./cn-viewerlock
+      dockerfile: Dockerfile
+    #   # hot reload를 위해 mount
+    # volumes:
+    #   - "./cn-viewerlock:/usr/src/viewerlock"
+    #   - "/usr/src/viewerlock/node_modules"
+    #   - "/usr/src/viewerlock/.viewerlock"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "cn-gs-test"
 
-  # ffmpeg_leak:
-  #   image: jrottenberg/ffmpeg:latest
-  #   links:
-  #     - influxdb
-  #   command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -c copy -an -f rtsp rtsp://host.docker.internal:8554/leak
-  #   # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=420:240 -an -f rtsp rtsp://host.docker.internal:8554/leak
-  #   # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -filter:v fps=fps=3 -update 1 /images/leak.jpg -y
-  #   # volumes:
-  #   #   - .\docker-vol\ffmpeg\images:/images:rw
-  #   restart: always
-  #   depends_on:
-  #     - rtsp_simple_server
+  rtsp_simple_server:
+    image: aler9/rtsp-simple-server
+    # network_mode: "host"
+    links:
+      - influxdb
+    ports:
+      - "8554:8554"
+      - "8888:8888"
+    volumes:
+      - .\docker-vol\rtsp-simple-server\rtsp-simple-server.yml:/rtsp-simple-server.yml:rw
+    environment:
+      - RTSP_PROTOCOLS=tcp
+    restart: always
 
-  # ffmpeg_shape:
-  #   image: jrottenberg/ffmpeg:latest
-  #   links:
-  #     - influxdb
-  #   command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -c copy -an -f rtsp rtsp://host.docker.internal:8554/shape
-  #   # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=210:120 -an -f rtsp rtsp://host.docker.internal:8554/shape
-  #   # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -filter:v fps=fps=3 -update 1 /images/shape.jpg -y
-  #   # volumes:
-  #   # - .\docker-vol\ffmpeg\images:/images:rw
-  #   restart: always
-  #   depends_on:
-  #     - rtsp_simple_server
+  ffmpeg_leak:
+    image: jrottenberg/ffmpeg:latest
+    links:
+      - influxdb
+    command: -rtsp_transport tcp -i rtsp://service:service@112.223.210.220:13554/video?inst=2 -c copy -an -f rtsp rtsp://host.docker.internal:8554/leak
+    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=420:240 -an -f rtsp rtsp://host.docker.internal:8554/leak
+    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:13554/profile0 -filter:v fps=fps=3 -update 1 /images/leak.jpg -y
+    # volumes:
+    #   - .\docker-vol\ffmpeg\images:/images:rw
+    restart: always
+    depends_on:
+      - rtsp_simple_server
 
-  # ffmpeg_assemble:
-  #   image: jrottenberg/ffmpeg:latest
-  #   links:
-  #     - influxdb
-  #   command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -c copy -an -f rtsp rtsp://host.docker.internal:8554/assemble
-  #   # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=210:120 -an -f rtsp rtsp://host.docker.internal:8554/assemble
-  #   # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -filter:v fps=fps=3 -update 1 /images/assemble.jpg -y
-  #   # volumes:
-  #   #   - .\docker-vol\ffmpeg\images:/images:rw
-  #   restart: always
-  #   depends_on:
-  #     - rtsp_simple_server
+  ffmpeg_shape:
+    image: jrottenberg/ffmpeg:latest
+    links:
+      - influxdb
+    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile1 -c copy -an -f rtsp rtsp://host.docker.internal:8554/shape
+    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=210:120 -an -f rtsp rtsp://host.docker.internal:8554/shape
+    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:23554/profile0 -filter:v fps=fps=3 -update 1 /images/shape.jpg -y
+    # volumes:
+    # - .\docker-vol\ffmpeg\images:/images:rw
+    restart: always
+    depends_on:
+      - rtsp_simple_server
+
+  ffmpeg_assemble:
+    image: jrottenberg/ffmpeg:latest
+    links:
+      - influxdb
+    command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile1 -c copy -an -f rtsp rtsp://host.docker.internal:8554/assemble
+    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -pix_fmt yuv420p -c:v libx264 -vf scale=210:120 -an -f rtsp rtsp://host.docker.internal:8554/assemble
+    # command: -rtsp_transport tcp -i rtsp://admin:admin@112.223.210.220:33554/profile0 -filter:v fps=fps=3 -update 1 /images/assemble.jpg -y
+    # volumes:
+    #   - .\docker-vol\ffmpeg\images:/images:rw
+    restart: always
+    depends_on:
+      - rtsp_simple_server
 # volumes:
 #   influxdb2:

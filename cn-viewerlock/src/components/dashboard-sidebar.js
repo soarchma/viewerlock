@@ -27,34 +27,34 @@ const items = [
   {
     href: "/",
     icon: <ChartBarIcon fontSize="small" />,
-    title: "Factory",
+    title: "대시보드",
   },
   {
     href: "/products",
     icon: <ShoppingBagIcon fontSize="small" />,
-    title: "Equipments",
+    title: "생산설비",
     nested: [
       {
         href: "/eqpt-shape",
         icon: null,
-        title: "자동 성형기",
+        title: "자동성형기",
       },
       {
         href: "/eqpt-leak",
         icon: null,
-        title: "Leak 측정기",
+        title: "리크측정기",
       },
       {
         href: "/eqpt-assemble",
         icon: null,
-        title: "자동 조립기",
+        title: "자동조립기",
       },
     ],
   },
   {
     href: "/system",
     icon: <ComputerIcon fontSize="small" />,
-    title: "System",
+    title: "시스템 정보",
   },
   // {
   //   href: "/settings",

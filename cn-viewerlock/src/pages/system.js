@@ -1,26 +1,9 @@
 import Head from "next/head";
 import { Box, Container, Grid, Card } from "@mui/material";
-import { Budget } from "../components/dashboard/budget";
-import { LatestOrders } from "../components/dashboard/latest-orders";
-import { LatestProducts } from "../components/dashboard/latest-products";
-import { Sales } from "../components/dashboard/sales";
-import { TasksProgress } from "../components/dashboard/tasks-progress";
-import { TotalCustomers } from "../components/dashboard/total-customers";
-import { TotalProfit } from "../components/dashboard/total-profit";
-import { TrafficByDevice } from "../components/dashboard/traffic-by-device";
 import { DashboardLayout } from "../components/dashboard-layout";
-import { ProductionList } from "../components/dashboard/production-list";
-import { InterlockList } from "../components/dashboard/interlock-list";
-import { ProductionGraph } from "../components/dashboard/production-graph";
-import { InterlockGraph } from "../components/dashboard/interlock-graph";
-import { CapacityLayout } from "../components/dashboard/capacity-layout";
-import { InterlockChart } from "../components/dashboard/interlock-chart";
-import { Capacity } from "../components/dashboard/capacity";
-import { NextPageContext } from "next";
-// import * as cookie from "cookie";
-// import { rewrites } from "../../next.config";
 import { default as getProps } from "../lib/getProps";
 import { useCookies } from "react-cookie";
+import { SysGraph } from "../components/system/sys-graph";
 
 const Page = (props) => {
   const [cookies, setCookie /*, removeCookie*/] = useCookies(["apiToken"]);
@@ -32,7 +15,7 @@ const Page = (props) => {
   return (
     <>
       <Head>
-        <title>System</title>
+        <title>시스템 정보</title>
       </Head>
       <Box
         component="main"
@@ -54,6 +37,10 @@ const Page = (props) => {
                         height="200"
                         frameBorder="0"
                       ></iframe>
+                      {/* <SysGraph
+                        src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=0&from=1670230768316&to=1670230828316&theme=light&panelId=22"
+                        height={200}
+                      /> */}
                     </Grid>
                     <Grid item lg={12} sm={12} xl={12} xs={12}>
                       <iframe
@@ -124,30 +111,24 @@ const Page = (props) => {
             </Grid>
 
             <Grid item xl={6} lg={6} sm={6} xs={6}>
-              <iframe
+              <SysGraph
                 src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=now-30s&to=now&theme=light&panelId=2&refresh=10s"
-                width="100%"
-                height="450"
-                frameBorder="0"
-              ></iframe>
+                height={430}
+              />
             </Grid>
 
             <Grid item xl={6} lg={6} sm={6} xs={6}>
-              <iframe
+              <SysGraph
                 src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=now-30s&to=now&theme=light&panelId=6&refresh=10s"
-                width="100%"
-                height="400"
-                frameBorder="0"
-              ></iframe>
+                height={375}
+              />
             </Grid>
 
             <Grid item xl={6} lg={6} sm={6} xs={6}>
-              <iframe
+              <SysGraph
                 src="http://localhost:3000/d-solo/dQBuSLI4z/System?orgId=1&from=now-30s&to=now&theme=light&panelId=24&refresh=10s"
-                width="100%"
-                height="400"
-                frameBorder="0"
-              ></iframe>
+                height={375}
+              />
             </Grid>
           </Grid>
         </Container>

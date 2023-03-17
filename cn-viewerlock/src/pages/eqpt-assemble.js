@@ -14,12 +14,12 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
 const Page = (props) => {
-  const { myEmitter } = props;
+  const { myEmitter, simulation } = props;
 
   return (
     <>
       <Head>
-        <title>자동 조립기</title>
+        <title>자동조립기</title>
       </Head>
       <Box
         component="main"
@@ -41,7 +41,7 @@ const Page = (props) => {
             </Grid>
 
             <Grid item lg={5} md={5} xl={5} xs={5}>
-              <InterlockList sx={{ height: "100%" }} event={myEmitter} />
+              <InterlockList sx={{ height: "100%" }} event={myEmitter} simulation={simulation} />
             </Grid>
             <Grid item lg={7} md={7} xl={7} xs={7}>
               <InterlockChart sx={{ height: "100%" }} />

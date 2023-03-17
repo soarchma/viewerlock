@@ -1,11 +1,23 @@
-import { Bar } from "react-chartjs-2";
-import { Box, Button, Card, CardContent, CardHeader, Divider, useTheme } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import RefreshIcon from "@mui/icons-material/Refresh";
-// import ReactPlayer from "react-player";
-import { useState, useEffect, useRef } from "react";
+import { Box, Button, Card, CardContent, CardHeader, Divider, useTheme, Tooltip } from "@mui/material";
 import dynamic from "next/dynamic";
+import { useState, useEffect, useRef } from "react";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+const theme = createTheme({
+  status: {
+    danger: "#e53e3e",
+  },
+  palette: {
+    primary: {
+      main: "#0971f1",
+      darker: "#053e85",
+    },
+    neutral: {
+      main: "#64748B",
+      contrastText: "#fff",
+    },
+  },
+});
 
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
@@ -55,16 +67,20 @@ export const Camera = (props) => {
     <Card {...props}>
       <CardHeader
         action={
-          <Button
-            sx={{
-              mt: -2,
-            }}
-            endIcon={<RefreshIcon fontSize="small" />}
-            size="small"
-            onClick={() => setKey(key + 1)}
-          >
-            새로고침
-          </Button>
+          <ThemeProvider theme={theme}>
+            <Tooltip title="새로고침">
+              <Button
+                variant="contained"
+                color="neutral"
+                sx={{
+                  mt: -4,
+                }}
+                endIcon={<RefreshIcon fontSize="small" sx={{ mr: 1 }} />}
+                size="small"
+                onClick={() => setKey(key + 1)}
+              ></Button>
+            </Tooltip>
+          </ThemeProvider>
         }
         title={`실시간 영상`}
         sx={{

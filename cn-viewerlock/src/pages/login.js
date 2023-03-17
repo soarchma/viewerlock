@@ -1,16 +1,36 @@
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import NextLink from "next/link";
 import Router from "next/router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Button, Container, Grid, Link, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Link, TextField, Typography, Switch } from "@mui/material";
 // import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 // import { Facebook as FacebookIcon } from "../icons/facebook";
 // import { Google as GoogleIcon } from "../icons/google";
 import GoogleButton from "../components/GoogleButton";
 
+import { useCookies } from "react-cookie";
+
 const Login = (props) => {
-  console.log(props);
+  const [simul, setSimul] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["simulation"]);
+  const { myEmitter } = props;
+
+  // let toggle = false;
+  // if (cookies.simulation && cookies.simulation.enabled) toggle = cookies.simulation.enabled;
+
+  const handleChange = () => {
+    setCookie("simulation", { enabled: !simul }, { path: "/" });
+    setSimul(!simul);
+    console.log(cookies.simulation);
+  };
+
+  useEffect(() => {
+    if (cookies.simulation && cookies.simulation.enabled) setSimul(cookies.simulation.enabled);
+  }, []);
+
+  // console.log("Login", myEmitter);
   // const formik = useFormik({
   //   initialValues: {
   //     email: "demo@devias.io",
@@ -28,7 +48,7 @@ const Login = (props) => {
   return (
     <>
       <Head>
-        <title>Login</title>
+        <title>로그인</title>
       </Head>
       <Box
         component="main"
@@ -54,10 +74,10 @@ const Login = (props) => {
           {/* <form onSubmit={formik.handleSubmit}> */}
           <Box sx={{ my: 3 }}>
             <Typography color="textPrimary" variant="h4">
-              Sign in
+              로그인
             </Typography>
             <Typography color="textSecondary" gutterBottom variant="body2">
-              Sign in on the internal platform
+              ViewerLock으로 로그인
             </Typography>
           </Box>
           <Grid container spacing={3}>
@@ -152,6 +172,11 @@ const Login = (props) => {
               </Link>
             </NextLink> */}
           </Typography>
+          <Switch
+            checked={simul}
+            onChange={handleChange}
+            inputProps={{ "aria-label": "controlled" }}
+          />
           {/* </form> */}
         </Container>
       </Box>

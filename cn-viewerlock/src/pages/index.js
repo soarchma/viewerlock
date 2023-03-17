@@ -34,7 +34,7 @@ const Page = (props) => {
 
   // console.log(props);
 
-  const { myEmitter } = props;
+  const { myEmitter, simulation } = props;
   // const [dbData, setDbData] = useState({});
   useEffect(() => {
     // myEmitter.on("assem", (msg) => {
@@ -74,7 +74,7 @@ const Page = (props) => {
   return (
     <>
       <Head>
-        <title>Dashboard</title>
+        <title>대시보드</title>
       </Head>
       <Box
         component="main"
@@ -86,10 +86,10 @@ const Page = (props) => {
         <Container maxWidth={false}>
           <Grid container rowSpacing={1} columnSpacing={1}>
             <Grid item lg={6} sm={6} xl={6} xs={6}>
-              <ProductionList event={myEmitter} />
+              <ProductionList event={myEmitter} simulation={simulation} />
             </Grid>
             <Grid item xl={6} lg={6} sm={6} xs={6}>
-              <InterlockList event={myEmitter} />
+              <InterlockList event={myEmitter} simulation={simulation} />
             </Grid>
 
             <Grid item lg={6} sm={6} xl={6} xs={6}>

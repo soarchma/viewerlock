@@ -38,7 +38,7 @@ export const CustomCell = (props) => {
 
     return () => {
       event.removeAllListeners();
-      console.log("111111 ==> Clean Up~!");
+      // console.log("111111 ==> Clean Up~!");
     };
   }, []);
 

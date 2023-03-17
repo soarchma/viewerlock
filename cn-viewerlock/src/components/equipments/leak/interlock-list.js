@@ -55,7 +55,7 @@ export const InterlockList = (props) => {
 
     return () => {
       event.removeAllListeners();
-      console.log("111111 ==> Clean Up~!");
+      // console.log("111111 ==> Clean Up~!");
     };
   }, []);
 
@@ -117,7 +117,7 @@ export const InterlockList = (props) => {
           </TableHead>
           <TableBody>
             {rows.map((row) => {
-              // row.isInterlock ? (color = "red") : (color = null);
+              // row.isInterlock ? (color = "#FF0000") : (color = null);
               return (
                 <TableRow
                   key={row.unit}
@@ -125,7 +125,7 @@ export const InterlockList = (props) => {
                     "&:last-child td, &:last-child th": {
                       border: 0,
                     },
-                    bgcolor: row.isInterlock ? "red" : null,
+                    bgcolor: row.isInterlock ? "#FF0000" : null,
                   }}
                 >
                   <TableCell align="center" component="th" scope="row">
@@ -137,7 +137,7 @@ export const InterlockList = (props) => {
                   <TableCell
                     align="center"
                     sx={{
-                      bgcolor: row.isInterlock ? "red" : null,
+                      bgcolor: row.isInterlock ? "#FF0000" : null,
                     }}
                   >
                     {row.isInterlock ? "√" : null}
