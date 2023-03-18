@@ -262,18 +262,95 @@ export const initStatAssem = async (connection: any) => {
 //     exp2: 0, // NG 2-1 수량 (확관)
 //     nipple: 0, // NG 2-1 수량 (니쁠)
 //     oring2: 0, // NG 2-1 수량 (O-링)
-const models = [700, 1000, 1200, 1500, 1800];
+const models = [700, 1000, 1200, 1500, 1800, 2500];
+const history = [
+  { cnt: 0, val: 0 },
+  { cnt: 0, val: 0 },
+  { cnt: 0, val: 0 },
+  { cnt: 0, val: 0 },
+  { cnt: 0, val: 0 },
+  { cnt: 0, val: 0 },
+  { cnt: 0, val: 0 },
+];
 const tempData: KeyAnyPair = comm.assemData();
-export const chekcDataAssem = (rawData: any) => {
-  if (rawData.model_no > 5 || rawData.model_no < 1) return null;
 
+/**
+ * 자동 조립기는 모든 값이 1씩 증가하는 특징
+ * 새로운 값이 과거 값보다 작으면 안됨(예외: 설비 재설정 등의 이유로 값이 초기화 되면 모든 값이 0으로 변경된다)
+ * 새로운 값이 과거 값보다 너무 크면 안됨
+ * @param rawData
+ * @param oldData
+ * @param newData
+ * @param id
+ * @returns
+ */
+const checkData = (rawData: any, oldData: any, newData: any, id: number) => {
+  // 1000 이상의 값은 버린다.
+  if (newData > 1000) {
+    console.log("checkData(", id, ") - 1", "old:", oldData, "new:", newData);
+    false;
+  }
+
+  if (oldData < newData) {
+    // 새값이 이전값 보다 100 이상 크면 버린다.
+    if (newData - oldData > 100) {
+      console.log("checkData(", id, ") - 2", "old:", oldData, "new:", newData);
+      return false;
+    }
+    history[id].cnt = 0;
+    history[id].val = 0;
+    return true;
+  } else if (oldData > newData) {
+    // 새로운 값이 더 작을 경우 0만 허용된다.
+    let isAllZero = true;
+    if (newData === 0) {
+      // 단, 다른 값도 모두 0이여야 한다.
+      Object.keys(rawData).forEach((key: string) => {
+        if (key != "model_no") {
+          if (rawData[key] != 0) {
+            console.log("checkData(", id, ")", newData.toString());
+            isAllZero = false;
+          }
+        }
+      });
+      return isAllZero;
+    }
+
+    // 새로들어온 작은 값을 저장한 후에 이후 계속(50회 정도?) 같은 값이 들어오면 적용한다
+    if (history[id].val === newData) history[id].cnt = history[id].cnt + 1;
+    else history[id].cnt = 0;
+
+    if (history[id].cnt > 50) {
+      history[id].cnt = 0;
+      return true;
+    }
+    console.log("checkData(", id, ") - 4", "old:", oldData, "new:", newData);
+    return false;
+  } else {
+    // 값이 같은 경우
+    return true;
+  }
+};
+
+export const chekcDataAssem = (rawData: any) => {
+  // 값이 1개라도 이상하면 전체 데이터를 버린다.
+  // TODO: => 데이터 수집이 너무 안될 경우 해당 값만 버리도록 수정
+  if (rawData.model_no > 5 || rawData.model_no < 1) return null;
   tempData.data.model = models[rawData.model_no - 1];
+
+  if (!checkData(rawData, tempData.data.cnt, rawData.prod, 0)) return null;
   tempData.data.cnt = rawData.prod;
+  if (!checkData(rawData, tempData.data.exp1, rawData.ng1_1, 1)) return null;
   tempData.data.exp1 = rawData.ng1_1;
+  if (!checkData(rawData, tempData.data.redu, rawData.ng1_2a, 2)) return null;
   tempData.data.redu = rawData.ng1_2a;
+  if (!checkData(rawData, tempData.data.oring1, rawData.ng1_2b, 3)) return null;
   tempData.data.oring1 = rawData.ng1_2b;
+  if (!checkData(rawData, tempData.data.exp2, rawData.ng2_1, 4)) return null;
   tempData.data.exp2 = rawData.ng2_1;
+  if (!checkData(rawData, tempData.data.nipple, rawData.ng2_2a, 5)) return null;
   tempData.data.nipple = rawData.ng2_2a;
+  if (!checkData(rawData, tempData.data.oring2, rawData.ng2_2b, 6)) return null;
   tempData.data.oring2 = rawData.ng2_2b;
   // console.log(tempData.toString());
   return tempData;

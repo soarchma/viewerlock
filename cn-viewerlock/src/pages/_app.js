@@ -38,7 +38,7 @@ const App = (props) => {
   if (cookies.simulation) {
     if (cookies.simulation.enabled) {
       simul = true;
-      console.log("SIMULATION!!!!!");
+      console.log("SIMULATION MODE!!!!!");
     }
   }
 

@@ -1,9 +1,5 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import NextLink from "next/link";
-import Router from "next/router";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import { Box, Button, Container, Grid, Link, TextField, Typography, Switch } from "@mui/material";
 // import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 // import { Facebook as FacebookIcon } from "../icons/facebook";
@@ -15,7 +11,7 @@ import { useCookies } from "react-cookie";
 const Login = (props) => {
   const [simul, setSimul] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["simulation"]);
-  const { myEmitter } = props;
+  // const { myEmitter } = props;
 
   // let toggle = false;
   // if (cookies.simulation && cookies.simulation.enabled) toggle = cookies.simulation.enabled;
@@ -27,6 +23,9 @@ const Login = (props) => {
   };
 
   useEffect(() => {
+    // TODO:FIXME: GS 인증
+    setCookie("simulation", { enabled: true }, { path: "/" });
+    // TODO:FIXME: GS 인증
     if (cookies.simulation && cookies.simulation.enabled) setSimul(cookies.simulation.enabled);
   }, []);
 
@@ -172,11 +171,14 @@ const Login = (props) => {
               </Link>
             </NextLink> */}
           </Typography>
-          <Switch
+          {/* TODO:FIXME: GS 인증 */}
+          {/* <Switch
             checked={simul}
             onChange={handleChange}
             inputProps={{ "aria-label": "controlled" }}
-          />
+            label="Test Mode(GS 인증)"
+          /> */}
+          {/* TODO:FIXME: GS 인증 */}
           {/* </form> */}
         </Container>
       </Box>

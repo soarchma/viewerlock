@@ -132,6 +132,22 @@ services:
     depends_on:
       - mosquitto
 
+  cn-vl-backend:
+    container_name: "cn-vl-backend"
+    restart: always
+    build:
+      context: ./cn-vl-backend
+      dockerfile: Dockerfile
+    # volumes:
+    # hot reload를 위해 mount
+    # - "./cn-vl-backend:/usr/src/testapp"
+    # - "/usr/src/testapp/node_modules"
+    # - "/usr/src/testapp/.testapp"
+    ports:
+      - "8071:8071"
+    depends_on:
+      - db
+
   cn-gs-test:
     container_name: "cn-gs-test"
     restart: always
@@ -162,7 +178,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - "cn-gs-test"
+      - "cn-vl-backend"
 
   rtsp_simple_server:
     image: aler9/rtsp-simple-server

@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- 테이블 데이터 cn_viewerlock.users:~2 rows (대략적) 내보내기
 REPLACE INTO `users` (`mail`, `note`) VALUES
+	('cn.gs.test@gmail.com', 'user'),
 	('soarchma.cn@gmail.com', 'user'),
 	('soarchma@gmail.com', 'admin');
 
