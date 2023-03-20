@@ -101,7 +101,8 @@ function ilShape(con: any, msg: any, myEmitter: any) {
               diff = true;
               // console.log(temp.data[key], ref[key]);
             } else {
-              if (key != "model" && key != "cnt") temp.data[key] = 0;
+              // 기준 데이터와 같은 경우 0으로 치환 - 왜?
+              // if (key != "model" && key != "cnt") temp.data[key] = 0;
             }
           });
           if (diff) {
@@ -193,12 +194,17 @@ export const initStatShape = async (connection: any) => {
 };
 
 const tempData: KeyAnyPair = comm.shapeData();
+
 export const chekcDataShape = (rawData: any) => {
   let isError: boolean = false;
 
+  // 너무 큰 숫자 버림
   Object.keys(rawData).forEach((key: string) => {
     if (rawData[key] > 50000) isError = true;
   });
+
+  // TODO: 이전값 보다 작은값 대응
+
   if (!isError) {
     tempData.data.model = rawData.setting_model;
     tempData.data.cnt = rawData.production;

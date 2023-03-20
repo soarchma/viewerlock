@@ -1,6 +1,17 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { Box, Button, Container, Grid, Link, TextField, Typography, Switch } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+  Switch,
+  FormGroup,
+  FormControlLabel,
+} from "@mui/material";
 // import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 // import { Facebook as FacebookIcon } from "../icons/facebook";
 // import { Google as GoogleIcon } from "../icons/google";
@@ -24,7 +35,7 @@ const Login = (props) => {
 
   useEffect(() => {
     // TODO:FIXME: GS 인증
-    setCookie("simulation", { enabled: true }, { path: "/" });
+    // setCookie("simulation", { enabled: true }, { path: "/" });
     // TODO:FIXME: GS 인증
     if (cookies.simulation && cookies.simulation.enabled) setSimul(cookies.simulation.enabled);
   }, []);
@@ -172,12 +183,16 @@ const Login = (props) => {
             </NextLink> */}
           </Typography>
           {/* TODO:FIXME: GS 인증 */}
-          {/* <Switch
-            checked={simul}
-            onChange={handleChange}
-            inputProps={{ "aria-label": "controlled" }}
+          <FormControlLabel
+            control={
+              <Switch
+                checked={simul}
+                onChange={handleChange}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            }
             label="Test Mode(GS 인증)"
-          /> */}
+          />
           {/* TODO:FIXME: GS 인증 */}
           {/* </form> */}
         </Container>

@@ -86,7 +86,7 @@ const endApp = () => {
   // }
   // clearInterval(workWdIntervalId);
   clearInterval(dayWdIntervalId);
-  // wss.close();
+  wss.close();
   mqttClientSub.end();
   mqttClientPub.end();
   endConnection();

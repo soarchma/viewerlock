@@ -33,6 +33,7 @@ const rows = [
   createData(1200, 900, 1950, 8700, 8701, 10040, 10040),
   createData(1500, 900, 1920, 11690, 11691, 10050, 10050),
   createData(1800, 900, 1950, 14650, 14651, 10090, 10090),
+  createData(2500, 500, 700, 23200, 23201, 11140, 11140),
 ];
 
 export const InterlockList = (props) => {
@@ -84,34 +85,12 @@ export const InterlockList = (props) => {
           <TableHead>
             <TableRow sx={{ dense: true }}>
               <TableCell align="center">모델</TableCell>
-              <TableCell align="center">
-                직관
-                <br />
-                1st
-              </TableCell>
-              <TableCell align="center">
-                직관
-                <br />
-                2nd
-              </TableCell>
-              <TableCell align="center">
-                성형
-                <br />
-                1st
-              </TableCell>
-              <TableCell align="center">
-                성형
-                <br />
-                2nd
-              </TableCell>
-              <TableCell align="center">
-                cut
-                <br />1
-              </TableCell>
-              <TableCell align="center">
-                cut
-                <br />2
-              </TableCell>
+              <TableCell align="center">직관 1</TableCell>
+              <TableCell align="center">직관 2</TableCell>
+              <TableCell align="center">성형 1</TableCell>
+              <TableCell align="center">성형 2</TableCell>
+              <TableCell align="center">cut 1</TableCell>
+              <TableCell align="center">cut 2</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -126,7 +105,7 @@ export const InterlockList = (props) => {
                     },
                     bgcolor: row.model === realData.model ? "#00FF00" : null,
                   }}
-                  style={{ height: 42 }}
+                  style={{ height: 39 }}
                 >
                   <TableCell align="center" sx={{}} component="th" scope="row">
                     {row.model}
@@ -173,34 +152,12 @@ export const InterlockList = (props) => {
           <TableHead>
             <TableRow sx={{ dense: true }}>
               <TableCell align="center">모델</TableCell>
-              <TableCell align="center">
-                직관
-                <br />
-                1st
-              </TableCell>
-              <TableCell align="center">
-                직관
-                <br />
-                2nd
-              </TableCell>
-              <TableCell align="center">
-                성형
-                <br />
-                1st
-              </TableCell>
-              <TableCell align="center">
-                성형
-                <br />
-                2nd
-              </TableCell>
-              <TableCell align="center">
-                cut
-                <br />1
-              </TableCell>
-              <TableCell align="center">
-                cut
-                <br />2
-              </TableCell>
+              <TableCell align="center">직관 1</TableCell>
+              <TableCell align="center">직관 2</TableCell>
+              <TableCell align="center">성형 1</TableCell>
+              <TableCell align="center">성형 2</TableCell>
+              <TableCell align="center">cut 1</TableCell>
+              <TableCell align="center">cut 2</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -212,7 +169,7 @@ export const InterlockList = (props) => {
                 },
                 bgcolor: "#00FF00",
               }}
-              style={{ height: 42 }}
+              style={{ height: 39 }}
             >
               <TableCell align="center" sx={{}} component="th" scope="row">
                 {realData.model}

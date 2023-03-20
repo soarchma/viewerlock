@@ -35,9 +35,13 @@ const defRows = [
 ];
 
 export const InterlockList = (props) => {
-  const { event, database } = props;
+  const { event, simulation } = props;
   const [rows, setRows] = useState(defRows);
-  if (!database) database = "cn_viewerlock";
+
+  let database = "cn_viewerlock";
+  if (simulation) {
+    database = "viewerlock";
+  }
 
   useEffect(() => {
     event.on("newIl", (msg) => {
@@ -64,8 +68,11 @@ export const InterlockList = (props) => {
           // console.log(response.data);
           const temp = rows.slice(0);
           if (response.data.il.shape) temp[0].ilCnt = response.data.il.shape;
+          else temp[0].ilCnt = 0;
           if (response.data.il.leak) temp[1].ilCnt = response.data.il.leak;
+          else temp[1].ilCnt = 0;
           if (response.data.il.assem) temp[2].ilCnt = response.data.il.assem;
+          else temp[2].ilCnt = 0;
           setRows(temp);
         }
       };

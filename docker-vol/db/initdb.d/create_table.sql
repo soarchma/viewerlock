@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS `il_shape_day` (
   `m_3` int(11) DEFAULT NULL,
   `m_4` int(11) DEFAULT NULL,
   `m_5` int(11) DEFAULT NULL,
+  `m_6` int(11) DEFAULT NULL,
   PRIMARY KEY (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='모델별 하루 인터락 횟수 - 자동성형기';
 
@@ -118,6 +119,7 @@ CREATE TABLE IF NOT EXISTS `prod_shape_day` (
   `m_3` int(11) unsigned DEFAULT NULL,
   `m_4` int(11) unsigned DEFAULT NULL,
   `m_5` int(11) unsigned DEFAULT NULL,
+  `m_6` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`date`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='모델별 하루 생산 수량 - 자동성형기';
 
@@ -140,7 +142,8 @@ REPLACE INTO `shape_ref` (`model`, `beeline1`, `beeline2`, `shape1`, `shape2`, `
 	(1000, 900, 1800, 6890, 6881, 1470, 1470),
 	(1200, 900, 1950, 8700, 8701, 10040, 10040),
 	(1500, 900, 1920, 11690, 11691, 10050, 10050),
-	(1800, 900, 1950, 14650, 14651, 10090, 10090);
+	(1800, 900, 1950, 14650, 14651, 10090, 10090),
+	(2500, 500, 700, 23200, 23201, 11140, 11140);
 
 -- 테이블 cn_viewerlock.test_leak 구조 내보내기
 CREATE TABLE IF NOT EXISTS `test_leak` (
@@ -240,6 +243,8 @@ CREATE TRIGGER `il_shape_after_insert` AFTER INSERT ON `il_shape` FOR EACH ROW B
 		INSERT INTO cn_viewerlock.il_shape_day (DATE, TIME, m_4) VALUES (@today, CURRENT_TIMESTAMP, @new_cnt) ON DUPLICATE KEY UPDATE time=CURRENT_TIMESTAMP, m_4=@new_cnt;
 	ELSEIF NEW.model = 1800 THEN
 		INSERT INTO cn_viewerlock.il_shape_day (DATE, TIME, m_5) VALUES (@today, CURRENT_TIMESTAMP, @new_cnt) ON DUPLICATE KEY UPDATE time=CURRENT_TIMESTAMP, m_5=@new_cnt;
+	ELSEIF NEW.model = 2500 THEN
+		INSERT INTO cn_viewerlock.il_shape_day (DATE, TIME, m_6) VALUES (@today, CURRENT_TIMESTAMP, @new_cnt) ON DUPLICATE KEY UPDATE time=CURRENT_TIMESTAMP, m_6=@new_cnt;
 	END IF;
 
 END//
@@ -297,6 +302,8 @@ CREATE TRIGGER `prod_shape_after_insert` AFTER INSERT ON `prod_shape` FOR EACH R
 		INSERT INTO cn_viewerlock.prod_shape_day (DATE, TIME, m_4) VALUES (@today, CURRENT_TIMESTAMP, @new_cnt) ON DUPLICATE KEY UPDATE time=CURRENT_TIMESTAMP, m_4=@new_cnt;
 	ELSEIF NEW.model = 1800 THEN
 		INSERT INTO cn_viewerlock.prod_shape_day (DATE, TIME, m_5) VALUES (@today, CURRENT_TIMESTAMP, @new_cnt) ON DUPLICATE KEY UPDATE time=CURRENT_TIMESTAMP, m_5=@new_cnt;
+	ELSEIF NEW.model = 2500 THEN
+		INSERT INTO cn_viewerlock.prod_shape_day (DATE, TIME, m_6) VALUES (@today, CURRENT_TIMESTAMP, @new_cnt) ON DUPLICATE KEY UPDATE time=CURRENT_TIMESTAMP, m_6=@new_cnt;
 	END IF;
 END//
 DELIMITER ;

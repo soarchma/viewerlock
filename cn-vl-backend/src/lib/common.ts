@@ -140,6 +140,15 @@ const _shapeRefs: any = [
     cut1: 10090, // CUT 1 설정치
     cut2: 10090, // CUT 2 설정치
   },
+  {
+    model: 2500, // 설정 모델
+    beeline1: 500, // 직관 1ST 설정치
+    beeline2: 700, // 직관 2ST 설정치
+    shape1: 23200, // 성형 1ST 설정치
+    shape2: 23201, // 성형 2ST 설정치
+    cut1: 11140, // CUT 1 설정치
+    cut2: 11140, // CUT 2 설정치
+  },
 ];
 export const shapeRefs = () => {
   return _shapeRefs.slice();

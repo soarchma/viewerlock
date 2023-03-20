@@ -135,26 +135,26 @@ export const chekcDataLeak = (rawData: any) => {
     testState = "testStarting";
     tempData.update = [];
     setTimeout(() => {
-      // 압력 인가 초기. 1초 대기 후 측정 시작
+      // 압력 인가 초기. 3초 대기 후 측정 시작
       testState = "testStart";
       console.log("Leak Test Start!");
-    }, 1000);
+    }, 1000 * 3);
   }
   if (testState === "testStart") {
     testState = "testing";
     setTimeout(() => {
-      // 15초 동안 테스트
+      // 12초 동안 테스트
       testState = "testEnd";
       console.log("Leak Test End!");
-    }, 1000 * 15);
+    }, 1000 * 12);
   }
   if (testState === "testEnd") {
     testState = "testWait";
     setTimeout(() => {
-      // 10초 동안 대기
+      // 15초 동안 대기
       testState = "testReady";
       // console.log("Leak Test Ready!");
-    }, 1000 * 10);
+    }, 1000 * 15);
   }
   // FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:
 

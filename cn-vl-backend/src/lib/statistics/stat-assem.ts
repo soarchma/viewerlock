@@ -262,7 +262,7 @@ export const initStatAssem = async (connection: any) => {
 //     exp2: 0, // NG 2-1 수량 (확관)
 //     nipple: 0, // NG 2-1 수량 (니쁠)
 //     oring2: 0, // NG 2-1 수량 (O-링)
-const models = [700, 1000, 1200, 1500, 1800, 2500];
+const models = [700, 1000, 1200, 1500, 1800];
 const history = [
   { cnt: 0, val: 0 },
   { cnt: 0, val: 0 },

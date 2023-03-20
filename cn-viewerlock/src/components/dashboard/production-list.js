@@ -47,7 +47,7 @@ export const ProductionList = (props) => {
     event.on("newProd", (msg) => {
       // console.log("newProd", msg);
       const getStatData = async () => {
-        console.log("???database", database);
+        // console.log("???database", database);
         const response = await axios
           .post(`./api/get-data?d=${database}&t=prod`)
           .then((response) => {
@@ -72,15 +72,18 @@ export const ProductionList = (props) => {
           if (response.data.prod.leak) temp[1].prodCnt = response.data.prod.leak;
           if (response.data.prod.assem) temp[2].prodCnt = response.data.prod.assem;
 
-          if (response.data.prod.shape)
-            temp[0].capacity = ((response.data.prod.shape / 11000) * 100).toFixed(1);
+          if (response.data.prod.shapeCap)
+            temp[0].capacity = Number(response.data.prod.shapeCap).toFixed(1);
+          else temp[0].capacity = 0;
           if (response.data.prod.leak)
             temp[1].capacity = ((response.data.prod.leak / 1300) * 100).toFixed(1);
+          else temp[1].capacity = 0;
           if (response.data.prod.assem)
             temp[2].capacity = ((response.data.prod.assem / 900) * 100).toFixed(1);
+          else temp[2].capacity = 0;
           setRows(temp);
         } else {
-          console.log("!!!!!!!!!!!!!!!!!!!!!!", response);
+          console.log("!!!!!!!!!!!!!!!!!!!!!", response);
         }
       };
       getStatData();

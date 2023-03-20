@@ -40,7 +40,13 @@ async function dbConnect(db: any) {
 
 const queryProdShape = `SELECT \
   date AS "time", \
-  (IFNULL(m_1, 0) + IFNULL(m_2, 0) + IFNULL(m_3, 0) + IFNULL(m_4, 0) + IFNULL(m_5, 0)) AS prodCnt \
+  (IFNULL(m_1, 0) + IFNULL(m_2, 0) + IFNULL(m_3, 0) + IFNULL(m_4, 0) + IFNULL(m_5, 0) + IFNULL(m_6, 0)) AS prodCnt \
+FROM prod_shape_day \
+ORDER BY TIME DESC LIMIT 1`;
+
+const queryProdShapeCap = `SELECT \
+  date AS "time", \
+  (IFNULL(m_1, 0)*7 + IFNULL(m_2, 0)*10 + IFNULL(m_3, 0)*12 + IFNULL(m_4, 0)*15 + IFNULL(m_5, 0)*18 + IFNULL(m_6, 0)*25) / 11000 * 100 AS prodCap \
 FROM prod_shape_day \
 ORDER BY TIME DESC LIMIT 1`;
 
@@ -58,7 +64,7 @@ ORDER BY TIME DESC LIMIT 1`;
 
 const queryIlShape = `SELECT \
   date AS "time", \
-  (IFNULL(m_1, 0) + IFNULL(m_2, 0) + IFNULL(m_3, 0) + IFNULL(m_4, 0) + IFNULL(m_5, 0)) AS ilCnt \
+  (IFNULL(m_1, 0) + IFNULL(m_2, 0) + IFNULL(m_3, 0) + IFNULL(m_4, 0) + IFNULL(m_5, 0) + IFNULL(m_6, 0)) AS ilCnt \
 FROM il_shape_day \
 ORDER BY TIME DESC LIMIT 1`;
 
@@ -78,6 +84,7 @@ async function getProdData(connection) {
   // simple query
   const prodCnt = {
     shape: 0,
+    shapeCap: 0,
     leak: 0,
     assem: 0,
   };
@@ -86,6 +93,14 @@ async function getProdData(connection) {
     const [rows] = await connection.execute(queryProdShape);
     console.log("getProdData() - shape:", rows);
     prodCnt.shape = rows[0].prodCnt;
+  } catch (e) {
+    console.log("ERROR", e);
+  }
+
+  try {
+    const [rows] = await connection.execute(queryProdShapeCap);
+    console.log("getProdData() - shapeCap:", rows);
+    prodCnt.shapeCap = rows[0].prodCap;
   } catch (e) {
     console.log("ERROR", e);
   }
