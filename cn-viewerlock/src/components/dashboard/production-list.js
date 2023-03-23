@@ -75,11 +75,11 @@ export const ProductionList = (props) => {
           if (response.data.prod.shapeCap)
             temp[0].capacity = Number(response.data.prod.shapeCap).toFixed(1);
           else temp[0].capacity = 0;
-          if (response.data.prod.leak)
-            temp[1].capacity = ((response.data.prod.leak / 1300) * 100).toFixed(1);
+          if (response.data.prod.leakCap)
+            temp[1].capacity = Number(response.data.prod.leakCap).toFixed(1);
           else temp[1].capacity = 0;
-          if (response.data.prod.assem)
-            temp[2].capacity = ((response.data.prod.assem / 900) * 100).toFixed(1);
+          if (response.data.prod.assemCap)
+            temp[2].capacity = Number(response.data.prod.assemCap).toFixed(1);
           else temp[2].capacity = 0;
           setRows(temp);
         } else {

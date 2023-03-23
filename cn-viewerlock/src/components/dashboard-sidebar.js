@@ -179,13 +179,16 @@ export const DashboardSidebar = (props) => {
           ))}
         </Box>
         <Divider sx={{ borderColor: "#2D3748" }} />
-        {/* <Box
+        <Box
           sx={{
             px: 2,
-            py: 3
+            py: 3,
           }}
         >
-          <Typography
+          <Typography color="neutral.400" variant="body2">
+            ViewerLock v1.0.1
+          </Typography>
+          {/* <Typography
             color="neutral.100"
             variant="subtitle2"
           >
@@ -227,8 +230,8 @@ export const DashboardSidebar = (props) => {
             >
               Pro Live Preview
             </Button>
-          </NextLink>
-        </Box> */}
+          </NextLink> */}
+        </Box>
       </Box>
     </>
   );

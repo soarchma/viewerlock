@@ -1,4 +1,13 @@
-import { Box, Button, Card, CardContent, CardHeader, Divider, useTheme, Tooltip } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  useTheme,
+  Tooltip,
+} from "@mui/material";
 import dynamic from "next/dynamic";
 import { useState, useEffect, useRef } from "react";
 import RefreshIcon from "@mui/icons-material/Refresh";
@@ -103,7 +112,7 @@ export const Camera = (props) => {
           autoPlay
           muted={true}
           playing={true}
-          controls={true}
+          controls={false}
           loop={true}
           // progressInterval={10}
           height={310}

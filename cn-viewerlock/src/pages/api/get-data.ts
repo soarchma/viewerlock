@@ -39,75 +39,83 @@ async function dbConnect(db: any) {
 }
 
 const queryProdShape = `SELECT \
-  date AS "time", \
-  (IFNULL(m_1, 0) + IFNULL(m_2, 0) + IFNULL(m_3, 0) + IFNULL(m_4, 0) + IFNULL(m_5, 0) + IFNULL(m_6, 0)) AS prodCnt \
-FROM prod_shape_day \
-ORDER BY TIME DESC LIMIT 1`;
-
-const queryProdShapeCap = `SELECT \
-  date AS "time", \
-  (IFNULL(m_1, 0)*7 + IFNULL(m_2, 0)*10 + IFNULL(m_3, 0)*12 + IFNULL(m_4, 0)*15 + IFNULL(m_5, 0)*18 + IFNULL(m_6, 0)*25) / 11000 * 100 AS prodCap \
-FROM prod_shape_day \
+  time, \
+  prod_cnt AS prodCnt \
+FROM prod_shape_day_cnt \
 ORDER BY TIME DESC LIMIT 1`;
 
 const queryProdLeak = `SELECT \
-  date AS "time", \
-  IFNULL(cnt, 0) AS prodCnt \
-FROM test_leak_day \
+  time, \
+  test_cnt AS prodCnt \
+FROM test_leak_day_cnt \
 ORDER BY TIME DESC LIMIT 1`;
 
 const queryProdAssem = `SELECT \
-  date AS "time", \
-  (IFNULL(m_3, 0) + IFNULL(m_4, 0)) AS prodCnt \
-FROM prod_assem_day \
+  time, \
+  prod_cnt AS prodCnt \
+FROM prod_assem_day_cnt \
+ORDER BY TIME DESC LIMIT 1`;
+
+const queryProdShapeCap = `SELECT \
+  time, \
+  prod_cap AS prodCap \
+FROM prod_shape_day_cap \
+ORDER BY TIME DESC LIMIT 1`;
+
+const queryTestLeakCap = `SELECT \
+  time, \
+  test_cap AS prodCap \
+FROM test_leak_day_cap \
+ORDER BY TIME DESC LIMIT 1`;
+
+const queryProdAssemCap = `SELECT \
+  time, \
+  prod_cap AS prodCap \
+FROM prod_assem_day_cap \
 ORDER BY TIME DESC LIMIT 1`;
 
 const queryIlShape = `SELECT \
-  date AS "time", \
-  (IFNULL(m_1, 0) + IFNULL(m_2, 0) + IFNULL(m_3, 0) + IFNULL(m_4, 0) + IFNULL(m_5, 0) + IFNULL(m_6, 0)) AS ilCnt \
-FROM il_shape_day \
+  time, \
+  il_cnt AS ilCnt \
+FROM il_shape_day_cnt \
 ORDER BY TIME DESC LIMIT 1`;
 
 const queryIlLeak = `SELECT \
-  date AS "time", \
-  (IFNULL(err1,0)+IFNULL(err2,0)+IFNULL(err3,0)+IFNULL(err4,0)+IFNULL(err5,0)+IFNULL(err6,0)) AS ilCnt \
-FROM test_leak_day \
+  time, \
+  il_cnt AS ilCnt \
+FROM il_leak_day_cnt \
 ORDER BY TIME DESC LIMIT 1`;
 
 const queryIlAssem = `SELECT \
-  date AS "time", \
-  (IFNULL(exp1,0)+IFNULL(redu,0)+IFNULL(oring1,0)+IFNULL(exp2,0)+IFNULL(nipple,0)+IFNULL(oring2,0)) AS ilCnt \
-FROM il_assem_day \
+  time, \
+  il_cnt AS ilCnt \
+FROM il_assem_day_cnt \
 ORDER BY TIME DESC LIMIT 1`;
+
+const queryShapeRef = `SELECT * FROM shape_ref`;
 
 async function getProdData(connection) {
   // simple query
   const prodCnt = {
     shape: 0,
-    shapeCap: 0,
     leak: 0,
     assem: 0,
+    shapeCap: 0,
+    leakCap: 0,
+    assemCap: 0,
   };
 
   try {
     const [rows] = await connection.execute(queryProdShape);
-    console.log("getProdData() - shape:", rows);
+    // console.log("getProdData() - shape:", rows);
     prodCnt.shape = rows[0].prodCnt;
   } catch (e) {
     console.log("ERROR", e);
   }
 
   try {
-    const [rows] = await connection.execute(queryProdShapeCap);
-    console.log("getProdData() - shapeCap:", rows);
-    prodCnt.shapeCap = rows[0].prodCap;
-  } catch (e) {
-    console.log("ERROR", e);
-  }
-
-  try {
     const [rows] = await connection.execute(queryProdLeak);
-    console.log("getProdData() - leak:", rows);
+    // console.log("getProdData() - leak:", rows);
     prodCnt.leak = rows[0].prodCnt;
   } catch (e) {
     console.log("ERROR", e);
@@ -115,8 +123,32 @@ async function getProdData(connection) {
 
   try {
     const [rows] = await connection.execute(queryProdAssem);
-    console.log("getProdData() - assem:", rows);
+    // console.log("getProdData() - assem:", rows);
     prodCnt.assem = rows[0].prodCnt;
+  } catch (e) {
+    console.log("ERROR", e);
+  }
+
+  try {
+    const [rows] = await connection.execute(queryProdShapeCap);
+    // console.log("getProdData() - shapeCap:", rows);
+    prodCnt.shapeCap = rows[0].prodCap;
+  } catch (e) {
+    console.log("ERROR", e);
+  }
+
+  try {
+    const [rows] = await connection.execute(queryTestLeakCap);
+    // console.log("getProdData() - shapeCap:", rows);
+    prodCnt.leakCap = rows[0].prodCap;
+  } catch (e) {
+    console.log("ERROR", e);
+  }
+
+  try {
+    const [rows] = await connection.execute(queryProdAssemCap);
+    // console.log("getProdData() - shapeCap:", rows);
+    prodCnt.assemCap = rows[0].prodCap;
   } catch (e) {
     console.log("ERROR", e);
   }
@@ -134,7 +166,7 @@ async function getIlData(connection) {
 
   try {
     const [rows] = await connection.execute(queryIlShape);
-    console.log("getIlData() - shape:", rows);
+    // console.log("getIlData() - shape:", rows);
     ilCnt.shape = rows[0].ilCnt;
   } catch (e) {
     console.log("ERROR", e);
@@ -142,7 +174,7 @@ async function getIlData(connection) {
 
   try {
     const [rows] = await connection.execute(queryIlLeak);
-    console.log("getIlData() - leak:", rows);
+    // console.log("getIlData() - leak:", rows);
     ilCnt.leak = rows[0].ilCnt;
   } catch (e) {
     console.log("ERROR", e);
@@ -150,13 +182,25 @@ async function getIlData(connection) {
 
   try {
     const [rows] = await connection.execute(queryIlAssem);
-    console.log("getIlData() - assem:", rows);
+    // console.log("getIlData() - assem:", rows);
     ilCnt.assem = rows[0].ilCnt;
   } catch (e) {
     console.log("ERROR", e);
   }
 
   return ilCnt;
+}
+
+async function getShapeRef(connection) {
+  try {
+    const [rows] = await connection.execute(queryShapeRef);
+    // console.log("getShapeRef():", rows);
+    // ilCnt.shape = rows[0].ilCnt;
+    return rows;
+  } catch (e) {
+    console.log("ERROR", e);
+    return null;
+  }
 }
 /////////////////////////////////////////////////////////////////////
 
@@ -206,7 +250,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.query) {
     if (req.query.d) database = req.query.d;
     if (req.query.t) type = req.query.t;
-    if (type != "prod" && type != "il") {
+    if (type != "prod" && type != "il" && type != "ref") {
       res.status(400).json({ text: `Wrong request!!! ${type}` });
       return;
     }
@@ -229,16 +273,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const connection = await dbConnect(database);
   let prodCnt = {};
   let ilCnt = {};
+  let shapeRef = {};
+
   if (type === "prod") prodCnt = await getProdData(connection);
   else if (type === "il") ilCnt = await getIlData(connection);
+  else if (type === "ref") {
+    shapeRef = await getShapeRef(connection);
+    return res.status(200).json({
+      shapeRef: shapeRef,
+    });
+  }
   console.log(prodCnt, ilCnt);
   // await userLog(connection, payload.email, userExist);
   connection.end();
   // TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:
-  return res.status(200).json({
-    prod: prodCnt,
-    il: ilCnt,
-  });
+  return res.status(200).json({ prod: prodCnt, il: ilCnt });
 }
 
 export default withIronSessionApiRoute(handler, options);

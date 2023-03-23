@@ -62,7 +62,13 @@ export const InterlockChart = (props) => {
             position: "relative",
           }}
         >
-          <iframe src={graphSrc} width="100%" height="100%" frameBorder="0"></iframe>
+          <iframe
+            className="iframe-no-click"
+            src={graphSrc}
+            width="100%"
+            height="100%"
+            frameBorder="0"
+          ></iframe>
         </Box>
       </CardContent>
     </Card>

@@ -293,7 +293,7 @@ const checkData = (rawData: any, oldData: any, newData: any, id: number) => {
 
   if (oldData < newData) {
     // 새값이 이전값 보다 100 이상 크면 버린다.
-    if (newData - oldData > 100) {
+    if (oldData != 0 && newData - oldData > 100) {
       console.log("checkData(", id, ") - 2", "old:", oldData, "new:", newData);
       return false;
     }
@@ -316,11 +316,11 @@ const checkData = (rawData: any, oldData: any, newData: any, id: number) => {
       return isAllZero;
     }
 
-    // 새로들어온 작은 값을 저장한 후에 이후 계속(50회 정도?) 같은 값이 들어오면 적용한다
+    // 새로들어온 작은 값을 저장한 후에 이후 계속(10회 정도?) 같은 값이 들어오면 적용한다
     if (history[id].val === newData) history[id].cnt = history[id].cnt + 1;
     else history[id].cnt = 0;
 
-    if (history[id].cnt > 50) {
+    if (history[id].cnt > 10) {
       history[id].cnt = 0;
       return true;
     }

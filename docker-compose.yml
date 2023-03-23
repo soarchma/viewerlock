@@ -64,6 +64,7 @@ services:
       - .\docker-vol\grafana\data:/var/lib/grafana:rw
       - .\docker-vol\grafana\provisioning:/etc/grafana/provisioning:rw
       # - .\docker-vol\grafana\admin_password:/run/secrets/admin_password
+      # - .\docker-vol\grafana\usr\share\grafana\public\build:/usr/share/grafana/public/build:rw
     ports:
       - "3000:3000"
     environment:

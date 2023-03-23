@@ -30,8 +30,8 @@ function createData(unit, interlockType, ilCnt) {
 
 const defRows = [
   createData("자동성형기", "Process", "-"),
-  createData("리크측정기", "SPC", "-"),
-  createData("자동조립기", "DCOP", "-"),
+  createData("리크측정기", "DCOP", "-"),
+  createData("자동조립기", "SPC", "-"),
 ];
 
 export const InterlockList = (props) => {

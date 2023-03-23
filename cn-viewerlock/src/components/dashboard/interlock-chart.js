@@ -19,11 +19,32 @@ const theme = createTheme({
   },
 });
 
+let testStyle = {
+  test: {
+    "pointer-events": "auto",
+    marginTop: -150,
+  },
+};
+
 export const InterlockChart = (props) => {
   const [key, setKey] = useState(0);
+  // const [test, setTest] = useState({ "pointer-events": "none" });
   const graphSrc =
     "http://localhost:3000/d-solo/udWnXn0Vz/new-dashboard?orgId=1&refresh=10s&panelId=19&theme=light" +
     `&from=${getDateStamp(6)}&to=${Date.now() + 10000 * 360 * 6}`;
+
+  // const onMouseDown = () => {
+  //   console.log("HAHAHAHAHAHAHAHAHAHA");
+  //   testStyle.test = {
+  //     "pointer-events": "none",
+  //   };
+  // };
+  // const onMouseUp = () => {
+  //   console.log("KEKEKEKEKEKEKEKEKEKE");
+  //   testStyle.test = {
+  //     "pointer-events": "auto",
+  //   };
+  // };
 
   return (
     <Card {...props}>
@@ -61,8 +82,29 @@ export const InterlockChart = (props) => {
             height: 250,
             position: "relative",
           }}
+          // onMouseDown={onMouseDown}
+          // onMouseUp={onMouseUp}
         >
-          <iframe src={graphSrc} width="100%" height="100%" frameBorder="0"></iframe>
+          {/* <Box
+            className="asdf"
+            key={key}
+            sx={{
+              marginTop: 0,
+              // paddingBottom: -400,
+              height: 200,
+              position: "relative",
+            }}
+            onMouseDown={onMouseDown}
+            onMouseUp={onMouseUp}
+          ></Box> */}
+          <iframe
+            className="iframe-no-click"
+            // style={testStyle.test}
+            src={graphSrc}
+            width="100%"
+            height="100%"
+            frameBorder="0"
+          ></iframe>
         </Box>
       </CardContent>
     </Card>

@@ -83,7 +83,13 @@ export const InterlockReal = (props) => {
             position: "relative",
           }}
         >
-          <iframe src={url} width="100%" height="100%" frameBorder="0"></iframe>
+          <iframe
+            className="iframe-no-click"
+            src={url}
+            width="100%"
+            height="100%"
+            frameBorder="0"
+          ></iframe>
           {/* <ResponsiveContainer width="100%" height="100%">
             <LineChart
               // width={440}

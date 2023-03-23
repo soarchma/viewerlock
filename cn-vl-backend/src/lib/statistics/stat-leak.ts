@@ -143,10 +143,10 @@ export const chekcDataLeak = (rawData: any) => {
   if (testState === "testStart") {
     testState = "testing";
     setTimeout(() => {
-      // 12초 동안 테스트
+      // 10초 동안 테스트
       testState = "testEnd";
       console.log("Leak Test End!");
-    }, 1000 * 12);
+    }, 1000 * 10);
   }
   if (testState === "testEnd") {
     testState = "testWait";

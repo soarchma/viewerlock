@@ -58,7 +58,13 @@ export const SysGraph = (props) => {
           pb: 1,
         }}
       >
-        <iframe src={src} width="100%" height={height} frameBorder="0"></iframe>
+        <iframe
+          className="iframe-no-click"
+          src={src}
+          width="100%"
+          height={height}
+          frameBorder="0"
+        ></iframe>
       </Box>
     </Card>
   );

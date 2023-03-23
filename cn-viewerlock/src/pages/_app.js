@@ -12,6 +12,7 @@ import { theme } from "../theme";
 import { EventEmitter } from "events";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useCookies } from "react-cookie";
+import "./style-global.css";
 
 registerChartJs();
 

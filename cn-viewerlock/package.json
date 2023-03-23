@@ -2,7 +2,7 @@
   "name": "cn-viewerlock",
   "author": "CloudNetworks",
   "licence": "MIT",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "private": false,
   "scripts": {
     "dev": "next dev -p 8081",
