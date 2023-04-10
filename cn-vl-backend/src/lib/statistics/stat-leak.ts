@@ -123,7 +123,7 @@ export const chekcDataLeak = (rawData: any) => {
   // TODO: 데이터를 분석해서 현재 설비의 동작 상태를 예측해야 한다.
   let sum = 0;
   Object.keys(rawData).forEach((key: string) => {
-    if (rawData[key] > 650) isError = true;
+    if (rawData[key] > 610) isError = true;
     if (rawData[key] != null) {
       sum += rawData[key];
     }
@@ -131,30 +131,31 @@ export const chekcDataLeak = (rawData: any) => {
 
   // ready -> start -> testing -> end -> wait -> ready
   // FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:
-  if (sum / 6 > 500 && testState === "testReady") {
+  // FIXME: 시작 조건에서 에러 발생한 항목만 제외하고 평균값을 구해서 판도록 수정.
+  if (sum / 6 > 550 && testState === "testReady" && !isError) {
     testState = "testStarting";
     tempData.update = [];
     setTimeout(() => {
-      // 압력 인가 초기. 3초 대기 후 측정 시작
+      // 압력 인가 초기. 2초 대기 후 측정 시작
       testState = "testStart";
-      console.log("Leak Test Start!");
-    }, 1000 * 3);
+      console.log("Leak Test Start!", rawData);
+    }, 1000 * 2);
   }
   if (testState === "testStart") {
     testState = "testing";
     setTimeout(() => {
-      // 10초 동안 테스트
+      // 12초 동안 테스트
       testState = "testEnd";
       console.log("Leak Test End!");
-    }, 1000 * 10);
+    }, 1000 * 12);
   }
   if (testState === "testEnd") {
     testState = "testWait";
     setTimeout(() => {
-      // 15초 동안 대기
+      // 20초 동안 대기
       testState = "testReady";
       // console.log("Leak Test Ready!");
-    }, 1000 * 15);
+    }, 1000 * 20);
   }
   // FIXME:TODO:FIXME:TODO:FIXME:TODO:FIXME:TODO:
 
@@ -172,7 +173,12 @@ export const chekcDataLeak = (rawData: any) => {
           // 에러 발생 알림
           if (tempData.update.indexOf(key) < 0) {
             tempData.update.push(key);
-            console.log("Leak Error!!!", tempData.update);
+            console.log("Leak Error!!!", tempData);
+          }
+        } else {
+          const idx = tempData.update.indexOf(key);
+          if (idx >= 0) {
+            tempData.update.splice(idx, 1);
           }
         }
       });
