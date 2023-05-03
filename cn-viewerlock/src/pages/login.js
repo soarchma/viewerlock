@@ -183,7 +183,7 @@ const Login = (props) => {
             </NextLink> */}
           </Typography>
           {/* TODO:FIXME: GS 인증 */}
-          <FormControlLabel
+          {/* <FormControlLabel
             control={
               <Switch
                 checked={simul}
@@ -192,7 +192,7 @@ const Login = (props) => {
               />
             }
             label="Test Mode(GS 인증)"
-          />
+          /> */}
           {/* TODO:FIXME: GS 인증 */}
           {/* </form> */}
         </Container>
