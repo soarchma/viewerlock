@@ -183,7 +183,7 @@ const Login = (props) => {
             </NextLink> */}
           </Typography>
           {/* TODO:FIXME: GS 인증 */}
-          {/* <FormControlLabel
+          <FormControlLabel
             control={
               <Switch
                 checked={simul}
@@ -191,8 +191,8 @@ const Login = (props) => {
                 inputProps={{ "aria-label": "controlled" }}
               />
             }
-            label="Test Mode(GS 인증)"
-          /> */}
+            label="Test Mode"
+          />
           {/* TODO:FIXME: GS 인증 */}
           {/* </form> */}
         </Container>
